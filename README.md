@@ -1,6 +1,7 @@
 RAPID
-Read Alignment and Analysis Pipeline
 =====
+Read Alignment and Analysis Pipeline
+------------------------------------
 
 RAPID is a set of tools for the alignment, and analysis of genomic regions with small RNA clusters derived from small RNA sequencing data.
 It currently features:
