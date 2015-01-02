@@ -1,3 +1,8 @@
+![RAPID Logo][logo]
+
+
+[logo]: figures/Logo.png
+
 RAPID
 =====
 Read Alignment and Analysis Pipeline
