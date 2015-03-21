@@ -19,7 +19,7 @@ It currently features:
 ./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  
 
 short | long params | explanation
------------|------------
+-----------|------------|--------
 -h | --help | show the help on screen
 -o | --out  | path to the output directory, directory will be created if non-existent
 -f | --file | path to the read fastq file (currently only fastq format)
@@ -37,7 +37,7 @@ Necessary parameters are file, annot, out
 ###Usage
 ./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid 
 short | long params | explanation
------------|------------
+-----------|------------|--------
 -h|-- | output help
 -o|--out | path to the output directory, directory will be created if non-existent
 -c|--conf | the config file that defines which rapid_main analysis folders should be used
