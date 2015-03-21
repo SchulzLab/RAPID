@@ -182,56 +182,6 @@ Poisson <- function(mean,value){
  return( ppois(value,mean,lower.tail=T,log.p=T))
 }
 
-#the following function compute pairwise significance 
-# tests for all possible pairs as denoted below
-#for each region
-#   for each samples
-#        compute Poisson test
-#        create pairwise entry (sample 1 sample 2) in data frame 
-#        use that for visualization or table output
-#  done
-#done
-computePairwiseSignificance <- function(df,allowed=c("all")){
-  dat=df
-  if(allowed[1] != "all"){
-    dat=subset(dat,region %in% allowed)
-  }
-  total=length(unique(dat$region)) * length(unique(dat$sample))^2
-  sub=as.character(rep("name",total))
-  tests=data.frame(region=sub,sample1=sub,sample2=sub,pval=rep(0,total),stringsAsFactors=FALSE)
-  row=1
-  for (regionName in unique(dat$region)){
-    for (sample1 in unique(dat$samples)){
-      for (sample2 in unique(dat$samples)){
-        pval=0
-        
-        if(sample1 != sample2){
-          pval=Poisson(subset(dat,region==regionName & samples==sample1)$readCountsAvg,
-                       subset(dat,region==regionName & samples==sample2)$readCountsAvg )
-        }
-        
-        tests[row,]=c(regionName,sample1,sample2,pval)
-        row=row+1
-      }
-    }
-  }
-  tests$pval=as.numeric(tests$pval)
-  return(tests)
-}
-
-regionSignificanceMaps <-function(df,allowed){
-  pairs=computePairwiseSignificance(df,allowed)
-  for (regionName in unique(pairs$region)){
-    title=paste('Pairwise Poisson tests region',regionName)
-   p=(  ggplot(pairs, aes(sample1, sample2)) + 
-    geom_tile(data=subset(pairs,region == regionName),aes(fill = pval), colour = "white") +
-    scale_fill_gradient(low = "white",high = "steelblue")+ 
-  labs(y="Sample1",x="Sample2",fill="p-value (log)",title=title))
-  p
-    
-  }
-}
-
 ####DONE FUNCTIONS####
 
 #read CMD line parameters
@@ -241,9 +191,6 @@ args <- commandArgs(trailingOnly = TRUE)
 config=args[1]
 annot=args[2]
 out=args[3]
-#config="/Users/mschulz/Projects/smallRNA/paramecium/analysis/transgene_final/ComparativeAnalysisRAPIDCont.config"
-#annot="/Users/mschulz/Projects/smallRNA/paramecium/analysis/transgene_final/AnnotationRegions.bed"
-#out="/Users/mschulz/Projects/smallRNA/paramecium/analysis/transgene_final/Comparitive_Control/"
 
 
 #load datasets 

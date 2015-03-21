@@ -20,11 +20,10 @@ VERSION="0.1"
 OUT=""
 FILE=""
 BIN=""
-ANNOT="/home/mschulz/smallRNA/paramecium/scripts/AnnotationRegions.bed"
+ANNOT=""
 INDEX=""
 CONTAMIN="no"
 INDEXCONT=""
-COLLAPSE="no"
 BAM="no"
 REMOVE="yes"
 
@@ -46,16 +45,15 @@ echo "|________________________________________________|"
     echo ""
     echo "./rapid_main.sh -o=complete/path/outputDirectory -file=reads.fastq "
     echo "Parameters:"
-    echo "-h --help"
-    echo "-o= path to the output directory, directory will be created if non-existent"
-    echo "--file= the read fastq file (currently in fastq format)"
-    echo "--annot=file.bed : bed file with regions that should be annotated with read alignments"
-    echo "--rapid=PATH/ set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
-   # echo "--collapse=yes : activate read collapsing (default no)"
+    echo "-h|--help"
+    echo "-o|--out= path to the output directory, directory will be created if non-existent"
+    echo "-f|--file= the read fastq file (currently in fastq format)"
+    echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments"
+    echo "-r|--rapid=PATH/ set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
+    echo "-i|--index=PATH/ set location of the bowtie2 index for alignment" 
     echo "--bam=yes : create sorted and indexed bam file (default no, needs samtools on path)"
-    echo "--index=PATH/ set location of the bowtie2 index for alignment" 
     echo "--contamin=yes : use a double alignment step first aligning to a contamination file (default no)"
-    echo "--indexcont=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
+    echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
     echo ""
     echo ""
@@ -69,20 +67,17 @@ while [ "$1" != "" ]; do
             usage
             exit
             ;;
-        --file)
+        -f | --file)
             FILE=$VALUE
             ;;
-        --out)
+        -o | --out)
             OUT=$VALUE
             ;;
         --rapid)
             BIN=$VALUE
             ;;
-        --annot)
+        -a | --annot)
             ANNOT=$VALUE
-            ;;
-        --collapse)
-            COLLAPSE=$VALUE
             ;;
         --bam)
             BAM=$VALUE
@@ -90,10 +85,10 @@ while [ "$1" != "" ]; do
         --contamin)
             CONTAMIN=$VALUE
             ;;
-        --index)
+        -i | --index)
             INDEX=$VALUE
             ;;
-        --indexcont)
+        --indexco)
             INDEXCONT=$VALUE
             ;;
         --remove)
@@ -135,23 +130,9 @@ fi
 
 #Main routines#
 
- #should be in path
-#bowtie=/home/mschulz/smallRNA/software/bowtie2-2.1.0/bowtie2
-#samtools=/home/mschulz/smallRNA/software/samtools-0.1.19/samtools
-#bedtools=/home/mschulz/smallRNA/software/bedtools2/bin/
-
-#temp variables
-#data=/home/mschulz/smallRNA/paramecium/data/
-#out=/home/mschulz/smallRNA/paramecium/analysis/transgene_contamin/
-#scripts=/home/mschulz/smallRNA/paramecium/scripts/
-
+#create project 
 mkdir -p $OUT/
 new=${OUT}/aligned
-
-#collapse read file into unqiue reads if desired:
-#if [ $COLLAPSE == "yes" ]
-  # perl${BIN}rapid_ToFasta.pl $FILE  | ${BIN}fastx_collapser > ${new}_collapsed_reads.fa
-  # bowtie2 -p 20  -k 2 -x /home/mschulz/smallRNA/paramecium/templates/OnlyContaminations -f ${new}_collapsed_reads.fa  --un ${new}_unmappedReads.fa -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
 
 if [ $CONTAMIN == "yes" ]
     then

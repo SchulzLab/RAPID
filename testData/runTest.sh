@@ -1,11 +1,22 @@
-#test the new RAPID pipeline
-rapid=/home/mschulz/smallRNA/software/github/RAPID/bin/
-data=/home/mschulz/smallRNA/paramecium/data/
-#add programs to path
-PATH=$PATH:/home/mschulz/smallRNA/software/bowtie2-2.1.0/
-PATH=$PATH:/home/mschulz/smallRNA/software/samtools-0.1.19/
-PATH=$PATH:/home/mschulz/smallRNA/software/bedtools2/bin/
-PATH=$PATH:/home/mschulz/smallRNA/software/github/RAPID/bin/
+##
+## This document is a test run for the RAPID pipeline.
+## It contains a small set of reads that are aligned against a gene
+## with two regions in the Regions.bed
+## After the first part of the pipelien (rapid_main) is run an example comparative
+## analysis (with three times the same data) is run to illustrate the different outputs
+##
+## Note that bedtools2, bowtie2, samtools (fro bam support) and the RAPID bin folder should be in your PATH
+## otherwise uncomment the lines below and at the paths.
+#add programs to path 
+#PATH=$PATH:/  #bowtie 2
+#PATH=$PATH:/  #samtools
+#PATH=$PATH:/  #bedtools2
+#PATH=$PATH:/  #RAPID/bin/
+
+#first create a rapid analysis of a small data set with 1 gene and 2 regions
 
 bash ${rapid}rapid_main.sh --file=test.fastq.gz --out=TestRapid/ --rapid=$rapid --annot=Regions.bed --index=/home/mschulz/smallRNA/software/github/RAPID/testData/GeneIndex 
 
+#second use the config file test.config to generate a toy comparative analysis
+
+bash ${rapid}rapid_compare.sh --conf=test.config --out=TestCompare/ --rapid=$rapid --annot=Regions.bed  
