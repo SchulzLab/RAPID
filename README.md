@@ -12,6 +12,12 @@ It currently features:
 - a comparative module (rapid_compare) that can take as input several datasets processed with rapid_main. It normalizes read counts and produces a battery of comparative visualizations of the different datasets provided.
 
 
+##Installation
+In addition to download the RAPID source you need to have installed the following programs:
+*Bedtools2
+*Bowtie2
+*Samtools (only if you want BAM files)
+
 ##rapid_main
 
 ###Usage
@@ -34,7 +40,7 @@ short | long params | explanation
  | --remove=yes | remove unecessary intermediate files (default yes)
 
 ##rapid_compare
-
+rapid_compare gets a config file as input that tells the software which folders have been created with rapid_main, these will be used to create the analysis.
 ###Usage
 ./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid 
 
