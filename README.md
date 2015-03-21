@@ -15,8 +15,8 @@ It currently features:
 ##Installation
 In addition to download the RAPID source you need to have installed the following programs:
 *Bedtools2
-*Bowtie2
-*Samtools (only if you want BAM files)
+*Bowtie2 (version 2.1.0 or higher)
+*Samtools (only if you want BAM files, version 0.1.19 or higher)
 
 ##rapid_main
 
