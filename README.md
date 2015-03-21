@@ -1,4 +1,4 @@
-[RAPID Logo][logo]
+![RAPID Logo][logo]
 
 
 [logo]: figures/Logo.png
