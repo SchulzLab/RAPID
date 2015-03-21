@@ -18,30 +18,32 @@ It currently features:
 
 ./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  
 
+**Necessary parameters are file, annot, out**
+
 short | long params | explanation
------------|------------
+-----------|------------|--------
 -h | --help | show the help on screen
 -o | --out  | path to the output directory, directory will be created if non-existent
 -f | --file | path to the read fastq file (currently only fastq format)
 -a | --annot |  bed file with regions that should be annotated with read alignments
 -r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) if not in PATH
- |--bam=yes | create sorted and indexed bam file (default no, needs samtools on path)
+ | --bam=yes | create sorted and indexed bam file (default no, needs samtools on path)
 -i | --index | set location of the bowtie2 index for alignment
-|--contamin=yes | use a double alignment step first aligning to a contamination file (default no)
-|--indexco | set location of the contamination bowtie2 index for alignment (only with contamin=yes)
-|--remove=yes | remove unecessary intermediate files (default yes)
+ | --contamin=yes | use a double alignment step first aligning to a contamination file (default no)
+ | --indexco | set location of the contamination bowtie2 index for alignment (only with contamin=yes)
+ | --remove=yes | remove unecessary intermediate files (default yes)
 
-Necessary parameters are file, annot, out
 ##rapid_compare
 
 ###Usage
 ./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid 
+
 short | long params | explanation
------------|------------
--h|-- | output help
--o|--out | path to the output directory, directory will be created if non-existent
--c|--conf | the config file that defines which rapid_main analysis folders should be used
--a|--annot | bed file with regions that should be used for the comparison, this must be a subset of the regions that was used for rapid_main calls
--r|--rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable
+-----------|------------|--------
+-h | -- | output help
+-o | --out | path to the output directory, directory will be created if non-existent
+-c | --conf | the config file that defines which rapid_main analysis folders should be used
+-a | --annot | bed file with regions that should be used for the comparison, this must be a subset of the regions that was used for rapid_main calls
+-r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable
 
 
