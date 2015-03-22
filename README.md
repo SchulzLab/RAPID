@@ -41,9 +41,18 @@ short | long params | explanation
 
 ##rapid_compare
 rapid_compare gets a config file as input that tells the software which folders have been created with rapid_main, these will be used to create the analysis.
+
 ####Config file format
+location   |     name |   background
+----------|----------|-------------
+Control1 | Ctrl1  | none
+Control2 | Ctrl2  | none
+Condition1 | Cond1   | none
+Condition2 | Cond2   | none
 
-
+The config file is a simple **tab-delimited** flat file that has 3 columns,  the path to the folder produced by rapid_main, the name of the experiment, and whether or not the file should substract regions for normalization (see section Normalization). Each line is one dataset that should be included in the comparison.
+For this example 4 datasets were run with ** rapid_main ** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapid_compare.sh is run. The 2nd column list the name under which the experiment is represented in the comparative analysis, lastly the *background* column is important for normalization if siRNA knockdown were done, default value if that is not the case is **none**.
+ 
 ###Usage
 `./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid `
 
