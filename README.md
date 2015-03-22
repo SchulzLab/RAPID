@@ -22,7 +22,7 @@ In addition to download the RAPID source you need to have installed the followin
 
 ###Usage
 
-./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  
+`./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  `
 
 **Necessary parameters are file, annot, out**
 
@@ -41,8 +41,11 @@ short | long params | explanation
 
 ##rapid_compare
 rapid_compare gets a config file as input that tells the software which folders have been created with rapid_main, these will be used to create the analysis.
+####Config file format
+
+
 ###Usage
-./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid 
+`./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid `
 
 short | long params | explanation
 -----------|------------|--------
