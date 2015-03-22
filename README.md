@@ -16,6 +16,7 @@ It currently features:
 In addition to download the RAPID source you need to have installed the following programs:
 * Bedtools2
 * Bowtie2 (version 2.1.0 or higher)
+* R version 3.0 or higher with packages ggplot2, scales
 * Samtools (only if you want BAM files, version 0.1.19 or higher)
 
 ##rapid_main
