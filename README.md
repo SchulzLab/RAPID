@@ -52,4 +52,11 @@ short | long params | explanation
 -a | --annot | bed file with regions that should be used for the comparison, this must be a subset of the regions that was used for rapid_main calls
 -r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable
 
+##Example
+After installation you can try running RAPID using the provided script runTest.sh in the testData folder.
 
+Simply run
+
+`bash runTest.sh`
+
+and there should be the folder TestRapid created in the TestData folder.
