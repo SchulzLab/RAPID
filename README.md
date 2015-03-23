@@ -13,7 +13,7 @@ It currently features:
 
 
 ##Installation
-In addition to download the RAPID source you need to have installed the following programs:
+In addition to downloading the RAPID source you need to have installed the following programs in your path:
 * Bedtools2
 * Bowtie2 (version 2.1.0 or higher)
 * R version 3.0 or higher with packages ggplot2, scales
@@ -25,7 +25,7 @@ In addition to download the RAPID source you need to have installed the followin
 
 `./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  `
 
-**Necessary parameters are file, annot, out**
+**Necessary parameters for running rapid_main are file, annot, out**
 
 short | long params | explanation
 -----------|------------|--------
