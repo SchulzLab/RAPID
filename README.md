@@ -13,9 +13,10 @@ It currently features:
 
 
 ##Installation
-In addition to download the RAPID source you need to have installed the following programs:
+In addition to downloading the RAPID source you need to have installed the following programs in your path:
 * Bedtools2
 * Bowtie2 (version 2.1.0 or higher)
+* R version 3.0 or higher with packages ggplot2, scales
 * Samtools (only if you want BAM files, version 0.1.19 or higher)
 
 ##rapid_main
@@ -24,7 +25,7 @@ In addition to download the RAPID source you need to have installed the followin
 
 `./rapid_main.sh -o=complete/path/outputDirectory -f=reads.fastq.gz -a=Regions.bed  `
 
-**Necessary parameters are file, annot, out**
+**Necessary parameters for running rapid_main are file, annot, out**
 
 short | long params | explanation
 -----------|------------|--------
@@ -51,7 +52,7 @@ Condition1 | Cond1   | none
 Condition2 | Cond2   | none
 
 The config file is a simple **tab-delimited** flat file that has 3 columns,  the path to the folder produced by rapid_main, the name of the experiment, and whether or not the file should substract regions for normalization (see section Normalization). Each line is one dataset that should be included in the comparison.
-For this example 4 datasets were run with ** rapid_main ** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapid_compare.sh is run. The 2nd column list the name under which the experiment is represented in the comparative analysis, lastly the *background* column is important for normalization if siRNA knockdown were done, default value if that is not the case is **none**.
+For this example 4 datasets were run with **rapid_main** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapid_compare.sh is run. The 2nd column lists the name under which the experiment is represented in the comparative analysis. Lastly the *background* column is important for normalization if siRNA knockdown was done, default value if that is not the case is **none**. In case that region should be substracted before normalization they have to given as a comma separated list and correspond to regions given in the Annotation bed file (parameter --annot).
  
 ###Usage
 `./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid `
