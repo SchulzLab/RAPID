@@ -52,7 +52,7 @@ Condition1 | Cond1   | none
 Condition2 | Cond2   | none
 
 The config file is a simple **tab-delimited** flat file that has 3 columns,  the path to the folder produced by rapid_main, the name of the experiment, and whether or not the file should substract regions for normalization (see section Normalization). Each line is one dataset that should be included in the comparison.
-For this example 4 datasets were run with **rapid_main** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapid_compare.sh is run. The 2nd column lists the name under which the experiment is represented in the comparative analysis. Lastly the *background* column is important for normalization if siRNA knockdown was done, default value if that is not the case is **none**. In case that region should be substracted before normalization they have to given as a comma separated list and correspond to regions given in the Annotation bed file (parameter --annot).
+For this example 4 datasets were run with **rapid_main** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapid_compare.sh is run. The 2nd column lists the name under which the experiment is represented in the comparative analysis. Lastly the *background* column is important for normalization if siRNA knockdown was done, default value if that is not the case is **none**. In case that region should be substracted before normalization they have to be given as a comma separated list and correspond to regions given in the Annotation bed file (parameter --annot).
  
 ###Usage
 `./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid `
@@ -65,6 +65,16 @@ short | long params | explanation
 -a | --annot | bed file with regions that should be used for the comparison, this must be a subset of the regions that was used for rapid_main calls
 -r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable
 
+##Output file formats
+One of the strengths of RAPID is that a number of useful file with statistics and plots are automaically created which can be used for additional analysis.
+
+###rapid_main formats
+In each folder created by rapid_main analysis exist the following files:
+* Statistics.dat - 
+
+* TotalReads.dat : Lists the total number of reads mapped to the genome (given by parameter -i and excluding reads that may have mapped to the contamination file)
+* 
+
 ##Example
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder.
 
@@ -72,4 +82,6 @@ Simply run
 
 `bash runTest.sh`
 
-and there should be the folder TestRapid created in the TestData folder.
+and there should be the folder TestRapid created by rapid_main.sh and TestCompare from rapid_compare.sh in the TestData folder.
+
+
