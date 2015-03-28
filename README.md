@@ -71,9 +71,8 @@ One of the strengths of RAPID is that a number of useful file with statistics an
 ###rapid_main formats
 In each folder created by rapid_main analysis exist the following files:
 * Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications and coverage on DNA strands
-
 * TotalReads.dat : Lists the total number of reads mapped to the genome (given by parameter -i and excluding reads that may have mapped to the contamination file)
-* Results.pdf - An autmatically generated PDF file that contains different plots analyzing read counts in the defined regions
+* Results.pdf - An automatically generated PDF file that contains different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions
 
 ##Example
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder.
