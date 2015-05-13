@@ -108,6 +108,9 @@ fi
 #create new folder for comparative results
 mkdir -p $OUT/
 echo Run comparative analysis using config file ${CONFIG} 
-
-Rscript ${BIN}rapid_CompareDatasets_auto.R ${CONFIG} ${ANNOT} ${OUT} >${OUT}/R_Errors.log 2>&1
+if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
+	Rscript ${BIN}rapid_CompareDatasets_auto.R ${CONFIG} ${ANNOT} ${OUT} >${OUT}/R_Errors.log 2>&1
+else
+	rapid_CompareDatasets_auto.R ${CONFIG} ${ANNOT} ${OUT} >${OUT}/R_Errors.log 2>&1
+fi
 echo Comparative analysis was created using the config file ${CONFIG} > $OUT/Analysis.Log

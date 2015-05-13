@@ -1,12 +1,13 @@
+#!/TL/opt/bin/Rscript
 args <- commandArgs(trailingOnly = TRUE)
 filename=as.character(args[1])
 annotationfile=as.character(args[2])
 annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
 
-outPlot=paste(filename,"Results.pdf",sep="")
-outStats=paste(filename,"Statistics.dat",sep="")
+outPlot=paste(filename,"/Results.pdf",sep="")
+outStats=paste(filename,"/Statistics.dat",sep="")
 
-tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
+tt=read.table(paste(filename,"/alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
 
 
 tt$ID=paste(tt$V1,tt$V2,tt$V3,tt$V4,sep="")

@@ -157,17 +157,22 @@ awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '
 if [ $BAM == "yes" ]
     then
         #create bam
-            $samtools view -S -b ${new}.sam >  ${new}.bam
+            samtools view -S -b ${new}.sam >  ${new}.bam
         #sort and 
-            $samtools sort ${new}.bam ${new}_sorted
+            samtools sort ${new}.bam ${new}_sorted
         #index
-            $samtools index ${new}_sorted.bam 
+            samtools index ${new}_sorted.bam 
 fi
 
 ######Postprocess data######
 
 #create summary gff file from SAM alignment files
-perl ${BIN}rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
+if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
+	perl ${BIN}rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
+else
+	rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
+
+fi
 
 echo compute overlap with regions in bed file ${ANNOT}
 intersectBed -a ${OUT}/alignedReads.gff -b ${ANNOT} -f 1 > ${OUT}/alignedReads.intersect -wao
@@ -187,7 +192,12 @@ if [ $REMOVE == "yes" ]
 fi
 
 #generate Plots for 
-Rscript ${BIN}/rapid_SummaryDataset.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
+if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
+	Rscript ${BIN}/rapid_SummaryDataset.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
+else
+	rapid_SummaryDataset.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
+fi
+
 
 
 

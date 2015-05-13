@@ -1,3 +1,4 @@
+#!/TL/opt/bin/Rscript
 #CALL: Rscript RAPID/bin/rapid_CompareDatasets_auto.R ComparisonNormal.config AnnotationRegions.bed Comparison_normal/
 
 #load libraries
@@ -208,9 +209,9 @@ normalized=normalizeEntries(Stats,Total)
 df=createPlottingData(normalized,conf)
 #save data.frame in output folder
 allowed= unique(subset(lens,type == "region")$region)
-write.table(subset(df,region %in% allowed),paste(out,"NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
+write.table(subset(df,region %in% allowed),paste(out,"/NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
 
-pdf(paste(out,"ComparativeAnalysesResults.pdf",sep=""))
+pdf(paste(out,"/ComparativeAnalysesResults.pdf",sep=""))
 createSamplePlot(df,title="",allowed,plotlog=FALSE)
 createSamplePlot(df,title="",allowed)
 createRegionPlot(df,title="",allowed)
