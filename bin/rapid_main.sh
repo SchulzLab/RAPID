@@ -140,6 +140,8 @@ if [ $CONTAMIN == "yes" ]
         bowtie2 -p 20  -k 2 -x ${INDEXCONT}  -U ${FILE}  --un ${new}_unmappedReads.fastq -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
 	#reset FILE name to unmapped reads
 	FILE=${new}_unmappedReads.fastq
+        echo run alignment with index ${INDEX}
+        bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
     else
         echo run alignment with index ${INDEX}
         bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
