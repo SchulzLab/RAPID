@@ -4,15 +4,17 @@ filename=as.character(args[1])
 annotationfile=as.character(args[2])
 annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
 
-outPlot=paste(filename,"/Results.pdf",sep="")
-outStats=paste(filename,"/Statistics.dat",sep="")
+outPlot=paste(filename,"Results.pdf",sep="")
+outStats=paste(filename,"Statistics.dat",sep="")
 
-tt=read.table(paste(filename,"/alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
+
+tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
 
 
 tt$ID=paste(tt$V1,tt$V2,tt$V3,tt$V4,sep="")
 tt$LM=paste(tt$V2,tt$V3,sep="")
 tt$LS=paste(tt$V2,tt$V4,sep="")
+
 nomodtt=subset(tt,V5 != "-")
 nomodtt$LSEQ=paste(nomodtt$V2,nomodtt$V5,sep="")
 
@@ -20,6 +22,27 @@ tt$MS=paste(tt$V4,tt$V3,sep="")
 
 stt=subset(tt,V5 != "-")
 tab=table(stt$V5)
+
+
+##create datastructure that counts reads per length per region and strand
+allNames=annotations$V4[!duplicated(annotations$V4)]
+names=paste(c(17:25,17:25),c(rep("+",9),rep("-",9)),sep="")
+allCounts=rep(0,length(names))
+#names(allCounts)=names
+
+for(name in allNames){
+  counts=rep(0,length(names))
+  subb=subset(tt,V1 == name)
+  for (i in 1:length(names)){
+    #counts[i]=length(grep(names[i],tt$LS,fixed=T))
+    counts[i]=nrow(subset(subb,LS == names[i]))
+  }
+  allCounts=rbind(allCounts,counts)
+  
+}
+#remove first dummy row
+allCounts=allCounts[-1,]
+
 
 
 #stats function returns line of stats for each matrix of alignments
@@ -49,8 +72,6 @@ Stats=c("region","reads","modified","MODratio","antisenseReads","ASratio","A+","
 
 pdf(outPlot)
 
-allNames=annotations$V4[!duplicated(annotations$V4)]
-#for( name in c("3endGene","5endGene","mRNAjunctions","introns","Vector","exons","mRNAND","mRNAND--","NDGene","genomicNDGene","ICLExons","ICLUTR")){
 for(name in allNames){
 par(mfrow=c(3,1))
 #single category plots
@@ -100,5 +121,9 @@ if(length(tab) >0){
 }
 
 dev.off()
+
+#add the header line of allCounts to the matrix to have the same nrow then Stats
+allCounts = rbind(names,allCounts)
+Stats=cbind(Stats,allCounts)
 write.table(Stats,outStats,quote=F,col.names=F,sep=" ")
 
