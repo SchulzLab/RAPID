@@ -183,6 +183,7 @@ Poisson <- function(mean,value){
  return( ppois(value,mean,lower.tail=T,log.p=T))
 }
 
+
 ####DONE FUNCTIONS####
 
 #read CMD line parameters
@@ -192,6 +193,10 @@ args <- commandArgs(trailingOnly = TRUE)
 config=args[1]
 annot=args[2]
 out=args[3]
+restrictLength=args[4]
+
+
+
 
 
 #load datasets 
@@ -200,6 +205,23 @@ lens=read.table(annot,header=F,stringsAsFactors=FALSE)
 names(lens)=c("chr","start","end","region","type")
 Stats=lapply(conf$location,readStatistics)
 Total=lapply(conf$location,readTotal)
+
+#check if variable is defined then updated Stats values 
+if(!is.na(restrictLength)){
+  # update reads column in each Stats entry to the sum of the counts 
+  # in the columns of given read counts
+  restrictPattern=gsub(',','|',restrictLength)
+  #show(paste(restrictPattern)) 
+  for (i in 1:length(Stats)){
+    indices=grep(restrictPattern,names(Stats[[i]]))
+    #show(paste(indices))
+    if(length(indices) > 0){
+      Stats[[i]]$reads=apply(Stats[[i]][,indices],1,sum)
+    }
+  }
+}
+
+
 #add length column
 Stats=addLengthColumnToStats(Stats,lens)
 
@@ -209,9 +231,9 @@ normalized=normalizeEntries(Stats,Total)
 df=createPlottingData(normalized,conf)
 #save data.frame in output folder
 allowed= unique(subset(lens,type == "region")$region)
-write.table(subset(df,region %in% allowed),paste(out,"/NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
+write.table(subset(df,region %in% allowed),paste(out,"NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
 
-pdf(paste(out,"/ComparativeAnalysesResults.pdf",sep=""))
+pdf(paste(out,"ComparativeAnalysesResults.pdf",sep=""))
 createSamplePlot(df,title="",allowed,plotlog=FALSE)
 createSamplePlot(df,title="",allowed)
 createRegionPlot(df,title="",allowed)
