@@ -195,15 +195,7 @@ fi
 
 #generate Plots for 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}/rapid_SummaryDataset.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
+	Rscript ${BIN}/rapidStats.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
 else
-	rapid_SummaryDataset.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
+	rapidStats.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
 fi
-
-
-
-
-
-
-
-

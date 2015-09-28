@@ -56,3 +56,4 @@ sub revComp {
         $revcomp =~ tr/ACGTacgt/TGCAtgca/;
         return $revcomp;
 }
+

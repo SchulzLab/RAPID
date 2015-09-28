@@ -112,8 +112,8 @@ fi
 mkdir -p $OUT/
 echo Run comparative analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}rapid_CompareDatasets_auto.R ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	Rscript ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
-	rapid_CompareDatasets_auto.R ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
-echo Comparative analysis was created using the config file ${CONFIG} > $OUT/Analysis.Log
+echo Normalized values are calculated using the config file ${CONFIG} > $OUT/Analysis.Log
