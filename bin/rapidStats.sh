@@ -43,12 +43,13 @@ echo "| -Read Alignment and Analysis Pipeline- V $VERSION   |"
 echo "|________________________________________________|"
     echo "Usage: "
     echo ""
-    echo "./rapid_main.sh -o=complete/path/outputDirectory -file=reads.fastq "
+    echo "./rapidStats.sh -o=/path_to_output_directory -f=reads.bam -ft=BAM --remove=no --annot=file.bed --index=/path_to_index"
     echo "Parameters:"
     echo "-h|--help"
     echo "-o|--out= path to the output directory, directory will be created if non-existent"
-    echo "-f|--file= the read fastq file (currently in fastq format)"
-    echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments"
+    echo "-f|--file= the input file"
+	echo "-ft|--filetype = Mention either BAM/SAM or FASTQ. Default FASTQ"
+    echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments (Multiple Bed files separated by commas can be given)"
     echo "-r|--rapid=PATH/ set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
     echo "-i|--index=PATH/ set location of the bowtie2 index for alignment" 
     echo "--bam=yes : create sorted and indexed bam file (default no, needs samtools on path)"
@@ -56,7 +57,7 @@ echo "|________________________________________________|"
     echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
     echo ""
-    echo ""
+    echo "CAN QUANTIFY ONLY FOR MULTIPLE BED FILES CURRENTLY..."
 }
  
 while [ "$1" != "" ]; do
@@ -66,6 +67,9 @@ while [ "$1" != "" ]; do
         -h | --help)
             usage
             exit
+            ;;
+        -ft | --filetype)
+            FILETYPE=$VALUE
             ;;
         -f | --file)
             FILE=$VALUE
@@ -102,10 +106,8 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+######Done parameter parsing######
 
- ######Done parameter parsing######
-
- 
 #ERROR HANDLING#
 
 if [ -z "$OUT" ]
@@ -117,6 +119,18 @@ fi
 if [ -z "$FILE" ]
     then
         echo "ERROR no input file defined "
+        usage
+        exit 1
+fi
+if [ -z "$ANNOT" ]
+    then
+        echo "ERROR no annotation file defined "
+        usage
+        exit 1
+fi
+if [ -z "$FILETYPE" ]
+    then
+        echo "ERROR no input file type defined "
         usage
         exit 1
 fi
@@ -134,36 +148,57 @@ fi
 mkdir -p $OUT/
 new=${OUT}/aligned
 
-if [ $CONTAMIN == "yes" ]
-    then
-	echo run two-step alignment by aligning first to contamination index  ${INDEXCONT}
-        bowtie2 -p 20  -k 2 -x ${INDEXCONT}  -U ${FILE}  --un ${new}_unmappedReads.fastq -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
-	#reset FILE name to unmapped reads
-	FILE=${new}_unmappedReads.fastq
-        echo run alignment with index ${INDEX}
-        bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
-    else
-        echo run alignment with index ${INDEX}
-        bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
-fi
+if [ $FILETYPE == "BAM" ]
+then
+	BASEFILE=$(basename $FILE)
+	#LOC=$(dirname $FILE)
+	FILENAME=`echo ${BASEFILE}|cut -d. -f1`
+	#samtools view -h ${FILE} >${new}.sam
+	#samtools sort ${new}.sam -o ${new}_sorted.sam
+	samtools sort -T ${new} -O sam -o ${new}.sam ${FILE}
+	samtools flagstat ${new}.sam >${new}.flagstat
+	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
+	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
+elif [ $FILETYPE == "SAM" ]
+then
+	BASEFILE=$(basename $FILE)
+	#LOC=$(dirname $FILE)
+	FILENAME=`echo ${BASEFILE}|cut -d. -f1`
+	#samtools sort ${FILE}.sam -o ${new}_sorted.sam
+	samtools sort -T ${new} -O sam -o ${new}.sam ${FILE}
+	samtools flagstat ${new}.sam >${new}.flagstat
+	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
+	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
+else
+	if [ $CONTAMIN == "yes" ]
+	then
+		echo run two-step alignment by aligning first to contamination index  ${INDEXCONT}
+		bowtie2 -p 20  -k 2 -x ${INDEXCONT}  -U ${FILE}  --un ${new}_unmappedReads.fastq -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
+		#reset FILE name to unmapped reads
+		FILE=${new}_unmappedReads.fastq
+		echo run alignment with index ${INDEX}
+		bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
+	else
+		echo run alignment with index ${INDEX}
+		bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
+	fi
 
+	#format for R
+	#count number of mapping reads
+	awk 'BEGIN{sum=0}{if($0 ~ "1 time"){sum=sum+$1;}}END{print sum}' ${new}_bowtie_final.LOG > ${OUT}/TotalReads.dat
 
+	#compute statisticis for aligned reads of different lengths:
+	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
 
-#format for R
-#count number of mapping reads
-awk 'BEGIN{sum=0}{if($0 ~ "1 time"){sum=sum+$1;}}END{print sum}' ${new}_bowtie_final.LOG > ${OUT}/TotalReads.dat
-
-#compute statisticis for aligned reads of different lengths:
-awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
-
-if [ $BAM == "yes" ]
-    then
-        #create bam
-            samtools view -S -b ${new}.sam >  ${new}.bam
-        #sort and 
-            samtools sort ${new}.bam ${new}_sorted
-        #index
-            samtools index ${new}_sorted.bam 
+	if [ $BAM == "yes" ]
+		then
+			#create bam
+				samtools view -S -b ${new}.sam >  ${new}.bam
+			#sort and 
+				samtools sort -T ${new} -o ${new}_sorted.bam ${new}.bam
+			#index
+				samtools index ${new}_sorted.bam
+	fi
 fi
 
 ######Postprocess data######
@@ -173,29 +208,40 @@ if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
 	perl ${BIN}rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
 else
 	rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
-
 fi
+IFS=',' read -ra ANNFILES <<< "$ANNOT"
+for ANNFILE in "${ANNFILES[@]}"; do
+#echo $ANNFILE
+BASEFILE=$(basename $ANNFILE)
+ANNFILENAME=`echo ${BASEFILE}|cut -d. -f1`
+mkdir -p ${OUT}/${ANNFILENAME}
+#echo $ANNFILENAME
 
-echo compute overlap with regions in bed file ${ANNOT}
-intersectBed -a ${OUT}/alignedReads.gff -b ${ANNOT} -f 1 > ${OUT}/alignedReads.intersect -wao
+echo compute overlap with regions in bed file ${ANNFILE}
+intersectBed -a ${OUT}/alignedReads.gff -b ${ANNFILE} -f 1 > ${OUT}/${ANNFILENAME}/alignedReads.intersect -wao
 
 #produce reduced output after using Bedtools
-awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/alignedReads.intersect | awk '{if($1 !~ /\./){print $0}}' > ${OUT}/alignedReads.sub.compact
+awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANNFILENAME}/alignedReads.intersect | awk '{if($1 !~ /\./){print $0}}' > ${OUT}/${ANNFILENAME}/alignedReads.sub.compact
 
+
+
+#generate Statistics for 
+if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
+	Rscript ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
+else
+	rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
+fi
+done;
 #remove intermediate files
-
 if [ $REMOVE == "yes" ]
     then
 	echo removing intermediate files
-	rm ${OUT}/alignedReads.intersect 
+	for ANNFILE in "${ANNFILES[@]}"; do
+		BASEFILE=$(basename $ANNFILE)
+		ANNFILENAME=`echo ${BASEFILE}|cut -d. -f1`
+		rm ${OUT}/${ANNFILENAME}/alignedReads.intersect
+	done;
 	rm ${OUT}/alignedReads.gff 
 	rm ${OUT}/aligned.sam 
 	
-fi
-
-#generate Plots for 
-if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}/rapidStats.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
-else
-	rapidStats.r ${OUT} ${ANNOT} >${OUT}/R_Errors.log 2>&1 
 fi
