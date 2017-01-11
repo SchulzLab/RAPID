@@ -1,4 +1,5 @@
 #!/TL/opt/bin/Rscript
+#!/TL/opt/bin/R3script
 #CALL: Rscript rapidNorm.R <configFile> <AnnotationFile> <OutputFolder> <LengthRestrictionIfAny>
 
 #load libraries
@@ -102,6 +103,10 @@ annot=args[2]
 out=args[3]
 restrictLength=args[4]
 
+#print(config)
+#print(annot)
+#print(out)
+#print(restrictLength)
 #load datasets 
 conf=read.table(config,header=T,sep="\t",stringsAsFactors=FALSE)
 lens=read.table(annot,header=F,stringsAsFactors=FALSE)
@@ -134,6 +139,9 @@ normalized=normalizeEntries(Stats,Total)
 df=createPlottingData(normalized,conf)
 #save data.frame in output folder
 allowed= unique(subset(lens,type == "region")$region)
-show(paste(allowed))
+#print(allowed)
+
+#print(df)
+#show(paste(allowed))
 write.table(subset(df,region %in% allowed),paste(out,"NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
 
