@@ -57,7 +57,8 @@ echo "|________________________________________________|"
     echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
     echo ""
-    echo "CAN QUANTIFY ONLY FOR MULTIPLE BED FILES CURRENTLY..."
+	echo "CAN QUANTIFY ONLY FOR MULTIPLE BED FILES CURRENTLY..."
+    echo ""
 }
  
 while [ "$1" != "" ]; do
@@ -215,6 +216,7 @@ for ANNFILE in "${ANNFILES[@]}"; do
 BASEFILE=$(basename $ANNFILE)
 ANNFILENAME=`echo ${BASEFILE}|cut -d. -f1`
 mkdir -p ${OUT}/${ANNFILENAME}
+cp ${OUT}/TotalReads.dat ${OUT}/${ANNFILENAME}/TotalReads.dat
 #echo $ANNFILENAME
 
 echo compute overlap with regions in bed file ${ANNFILE}
