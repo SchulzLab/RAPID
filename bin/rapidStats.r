@@ -1,8 +1,10 @@
 #!/TL/opt/bin/Rscript
-#CALL: Rscript Rscript rapidStats.r <outputFolder> <AnnotationFile>
+#!/TL/opt/bin/R3script
+#CALL: R3script rapidStats.r <outputFolder> <AnnotationFile>
 args <- commandArgs(trailingOnly = TRUE)
 filename=as.character(args[1])
 annotationfile=as.character(args[2])
+
 annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
 outStats=paste(filename,"Statistics.dat",sep="")
 tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
@@ -14,6 +16,7 @@ nomodtt$LSEQ=paste(nomodtt$V2,nomodtt$V5,sep="")
 tt$MS=paste(tt$V4,tt$V3,sep="")
 stt=subset(tt,V5 != "-")
 tab=table(stt$V5)
+
 ##create datastructure that counts reads per length per region and strand
 allNames=annotations$V4[!duplicated(annotations$V4)]
 names=paste(c(17:25,17:25),c(rep("+",9),rep("-",9)),sep="")
@@ -52,6 +55,7 @@ computeStats <- function(subMatrix,header){
   MODratio=round(mod/reads,2)
   return(as.character(c(header,reads,mod,MODratio,stranded,ASratio,Aplus,Cplus,Gplus,Tplus,Aminus,Cminus,Gminus,Tminus,Aratio,Cratio,Gratio,Tratio)))
 }
+
 #create table for stats results
 Stats=c("region","reads","modified","MODratio","antisenseReads","ASratio","A+","C+","G+","T+","A-","C-","G-","T-","Aratio","Cratio","Gratio","Tratio")
 for(name in allNames){
@@ -60,8 +64,8 @@ subtt=subset(subtt, V2 > 16 & V2 <27)
 #add statistics for this subset
 Stats=rbind(Stats,computeStats(subtt,name))
 }
+
 #add the header line of allCounts to the matrix to have the same nrow then Stats
 allCounts = rbind(names,allCounts)
 Stats=cbind(Stats,allCounts)
 write.table(Stats,outStats,quote=F,col.names=F,sep=" ")
-
