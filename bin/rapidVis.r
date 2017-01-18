@@ -1,5 +1,5 @@
 #!/TL/opt/bin/R3script
-#CALL: Rscript Rscript rapidVis.r <outputFolder_of_rapidStats.sh or rapidNorm.sh> <AnnotationFile> <plotMethod>
+#CALL: R3script rapidVis.r <plotMethod> <outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)> <AnnotationFile> <rapidPath (MUST)>
 #load libraries
 library("ggplot2")
 library("scales")
@@ -7,7 +7,7 @@ library("knitr")
 opts_chunk$set(echo=FALSE)
 args <- commandArgs(trailingOnly = TRUE)
 rapidPath <- Sys.getenv("rapid")
-show(rapidPath)
+#show(rapidPath)
 plotMethod=as.character(args[1]) #value for differentiating Individual or Comparison Plots (stats, compare)
 
 if(plotMethod=="stats"){
@@ -21,11 +21,11 @@ tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors
 allNames=annotations$V4[!duplicated(annotations$V4)] #Need to change this if we need to parse only a subset of regions
 
 ipname=paste(rapidPath,"statsPlot.Rmd", sep="")
-show(ipname)
+#show(ipname)
 for(name in allNames){
 opts_chunk$set(echo=FALSE)
 fname=paste(filename,paste(name,".html", sep=""), sep="")
-show(fname)
+#show(fname)
 knit2html(input=ipname,output=fname, envir=parent.frame())
 ##################################################For Individual Results - END
 }
