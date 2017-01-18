@@ -5,7 +5,7 @@
 # Read Alignment and Analysis Pipeline
 # 
  
-# Copyright (C) 2014 Marcel H. Schulz 
+# Copyright (C) 2017 Marcel H. Schulz 
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -26,6 +26,7 @@ CONTAMIN="no"
 INDEXCONT=""
 BAM="no"
 REMOVE="yes"
+FILETYPE="fq"
 
 function usage()
 {
@@ -43,22 +44,19 @@ echo "| -Read Alignment and Analysis Pipeline- V $VERSION   |"
 echo "|________________________________________________|"
     echo "Usage: "
     echo ""
-    echo "./rapidStats.sh -o=/path_to_output_directory -f=reads.bam -ft=BAM --remove=no --annot=file.bed --index=/path_to_index"
+    echo "./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no --annot=file.bed --index=/path_to_index"
     echo "Parameters:"
     echo "-h|--help"
-    echo "-o|--out= path to the output directory, directory will be created if non-existent"
-    echo "-f|--file= the input file"
-	echo "-ft|--filetype = Mention either BAM/SAM or FASTQ. Default FASTQ"
-    echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments (Multiple Bed files separated by commas can be given)"
-    echo "-r|--rapid=PATH/ set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
-    echo "-i|--index=PATH/ set location of the bowtie2 index for alignment" 
+    echo "-o|--out=/path_to_output_directory/ : path to the output directory, directory will be created if non-existent"
+    echo "-f|--file=filename : the input file"
+	echo "-ft|--filetype = BAM/SAM/fq : Mention either BAM/SAM or FASTQ. Default FASTQ"
+    echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments (Multiple Bed files should be separated by commas)"
+    echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
+    echo "-i|--index=PATH/ : set location of the bowtie2 index for alignment" 
     echo "--bam=yes : create sorted and indexed bam file (default no, needs samtools on path)"
     echo "--contamin=yes : use a double alignment step first aligning to a contamination file (default no)"
     echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
-    echo ""
-	echo "CAN QUANTIFY ONLY FOR MULTIPLE BED FILES CURRENTLY..."
-    echo ""
 }
  
 while [ "$1" != "" ]; do
@@ -129,12 +127,6 @@ if [ -z "$ANNOT" ]
         usage
         exit 1
 fi
-if [ -z "$FILETYPE" ]
-    then
-        echo "ERROR no input file type defined "
-        usage
-        exit 1
-fi
 if [ -z "$INDEX" ]
     then
         echo "ERROR no bowtie2 index path given "
@@ -152,10 +144,7 @@ new=${OUT}/aligned
 if [ $FILETYPE == "BAM" ]
 then
 	BASEFILE=$(basename $FILE)
-	#LOC=$(dirname $FILE)
 	FILENAME=`echo ${BASEFILE}|cut -d. -f1`
-	#samtools view -h ${FILE} >${new}.sam
-	#samtools sort ${new}.sam -o ${new}_sorted.sam
 	samtools sort -T ${new} -O sam -o ${new}.sam ${FILE}
 	samtools flagstat ${new}.sam >${new}.flagstat
 	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
@@ -163,9 +152,7 @@ then
 elif [ $FILETYPE == "SAM" ]
 then
 	BASEFILE=$(basename $FILE)
-	#LOC=$(dirname $FILE)
 	FILENAME=`echo ${BASEFILE}|cut -d. -f1`
-	#samtools sort ${FILE}.sam -o ${new}_sorted.sam
 	samtools sort -T ${new} -O sam -o ${new}.sam ${FILE}
 	samtools flagstat ${new}.sam >${new}.flagstat
 	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
@@ -212,12 +199,10 @@ else
 fi
 IFS=',' read -ra ANNFILES <<< "$ANNOT"
 for ANNFILE in "${ANNFILES[@]}"; do
-#echo $ANNFILE
 BASEFILE=$(basename $ANNFILE)
 ANNFILENAME=`echo ${BASEFILE}|cut -d. -f1`
 mkdir -p ${OUT}/${ANNFILENAME}
 cp ${OUT}/TotalReads.dat ${OUT}/${ANNFILENAME}/TotalReads.dat
-#echo $ANNFILENAME
 
 echo compute overlap with regions in bed file ${ANNFILE}
 intersectBed -a ${OUT}/alignedReads.gff -b ${ANNFILE} -f 1 > ${OUT}/${ANNFILENAME}/alignedReads.intersect -wao
@@ -229,7 +214,7 @@ awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANN
 
 #generate Statistics for 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
+	R3script ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 else
 	rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 fi
