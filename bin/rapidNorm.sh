@@ -5,7 +5,7 @@
 # Read Alignment and Analysis Pipeline
 # 
  
-# Copyright (C) 2014 Marcel H. Schulz 
+# Copyright (C) 2017 Marcel H. Schulz 
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -21,6 +21,7 @@ OUT=""
 CONFIG=""
 ANNOT=""
 BIN=""
+RESTLEN=""
 
 function usage()
 {
@@ -38,13 +39,14 @@ echo "| -Read Alignment and Analysis Pipeline- V $VERSION   |"
 echo "|________________________________________________|"
     echo "Usage: "
     echo ""
-    echo "./rapid_compare.sh --out=complete/path/outputDirectory --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid "
+    echo "./rapidNorm.sh --out=complete/path/outputDirectory/ --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid "
     echo "Parameters:"
     echo "-h|--help"
     echo "-o|--out=PATH/ : path to the output directory, directory will be created if non-existent"
-    echo "-c|--conf=PATH/ the config file that defines which rapid_main analysis folders should be used"
+    echo "-c|--conf=PATH/ : the config file that defines which rapidStats analysis folders should be used"
     echo "-a|--annot=file.bed : bed file with regions that should be used for the comparison"
-    echo "-r|--rapid=PATH/ set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
+    echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
+	echo "-l|--restrictlength=<INTEGER> : Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"
     echo ""
     echo ""
 }
@@ -112,7 +114,7 @@ fi
 mkdir -p $OUT/
 echo Run comparative analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	R3script ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
 	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
