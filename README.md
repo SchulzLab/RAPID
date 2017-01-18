@@ -66,10 +66,10 @@ location   |     name |   background
 ----------|----------|-------------
 Control1 | Ctrl1  | none
 Control2 | Ctrl2  | none
-Condition1 | Cond1   | <geneA,geneB>
+Condition1 | Cond1   | *geneA,geneB*
 Condition2 | Cond2   | none
 
-<geneA,geneB> - Gene names provided as background should be same as provided earlier in Annotation file.
+*geneA,geneB* - Gene names provided as background should be same as provided earlier in Annotation file.
 
 The config file is a simple **tab-delimited** flat file that has 3 columns,  the path to the folder produced by rapidStats, the name of the experiment, and whether or not the file should substract regions for normalization (see section Normalization). Each line is one dataset that should be included in the Normalization. Later these normalized statistics can be used to make comparison plots using **rapidVis**.
 For this example 4 datasets were run with **rapidStats** which created the folders Control1/2 and Condition1/2 (1st column), note that the string given in that column corresponds to the full path to the folders or the relative path from the folder where rapidNorm.sh is run. 
@@ -80,7 +80,7 @@ Lastly the *background* column is important for normalization if gene/siRNA knoc
 rapidVis is a R-script used to generate visualisations of the statistics calculated using rapidStats and rapidNorm.
 
 ###Usage
-`R3script rapidVis.r <plotMethod> <out> <annot> <rapidPath>`
+`R3script rapidVis.r *plotMethod* *out* *annot* *rapidPath*`
 
 arguments | explanation
 -------|-------------
@@ -136,7 +136,7 @@ In each folder created by rapidNorm analysis exist the following files:
 RapidVis output description when ran in two different modes. 
 
 ####rapidStats
-* <FolderName>.html - An automatically generated main HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions
+* *FolderName*.html - An automatically generated main HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions
 ####rapidNorm
 * ComparativeAnalysesResults.pdf - A PDF file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
