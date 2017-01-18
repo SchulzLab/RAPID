@@ -29,7 +29,7 @@ dds<-DESeq(ddsHTSeq)
 res<-results(dds)
 deStats<-as.data.frame(cbind(assay(dds), res$baseMean, res$log2FoldChange, res$lfcSE, res$stat, res$pvalue, res$padj))
 colnames(deStats)=t(c(colnames(assay(dds)),colnames(res)))
-write.table(deStats,paste(out,"DiffExp_Statistics",sep=""),quote=F,sep=",",col.names=NA)
+write.table(deStats,paste(out,"DiffExp_Statistics.csv",sep=""),quote=F,sep=",",col.names=NA)
 res<-res[order(res$padj),]
 
 #Making Plots as a PDF file
