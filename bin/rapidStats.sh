@@ -5,7 +5,7 @@
 # Read Alignment and Analysis Pipeline
 # 
  
-# Copyright (C) 2017 Marcel H. Schulz 
+# Copyright (C) 2017 Marcel H. Schulz  and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 

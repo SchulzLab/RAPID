@@ -46,3 +46,4 @@ sub revComp {
         return $revcomp;
 }
 
+
