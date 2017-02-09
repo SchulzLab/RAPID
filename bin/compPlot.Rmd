@@ -1,0 +1,198 @@
+---
+title: "Comparison plots of samples and gene/regions"
+author: "Sivarajan Karunanithi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+This report provides comparison plots of various samples and gene/region in normal and log2 scale. 
+
+###### Note: If graphs under some category are absent, it means there is not sufficient data with respect to that category. {#top}
+
+### [Quality Plots](#Quality) &nbsp; [Sample Comparison](#Sample) &nbsp; [Gene/Region Comparison](#Gene)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+
+COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"), strip.text = element_text(size = 14,face = "bold"))
+
+  ####FUNCTIONS####
+  #create barplot dividing the read counts for each region
+  createSamplePlot <- function(df,title,allowed=c("all"),plotlog=TRUE){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    
+    if(plotlog){
+      print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
+              geom_bar(stat="identity")+
+              facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
+              labs(x="Sample", y="Read count (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+    }else{
+      print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ region)+
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
+              labs(x="Sample", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+    }
+  }
+  #create barplot dividing the read counts for each region
+  createSampleASRatioPlot <- function(df,title,allowed=c("all"),y="Antisense ratio "){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    print(ggplot(df,aes(x=samples,y=ASratio,fill=samples)) +  
+            geom_bar(stat="identity") + facet_wrap(~ region)+ 
+            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
+            labs(x="Sample", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+  }
+  #create barplot dividing the read counts for each sample
+  createRegionPlot <- function(df,title,allowed=c("all"),plotlog=FALSE){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    if(plotlog){
+      print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ samples) + 
+              scale_y_continuous(trans=log2_trans()) +
+              theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) + 
+              labs(x="Gene/Region", y="Average read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+    }else{
+      print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ samples) + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
+              labs(x="Gene/Region", y="Average read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+      
+    }
+    
+  }
+  #create barplot dividing the read counts for each sample
+  createRegionASRatioPlot <- function(df,title,allowed=c("all"),y="Antisense ratio"){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    
+    print(ggplot(df,aes(x=region,y=ASratio,fill=region)) +  
+            geom_bar(stat="identity") +
+            facet_wrap(~ samples)+
+            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
+            labs(x="Gene/Region", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+  }
+  ####DONE FUNCTIONS####
+```
+
+### Clustered heatmap of antisense ratio {#Quality}
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-antisense-ratio" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  
+  #plotting the read count per region (log2) as heatmap
+  cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
+  
+  heatmap.2(as.matrix(asratio), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "ASratio", cexRow = 1.5, cexCol = 1.5, keysize = 1)
+```
+
+### Clustered heatmap of average read count (log2 scale)
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-average-read-count-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  heatmap.2(as.matrix(rdCntAvgLog), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "log2(readCountsAvg)", cexRow = 1.5, cexCol = 1.5, keysize = 1)
+```
+
+### PCA plot of samples
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#pca-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  
+  #Making PCA Plots of samples, analyzed with Normalized counts
+  rdCntNormPCA=prcomp(rdCntNorm)
+  score<-as.data.frame(rdCntNormPCA$rotation[,c(1,2)])
+  score<-cbind(row.names(score),score)
+  row.names(score)<-c(1:dim(score)[1])
+  colnames(score)<-c("Sample","PC1","PC2")
+  print(ggplot(score, aes(x = PC1, y = PC2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+```
+
+### MDS plot of samples
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#mds-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}  
+  #Making MDS Plots of samples, analyzed with Normalized counts
+  rdCntNormTDist=dist(t(rdCntNorm))
+  mds=cmdscale(rdCntNormTDist, k=2, eig = TRUE)
+  scoreMDS=as.data.frame(mds$points)
+  scoreMDS<-cbind(row.names(scoreMDS),scoreMDS)
+  row.names(scoreMDS)<-c(1:dim(scoreMDS)[1])
+  colnames(scoreMDS)<-c("Sample","Dimension1","Dimension2")
+  print(ggplot(scoreMDS, aes(x = Dimension1, y = Dimension2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+```
+
+### Box plot of regions
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#box-plot-of-read-counts" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  #Maxing a boxplot of regions
+  print(ggplot(dfa, aes(region, readCountsAvg)) + geom_boxplot() + labs(x="Gene/Region", y="Normalized Read Count") + COSMO)
+```
+
+### Sample wise comparison of read counts for each gene/region {#Sample}
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-read-counts-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createSamplePlot(dfa,title="",allowed,plotlog=FALSE)
+  #createSamplePlot(dfa,title="Sample Comparison",allowed,plotlog=FALSE)
+```
+
+### Sample wise comparison of read counts for each gene/region (log2 scale)
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-read-counts-for-each-generegion-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createSamplePlot(dfa,title="",allowed)
+  #createSamplePlot(dfa,title="Sample Comparison in log scale",allowed)
+```
+
+### Sample wise comparison of antisense ratio for each gene/region
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-antisense-ratio-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createSampleASRatioPlot(dfa,title="",allowed)
+  #createSampleASRatioPlot(dfa,title="Antisense ratio of samples",allowed)
+```
+
+### Gene/Region wise comparsion of average read counts for each sample {#Gene}
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-average-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createRegionPlot(dfa,title="",allowed)
+  #createRegionPlot(dfa,title="Gene/Regions Comparison",allowed)
+```
+
+### Gene/Region wise comparsion of average read counts for each sample (log2 scale)
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-average-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createRegionPlot(dfa,title="",allowed,plotlog=TRUE)
+  #createRegionPlot(dfa,title="Gene/Regions Comparison in log scale",allowed,plotlog=TRUE)
+```
+
+### Gene/Region wise comparison of antisense ratio for each sample
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparison-of-antisense-ratio-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createRegionASRatioPlot(dfa,title="",allowed)
+  #createRegionASRatioPlot(dfa,title="Antisense ratio of regions",allowed)
+```
+
+This document was created with R Markdown and the Knit package. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.

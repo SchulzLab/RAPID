@@ -16,11 +16,11 @@ It currently features:
 In addition to downloading the RAPID source you need to have installed the following programs in your path:
 * Bedtools2
 * Bowtie2 (version 2.1.0 or higher)
-* R version 3.0 or higher
+* R version 3.2 or higher
 * Samtools (only if you want BAM files, version 0.1.19 or higher)
 * R Packages required:
 ** DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
-** ggplot2, scales (MUST)
+** ggplot2, scales, pandoc (MUST)
 
 Extract the RAPID/bin/ files in your preferred location. Ensure to give execute permissions to all files in RAPID/bin/ and then add the installed location to PATH variable.
 
@@ -114,7 +114,7 @@ Condition1 | Cond1   | treated
 
 This config file is a simple **tab-delimited** file that has 3 columns, with the **same** headers as mentioned in the above format. 
 First field **sampleName** tells the name to be used in the analysis output.
-Second field **location** tells the location of rapidStats analysis folders should be used for extracting the raw counts of gene/regions analyzed
+Second field **location** tells the location of rapidStats analysis folders should be used for extracting the raw counts of gene/regions analyzed (USE ONLY ABSOLUTE PATH)
 Third field **condition** tells whether the sample is *untreated* or *treated* sample. For example, Use *treated*  drug treated cancerous samples and *untreated* for cancer samples.
 
 ##Output file formats
@@ -136,9 +136,10 @@ In each folder created by rapidNorm analysis exist the following files:
 RapidVis output description when ran in two different modes. 
 
 ####rapidStats
-* *FolderName*.html - An automatically generated main HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions
+* *FolderName*.html - An automatically generated main HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions.
+
 ####rapidNorm
-* ComparativeAnalysesResults.pdf - A PDF file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
+* *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
 ###rapidDiff
 In each folder created by rapidDiff analysis exist the following files:

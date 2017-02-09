@@ -1,123 +1,78 @@
 #!/TL/opt/bin/R3script
+#!/TL/opt/bin/R3
 #CALL: R3script rapidVis.r <plotMethod> <outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)> <AnnotationFile> <rapidPath (MUST)>
 #load libraries
+library("reshape2")
 library("ggplot2")
 library("scales")
 library("knitr")
-opts_chunk$set(echo=FALSE)
+library("gplots")
+library("RColorBrewer")
+opts_chunk$set(echo=FALSE, warning = FALSE)
 args <- commandArgs(trailingOnly = TRUE)
-rapidPath <- Sys.getenv("rapid")
-#show(rapidPath)
+rapidPath=Sys.getenv("rapid")
 plotMethod=as.character(args[1]) #value for differentiating Individual or Comparison Plots (stats, compare)
-
-if(plotMethod=="stats"){
-args <- commandArgs(trailingOnly = TRUE)
-filename=as.character(args[2])
-annotationfile=as.character(args[3])
-rapidPath=as.character(args[4])
 #################################For Individual Results
-annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
-tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
-allNames=annotations$V4[!duplicated(annotations$V4)] #Need to change this if we need to parse only a subset of regions
-
-ipname=paste(rapidPath,"statsPlot.Rmd", sep="")
-#show(ipname)
-for(name in allNames){
-opts_chunk$set(echo=FALSE)
-fname=paste(filename,paste(name,".html", sep=""), sep="")
-#show(fname)
-knit2html(input=ipname,output=fname, envir=parent.frame())
+if(plotMethod=="stats"){
+  args <- commandArgs(trailingOnly = TRUE)
+  filename=as.character(args[2])
+  annotationfile=as.character(args[3])
+  if(rapidPath==""){
+    rapidPath=as.character(args[4])
+  }
+  annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
+  tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
+  allNames=annotations$V4[!duplicated(annotations$V4)] #Need to change this if we need to parse only a subset of regions
+  
+  smpName=system("pwd|rev|cut -d '/' -f 1|rev", intern = TRUE)
+  homeIP=paste(rapidPath,"homePage.Rmd", sep="")
+  homeOUT=paste(normalizePath(filename),"Information.html", sep="/")
+  rmarkdown::render(input=homeIP,output_file = homeOUT, envir=parent.frame())
+  
+  ipname=paste(rapidPath,"statsPlot.Rmd", sep="")
+  for(name in allNames){
+    opts_chunk$set(echo=FALSE)
+    fname=paste(normalizePath(filename),paste(name,".html", sep=""), sep="/")
+    rmarkdown::render(input=ipname,output_file = fname, envir=parent.frame())
+    #knit2html(input=ipname,output=fname, envir=parent.frame())
+  }
+  masterFile=paste(paste("cp ", paste(rapidPath,"master.html", sep=""), sep=""), filename)
+  system(masterFile)
+  setwd(filename)
+  system("echo \"<HTML>\" >>sidecolumn.html")
+  system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo -n $file|cut -n -d '.' -f 1 >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
+  system("echo \"</HTML>\" >>sidecolumn.html")
+  system("sed -i '/sidecolumn\\|master/d' sidecolumn.html")
+  system("mv master.html `pwd|rev|cut -d '/' -f 1|rev`.html")
+}
 ##################################################For Individual Results - END
-}
-masterFile=paste(paste("cp ", paste(rapidPath,"master.html", sep=""), sep=""), filename)
-system(masterFile)
-setwd(filename)
-system("echo \"<HTML>\" >>sidecolumn.html")
-system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo -n $file|cut -n -d '.' -f 1 >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
-system("echo \"</HTML>\" >>sidecolumn.html")
-system("sed -i '/sidecolumn\\|master/d' sidecolumn.html")
-system("mv master.html `pwd|rev|cut -d '/' -f 1|rev`.html")
-}
-if(plotMethod=="compare"){
-out=args[2]
-
 #################################For Comparative Results
 
-####FUNCTIONS####
-#create barplot dividing the read counts for each region
-createSamplePlot <- function(df,title,allowed=c("all"),plotlog=TRUE){
-  if(allowed[1] != "all"){
-    df=subset(df,region %in% allowed)
+if(plotMethod=="compare"){
+  out=args[2]
+  if(rapidPath==""){
+    rapidPath=as.character(args[3])
   }
-  #show(df)
-  if(plotlog){
-  #show("InIfSamplePlot")
-  print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  geom_bar(stat="identity") +
-    facet_wrap(~ region)+theme_bw()+scale_y_continuous(trans=log2_trans()) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y="read counts (log2)",title=title))
-  }else{
-    #show("InElseSamplePlot")
-    print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  geom_bar(stat="identity") +
-      facet_wrap(~ region)+theme_bw()+
-      theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y="read counts",title=title))
-  }
+  opts_chunk$set(echo=FALSE, warning = FALSE)
+  normData=read.table(paste(out,"NormalizedValues.dat",sep=""),header=T,stringsAsFactors=FALSE)
+  dfa=normData
+  allowed<-unique(dfa$region)
+  hval=nrow(transform(allowed))*0.85
+  dfa$readCountsAvgLog = log2(0.00001+dfa$readCountsAvg)
+  asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratio'))
+  rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
+  rdCntNorm=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsNorm'))
+  rownames(asratio)=asratio$region
+  rownames(rdCntAvgLog)=rdCntAvgLog$region
+  rownames(rdCntNorm)=rdCntNorm$region
+  rdCntNorm$region=NULL
+  rdCntAvgLog$region=NULL
+  asratio$region=NULL
+  ipfile=paste(rapidPath,"compPlot.Rmd", sep="")
+  outfile=paste(normalizePath(out),"CompAnalysisResults.html", sep="/")
+  rmarkdown::render(input=ipfile,output_file=outfile, envir=parent.frame())
+  #knit2html(input=paste(rapidPath,"compPlot.Rmd", sep=""),output=paste(out,"CompAnalysisResults.html", sep=""), envir=parent.frame())
+  setwd(out)
+  system("mv CompAnalysisResults.html `pwd|rev|cut -d '/' -f 1|rev`.html")
 }
-#create barplot dividing the read counts for each region
-createSampleASRatioPlot <- function(df,title,allowed=c("all"),y="antisense ratio "){
-  if(allowed[1] != "all"){
-    df=subset(df,region %in% allowed)
-  }
-  print(ggplot(df,aes(x=samples,y=ASratio,fill=samples)) +  geom_bar(stat="identity") +theme_bw()+
-    facet_wrap(~ region)+ theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    labs(y=y,title=title))
-}
-#create barplot dividing the read counts for each sample
-createRegionPlot <- function(df,title,allowed=c("all"),plotlog=FALSE){
- if(allowed[1] != "all"){
-   df=subset(df,region %in% allowed)
- }
- if(plotlog){
-  print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  geom_bar(stat="identity") +
-  facet_wrap(~ samples)+theme_bw() + scale_y_continuous(trans=log2_trans()) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y="average read counts (log2) ",title=title))
- }else{
-  print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  geom_bar(stat="identity") +
-  facet_wrap(~ samples)+theme_bw() + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y="average read counts",title=title))
-   
- }
- 
-}
-#create barplot dividing the read counts for each sample
-createRegionASRatioPlot <- function(df,title,allowed=c("all"),y="antisense ratio"){
-  if(allowed[1] != "all"){
-    df=subset(df,region %in% allowed)
-  }
-  
-  print(ggplot(df,aes(x=region,y=ASratio,fill=region)) +  geom_bar(stat="identity") +
-    facet_wrap(~ samples)+theme_bw()+
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y=y,title=title))
-}
-####DONE FUNCTIONS####
-normData=read.table(paste(out,"NormalizedValues.dat",sep=""),header=T,stringsAsFactors=FALSE)
-dfa=normData
-allowed<-unique(dfa$region)
-pdf(paste(out,"ComparativeAnalysesResults.pdf",sep=""))
-createSamplePlot(dfa,title="",allowed,plotlog=FALSE)
-createSamplePlot(dfa,title="",allowed)
-createRegionPlot(dfa,title="",allowed)
-createRegionPlot(dfa,title="",allowed,plotlog=TRUE)
-createSampleASRatioPlot(dfa,title="",allowed)
-createRegionASRatioPlot(dfa,title="",allowed)
-#plotting the read counts per region (log2) as heatmap
-dfa$readCountsAvgLog = log2(dfa$readCountsAvg)
-print((p <- ggplot(dfa, aes(region, samples)) + geom_tile(data=subset(dfa,region %in% allowed),aes(fill = readCountsAvgLog),
-                    colour = "white") + scale_fill_gradient(low = "white",
-                    high = "steelblue")) + labs(y="Samples",x="Region",fill="Average count (log2)"))
-#plotting the read counts per region (log2) as heatmap
-print((p <- ggplot(dfa, aes(region, samples)) + geom_tile(data=subset(dfa,region %in% allowed),aes(fill = ASratio),
- colour = "white") + scale_fill_gradient(low = "white",
- high = "steelblue")) + labs(y="Samples",x="Region",fill="Antisense ratio"))
-dev.off()
 ##################################################For Comparative Results - END
-}

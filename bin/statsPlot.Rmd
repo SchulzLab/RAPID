@@ -1,55 +1,167 @@
+---
+title: "Statistical report of *`r name`*"
+author: "Sivarajan Karunanithi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+This report provides the basic statistical analysis of **`r name`**. It consists of various single category plots detailing on the distribution of read length, strand, and base modification. It also contains double category plots showing the combinations of aforementioned.
+
 ```{r echo=FALSE}
-#!/TL/opt/bin/R3
-par(mfrow=c(3,1))
 #single category plots
 subtt=subset(tt,V1==name)
 subtt=subset(subtt, V2 > 16 & V2 <27)
-
-if(nrow(subtt)>0){
 aligned=nrow(subtt)
-barplot(table(subtt$V2)/aligned*100,ylab="%",main=paste("Read lengths",name,filename,aligned,sep=" - "))
-barplot(table(subtt$V3)/aligned*100,ylab="%",main=paste("Modifications",name,aligned,sep=" - "))
 
-barplot(table(subtt$V4)/aligned*100,ylab="%",main=paste("Strand distribution",name,aligned,sep=" - "))
-
-par(mfrow=c(2,1))
-tab=table(subset(tt,V1==name & V5 != "-")$V5)
-aligned=nrow(subset(tt,V1==name))
-if(length(tab) >0){
-threshold=nrow(subset(tt,V1==name & V5 != "-"))*0.05
-threshold=max(threshold,1)
-
-barplot(tab[tab>=threshold],main=paste("Read Modifications minimum",threshold,name ,sep=" "))
-
-barplot(tab[tab>=threshold]/aligned*100,ylab="%",main=paste("Read Modifications minimum",threshold, name, sep=" - "))
-
-}
-par(mfrow=c(2,1))
-#double category plots
-#barplot(table(subset(tt,V1==name)$LS)/nrow(subset(tt,V1==name))*100,ylab="%",main=paste("Read strand by length",name,sep=" - "))
-counts=table(subtt$V4,subtt$V2)
-barplot(counts,legend= rownames(counts),ylab="count",main=paste("Read strand by length",name,sep=" - "))
-
-counts=table(subtt$V3,subtt$V2)
-barplot(counts,legend= rownames(counts),ylab="count",main=paste("Read modifications by length",name,sep=" - "))
-
-counts=table(subtt$V3,subtt$V4)
-barplot(counts,legend= rownames(counts),ylab="count",main=paste("Read modifications by strand",name,sep=" - "))
-
-
-#check if alignments are corrected, if minimum frequency is achieved
-#nrow(subset(tt,V5 != "-"))
-
-if(length(tab) >0){
-  #create subset with 1-base modifications
-  modtt=subset(subtt,V5 %in% c("A","C","G","T"))
-  if(nrow(modtt) >0){
-        counts=table(modtt$V5,modtt$V2)
-        barplot(counts,legend= rownames(counts),ylab="count",main=paste("Read length by modification",name, aligned,sep=" - "))
-		
-}
-}
-} else {
-next;
+COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"))
+if(nrow(subtt)==0) {
+	next;
 }
 ```
+
+**Total reads aligned to `r name` : `r aligned`**
+
+###### Note: If graphs under some category are absent, it means there is not sufficient data with respect to that category. {#top}
+
+### Read alignment percentage of various read lengths
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#read-alignment-percentage-of-various-read-lengths" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){
+  aligned=nrow(subtt)
+  print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("% of aligned reads") + COSMO)
+  #print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Length",name,aligned,sep=" - "))+xlab("Read Length")+ylab("% of aligned reads") + COSMO)
+}
+```
+
+### Alignment percentage of reads with (Un)Modified bases
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#alignment-percentage-of-reads-with-unmodified-bases" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){
+  aligned=nrow(subtt)  
+  print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Modified?")+ylab("% of aligned reads")+COSMO)
+  #print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Modifications",name,aligned,sep=" - "))+xlab("Modified?")+ylab("% of aligned reads")+COSMO)
+}
+```
+
+### Strand specific alignment percentage of reads
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-alignment-percentage-of-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){
+  aligned=nrow(subtt)  
+  print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Strand")+ylab("% of aligned reads") + COSMO)
+  #print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Strand distribution",name,aligned,sep=" - "))+xlab("Strand")+ylab("% of aligned reads") + COSMO)
+}
+if(nrow(subtt)>0){  
+  tab=table(subset(tt,V1==name & V5 != "-")$V5)
+  aligned=nrow(subset(tt,V1==name))
+
+  if(length(tab) >0){
+    threshold=nrow(subset(tt,V1==name & V5 != "-"))*0.05
+    threshold=max(threshold,1)
+  }
+}
+```
+
+### Reads aligned with base modifications above `r threshold` reads
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#reads-aligned-with-base-modifications-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){  
+  tab=table(subset(tt,V1==name & V5 != "-")$V5)
+  aligned=nrow(subset(tt,V1==name))
+
+  if(length(tab) >0){
+    threshold=nrow(subset(tt,V1==name & V5 != "-"))*0.05
+    threshold=max(threshold,1)
+    
+    if(nrow(melt(tab[tab>=threshold]))>1){
+      print(ggplot(melt(tab[tab>=threshold]), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ylab("Count") + COSMO)
+      #print(ggplot(melt(tab[tab>=threshold]), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications Above ",threshold,"Reads", name, sep=" "))+xlab("Base")+ylab("Count") + COSMO)
+		}
+	}
+}
+
+```
+
+### Alignment percentage of reads with base modifications above `r threshold` reads
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#alignment-percentage-of-reads-with-base-modifications-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){  
+  tab=table(subset(tt,V1==name & V5 != "-")$V5)
+  aligned=nrow(subset(tt,V1==name))
+
+  if(length(tab) >0){
+    threshold=nrow(subset(tt,V1==name & V5 != "-"))*0.05
+    threshold=max(threshold,1)
+    
+    if(nrow(melt(tab[tab>=threshold]))>1){
+      print(ggplot(melt(tab[tab>=threshold]/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ ylab("% of reads aligned") + COSMO)
+      #print(ggplot(melt(tab[tab>=threshold]/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications Above ",threshold,"Reads", name, sep=" "))+xlab("Base")+ylab("% of reads aligned") + COSMO)
+		}
+	}
+}
+```
+
+### Strand specific reads of varied length
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+  #double category plots
+if(nrow(subtt)>0){ 
+  print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO)
+  #print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length & Strand Distribution", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO)
+}
+```
+
+### Modification status specific reads of varied length
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#modification-status-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){ 
+  print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+  #print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length & Modifications", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+}
+```
+
+### 1-base modification specific reads of varied length
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#1-base-modification-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){  
+  tab=table(subset(tt,V1==name & V5 != "-")$V5)
+  aligned=nrow(subset(tt,V1==name))
+  if(length(tab) >0){
+    #Subset with 1-base modifications
+      modtt=subset(subtt,V5 %in% c("A","C","G","T"))
+      if(nrow(modtt) >0){
+        print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO)
+        #print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length by modified base", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO)
+      }
+    }
+}
+```
+
+### Strand specific reads with respect to base modification status
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-reads-with-respect-to-base-modification-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+if(nrow(subtt)>0){ 
+  print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+  #print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications & Strand", name, sep=" - "))+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+}
+```
+
+This document was created with R Markdown and the Knit package. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.

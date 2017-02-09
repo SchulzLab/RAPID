@@ -35,24 +35,6 @@ This plot shows the strand specific read counts with their base modification sta
 ## Comparison Report
 This section describe the plots in the comparison report produced from *rapidVis*. The normalized values mentioned below corresponds to the normalization method you choose, while running *rapidNorm*
 
-#### Sample wise comparison of read counts for each gene/region
-This plot shows the normalized read counts of each sample for each gene/region.
-
-#### Sample wise comparison of read counts for each gene/region (log2 scale)
-Log2 of normalized read counts of each sample for each gene/region is shown in this plot.
-
-#### Gene/Region wise comparsion of average read counts for each sample
-This plot shows the gene/region wise average read counts for each sample.
-
-#### Gene/Region wise comparsion of average read counts for each sample (log2 scale)
-Log2 of gene/region wise average read counts for each sample is shown in this plot.
-
-#### Sample wise comparison of antisense ratio for each gene/region
-This plot shows the antisense ratio of each sample is shown for each gene/region.
-
-#### Gene/Region wise comparison of antisense ratio for each sample
-Antisense ratio of gene/region for each samples is shown in this plot.
-
 #### Clustered heatmap of antisense ratio
 This is a heatmap of the antisense ratio of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
 
@@ -64,3 +46,24 @@ This principle component analysis (PCA) plot shows where your samples fall in th
 
 #### MDS plot of samples
 This multi dimensional scaling (MDS) plot shows the proximities of your samples in two dimension. Read counts of each sample is used for performing MDS.
+
+#### Box plot of read counts
+This is a box plot of the normalized read counts of each gene/region.
+
+#### Sample wise comparison of read counts for each gene/region
+This plot shows the normalized read counts of each sample for each gene/region.
+
+#### Sample wise comparison of read counts for each gene/region (log2 scale)
+Log2 of normalized read counts of each sample for each gene/region is shown in this plot.
+
+#### Sample wise comparison of antisense ratio for each gene/region
+This plot shows the antisense ratio of each sample is shown for each gene/region.
+
+#### Gene/Region wise comparsion of average read counts for each sample
+This plot shows the gene/region wise average read counts for each sample.
+
+#### Gene/Region wise comparsion of average read counts for each sample (log2 scale)
+Log2 of gene/region wise average read counts for each sample is shown in this plot.
+
+#### Gene/Region wise comparison of antisense ratio for each sample
+Antisense ratio of gene/region for each samples is shown in this plot.
