@@ -16,13 +16,17 @@ args <- commandArgs(trailingOnly = TRUE)
 
 config=args[1]
 out=args[2]
-NVAL=args[3]
-ALPHA=args[4]
+ALPHA=args[3]
+
 conf=read.table(config,header=T,sep="\t",stringsAsFactors=FALSE)
 lapply(conf$location,parseStatsGetReadCountFile)
 sampleTable=data.frame(sampleName=conf$sampleName, filename=paste(conf$location,"/readCounts.txt",sep=""), condition=conf$condition)
 
+#This working directory changing is done, because the DESeqDataSetFromHTSeqCount function uses "./" before the location we provide.
+actWD<-getwd()
+setwd("/")
 ddsHTSeq<-DESeqDataSetFromHTSeqCount(sampleTable=sampleTable, design=~condition)
+setwd(actWD)
 
 colData(ddsHTSeq)$condition<-factor(colData(ddsHTSeq)$condition, levels=c("untreated","treated"))
 dds<-DESeq(ddsHTSeq)
@@ -36,17 +40,18 @@ res<-res[order(res$padj),]
 pdf(paste(out,"DiffExp_Plots.pdf",sep=""))
 
 #MAPlot
-print(plotMA(res,main="MAPlot",alpha=ALPHA,colNonSig="blue",colLine="aliceblue",cex=0.6))
+print(plotMA(res,main="MAPlot",alpha=ALPHA,colNonSig="blue",colLine=NULL,cex=0.6))
 #print(plotMA(dds,main="MAPlot",alpha=ALPHA))
 
 #Data Transformation
 vsd <- varianceStabilizingTransformation(dds, blind=TRUE)
 
 #Heatmaps For different transformations
-selection<-rownames(res)[1:NVAL]
+#selection<-rownames(res)[1:NVAL]
+selection<-rownames(na.omit(res[(res$padj[complete.cases(res$padj)]<ALPHA),]))
 cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
-celtextm<-as.data.frame(rep(transform(round(res$padj[1:NVAL],4)),4))
-print(heatmap.2(assay(vsd)[selection,], col = cpalette, margin=c(9,9), density.info="none", scale="none", cellnote=celtextm, trace="none", notecol="black",notecex=0.7, srtRow=0,srtCol=30))
+#celtextm<-as.data.frame(rep(transform(round(res$padj[1:NVAL],4)),4))
+print(heatmap.2(assay(vsd)[selection,], col = cpalette, margin=c(9,9), density.info="none", scale="none", trace="none", srtRow=0, srtCol=30, key.xlab = "Read Count", cexRow = 0.5, cexCol = 0.75))
 
 #PCA Plot
 pcaPl<-plotPCA(vsd,intgroup=c("condition"),returnData=TRUE)

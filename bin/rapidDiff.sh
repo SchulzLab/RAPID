@@ -5,7 +5,7 @@
 # Read Alignment and Analysis Pipeline
 # 
  
-# Copyright (C) 2017 Marcel H. Schulz 
+# Copyright (C) 2017 Marcel H. Schulz  and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -20,7 +20,6 @@ VERSION="0.1"
 OUT=""
 CONFIG=""
 ALPHA="0.05"
-NVAL="30"
 BIN=""
 
 function usage()
@@ -43,9 +42,8 @@ echo "|________________________________________________|"
     echo "Parameters:"
     echo "-h|--help"
     echo "-o|--out=PATH/ : path to the output directory, directory will be created if non-existent"
-    echo "-c|--conf=PATH/ : the config file that defines which rapid_main analysis folders should be used"
+    echo "-c|--conf=PATH/ : the config file that defines which rapidStats analysis folders should be used"
     echo "-a|--alpha=0.05 (default) : Alpha value cut off for adjusted p-value to use in MAPlot"
-	echo "-n|--nVal=30 (default) : Top 'n' values to be shown as heatmap"
     echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
     echo ""
     echo ""
@@ -70,9 +68,6 @@ while [ "$1" != "" ]; do
             ;;
         -a | --alpha)
             ALPHA=$VALUE
-            ;;
-        -n | --nVal)
-            NVAL=$VALUE
             ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
@@ -108,8 +103,8 @@ fi
 mkdir -p $OUT/
 echo Run differential analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	R3script ${BIN}rapidDiff.r ${CONFIG} ${OUT} ${NVAL} ${ALPHA} >${OUT}/R_Errors.log 2>&1
+	R3script ${BIN}rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} >${OUT}/R_Errors.log 2>&1
 else
-	rapidDiff.r ${CONFIG} ${OUT} ${NVAL} ${ALPHA} >${OUT}/R_Errors.log 2>&1
+	rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} >${OUT}/R_Errors.log 2>&1
 fi
 
