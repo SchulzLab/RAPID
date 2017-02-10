@@ -16,10 +16,13 @@ nomodtt$LSEQ=paste(nomodtt$V2,nomodtt$V5,sep="")
 tt$MS=paste(tt$V4,tt$V3,sep="")
 stt=subset(tt,V5 != "-")
 tab=table(stt$V5)
+rmin=range(tt$V2)[1]-1
+rmax=range(tt$V2)[2]+1
 
 ##create datastructure that counts reads per length per region and strand
 allNames=annotations$V4[!duplicated(annotations$V4)]
-names=paste(c(17:25,17:25),c(rep("+",9),rep("-",9)),sep="")
+#names=paste(c(17:25,17:25),c(rep("+",9),rep("-",9)),sep="")
+names=paste(c((rmin+1):(rmax-1), (rmin+1):(rmax-1)), c(rep("+", rmax-rmin-1), rep("-", rmax-rmin-1)), sep = "")
 allCounts=rep(0,length(names))
 #names(allCounts)=names
 for(name in allNames){
@@ -60,7 +63,8 @@ computeStats <- function(subMatrix,header){
 Stats=c("region","reads","modified","MODratio","antisenseReads","ASratio","A+","C+","G+","T+","A-","C-","G-","T-","Aratio","Cratio","Gratio","Tratio")
 for(name in allNames){
 subtt=subset(tt,V1==name)
-subtt=subset(subtt, V2 > 16 & V2 <27)
+subtt=subset(subtt, V2 > rmin & V2 < rmax)
+#subtt=subset(subtt, V2 > 16 & V2 <27)
 #add statistics for this subset
 Stats=rbind(Stats,computeStats(subtt,name))
 }
