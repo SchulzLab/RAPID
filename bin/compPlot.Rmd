@@ -40,7 +40,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
     if(allowed[1] != "all"){
       df=subset(df,region %in% allowed)
     }
-    print(ggplot(df,aes(x=samples,y=ASratio,fill=samples)) +  
+    print(ggplot(df,aes(x=samples,y=ASratioNorm,fill=samples)) +  
             geom_bar(stat="identity") + facet_wrap(~ region)+ 
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
             labs(x="Sample", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
@@ -73,7 +73,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
       df=subset(df,region %in% allowed)
     }
     
-    print(ggplot(df,aes(x=region,y=ASratio,fill=region)) +  
+    print(ggplot(df,aes(x=region,y=ASratioNorm,fill=region)) +  
             geom_bar(stat="identity") +
             facet_wrap(~ samples)+
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 

@@ -59,7 +59,7 @@ if(plotMethod=="compare"){
   allowed<-unique(dfa$region)
   hval=nrow(transform(allowed))*0.85
   dfa$readCountsAvgLog = log2(0.00001+dfa$readCountsAvg)
-  asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratio'))
+  asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratioNorm'))
   rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
   rdCntNorm=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsNorm'))
   rownames(asratio)=asratio$region
@@ -76,3 +76,4 @@ if(plotMethod=="compare"){
   system("mv CompAnalysisResults.html `pwd|rev|cut -d '/' -f 1|rev`.html")
 }
 ##################################################For Comparative Results - END
+

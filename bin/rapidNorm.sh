@@ -22,6 +22,7 @@ CONFIG=""
 ANNOT=""
 BIN=""
 RESTLEN=""
+DESEQ="FALSE"
 
 function usage()
 {
@@ -45,6 +46,7 @@ echo "|________________________________________________|"
     echo "-o|--out=PATH/ : path to the output directory, directory will be created if non-existent"
     echo "-c|--conf=PATH/ : the config file that defines which rapidStats analysis folders should be used"
     echo "-a|--annot=file.bed : bed file with regions that should be used for the comparison"
+    echo "-d|--deseq=<LOGICAL> : Use only TRUE or FALSE. Set this to TRUE, if you wish to use DESeq2 based normalization. Default is FALSE." 
     echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
 	echo "-l|--restrictlength=<INTEGER> : Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"
     echo ""
@@ -71,6 +73,9 @@ while [ "$1" != "" ]; do
         -a | --annot)
             ANNOT=$VALUE
             ;;
+        -d | --deseq)
+            DESEQ=$VALUE
+            ;;            
 	-l | --restrictlength)
 	    RESTLEN=$VALUE
 	    ;;
@@ -114,9 +119,9 @@ fi
 mkdir -p $OUT/
 echo Run comparative analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	R3script ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	R3script ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
-	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
 echo Normalized values are calculated using the config file ${CONFIG} > $OUT/Analysis.Log
 

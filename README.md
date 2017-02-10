@@ -19,8 +19,8 @@ In addition to downloading the RAPID source you need to have installed the follo
 * R version 3.2 or higher
 * Samtools (only if you want BAM files, version 0.1.19 or higher)
 * R Packages required:
-..* DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
-..* ggplot2, scales, pandoc (MUST)
+** DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
+** ggplot2, scales, pandoc (MUST)
 
 Extract the RAPID/bin/ files in your preferred location. Ensure to give execute permissions to all files in RAPID/bin/ and then add the installed location to PATH variable.
 
@@ -59,6 +59,7 @@ short | long params | explanation
 -c | --conf | the config file that defines which rapidStats analysis folders should be used
 -a | --annot | bed file with regions that should be used for the comparison, this must be a subset of the regions that was used for rapidStats calls
 -r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable
+-d | --deseq | LOGICAL value. Use only TRUE or FALSE. Set this to TRUE, if you wish to use DESeq2 based normalization. Default is FALSE, which does a total count based scaling.
 -l | --restrictlength | An INTEGER of Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"
 
 ####Config file format
@@ -143,8 +144,8 @@ RapidVis output description when ran in two different modes.
 
 ###rapidDiff
 In each folder created by rapidDiff analysis exist the following files:
-* DiffExp_Statistics.csv - A CSV file containing the normal counts retrieved for each sample and the DESeq2 statistics obtained
-* DiffExp_Plots.pdf - A PDF file containing MA-Plot, Heatmap of significantly expressed genes read counts, PCA plot of the samples analysed
+*DiffExp_Statistics.csv - A CSV file containing the normal counts retrieved for each sample and the DESeq2 statistics obtained
+*DiffExp_Plots.pdf - A PDF file containing MA-Plot, Heatmap of top 'n' q-values, PCA plot of the samples analysed
 
 ##Example
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder. 
