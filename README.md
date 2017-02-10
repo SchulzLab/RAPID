@@ -19,8 +19,8 @@ In addition to downloading the RAPID source you need to have installed the follo
 * R version 3.2 or higher
 * Samtools (only if you want BAM files, version 0.1.19 or higher)
 * R Packages required:
-** DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
-** ggplot2, scales, pandoc (MUST)
+..* DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
+..* ggplot2, scales, pandoc (MUST)
 
 Extract the RAPID/bin/ files in your preferred location. Ensure to give execute permissions to all files in RAPID/bin/ and then add the installed location to PATH variable.
 
@@ -143,8 +143,8 @@ RapidVis output description when ran in two different modes.
 
 ###rapidDiff
 In each folder created by rapidDiff analysis exist the following files:
-*DiffExp_Statistics.csv - A CSV file containing the normal counts retrieved for each sample and the DESeq2 statistics obtained
-*DiffExp_Plots.pdf - A PDF file containing MA-Plot, Heatmap of top 'n' q-values, PCA plot of the samples analysed
+* DiffExp_Statistics.csv - A CSV file containing the normal counts retrieved for each sample and the DESeq2 statistics obtained
+* DiffExp_Plots.pdf - A PDF file containing MA-Plot, Heatmap of significantly expressed genes read counts, PCA plot of the samples analysed
 
 ##Example
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder. 
