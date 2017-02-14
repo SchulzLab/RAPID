@@ -10,7 +10,9 @@ This report provides the basic statistical analysis of **`r name`**. It consists
 ```{r echo=FALSE}
 #single category plots
 subtt=subset(tt,V1==name)
-subtt=subset(subtt, V2 > 16 & V2 <27)
+rmin=range(tt$V2)[1]-1
+rmax=range(tt$V2)[2]+1
+subtt=subset(subtt, V2 > rmin & V2 <rmax)
 aligned=nrow(subtt)
 
 COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"))
@@ -64,6 +66,9 @@ if(nrow(subtt)>0){
   if(length(tab) >0){
     threshold=nrow(subset(tt,V1==name & V5 != "-"))*0.05
     threshold=max(threshold,1)
+  }
+  else {
+    threshold=0
   }
 }
 ```
