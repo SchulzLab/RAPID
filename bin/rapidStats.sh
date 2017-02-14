@@ -76,7 +76,7 @@ while [ "$1" != "" ]; do
         -o | --out)
             OUT=$VALUE
             ;;
-        --rapid)
+        --rapid | -r)
             BIN=$VALUE
             ;;
         -a | --annot)
@@ -126,13 +126,7 @@ if [ -z "$ANNOT" ]
         echo "ERROR no annotation file defined "
         usage
         exit 1
-fi
-if [ -z "$INDEX" ]
-    then
-        echo "ERROR no bowtie2 index path given "
-        usage
-        exit 1
-fi  
+fi 
 
 
 #Main routines#
