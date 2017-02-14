@@ -164,13 +164,16 @@ if(useDEseq){
   normalized=normalizeEntries(Stats,Total,normalizeByDESeq=FALSE) 
 }
 
-df=createPlottingData(normalized,conf)
-#save data.frame in output folder
 allowed= unique(subset(lens,type == "region")$region)
-#print(allowed)
 
-#print(df)
-#show(paste(allowed))
+#Filter only the non-background regions. Also enables to use different bed files while using rapidStats, although it is not advised.
+normalizedSub = normalized
+for(i in 1:length(normalized)){
+  normalizedSub[[i]]=subset(normalized[[i]], region %in% allowed)
+}
+
+df=createPlottingData(normalizedSub,conf)
+#save data.frame in output folder
 write.table(subset(df,region %in% allowed),paste(out,"NormalizedValues.dat",sep=""),quote=F,row.names=F,sep="\t")
 
 
