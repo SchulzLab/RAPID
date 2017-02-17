@@ -12,8 +12,9 @@ This report provides comparison plots of various samples and gene/region in norm
 ### [Quality Plots](#Quality) &nbsp; [Sample Comparison](#Sample) &nbsp; [Gene/Region Comparison](#Gene)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
-
-COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"), strip.text = element_text(size = 14,face = "bold"))
+txtSize=hval*0.5
+#COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"), strip.text = element_text(size = 14,face = "bold"))
+COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bold", hjust = 0.5), axis.title.x = element_text(size = txtSize, face = "bold"), axis.title.y = element_text(size = txtSize, face = "bold"), axis.text.x = element_text(size = txtSize, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = txtSize,face = "bold"), legend.title = element_text(size = txtSize, face = "bold"), legend.text = element_text(size = txtSize, face = "bold"), strip.text = element_text(size = txtSize,face = "bold"))
 
   ####FUNCTIONS####
   #create barplot dividing the read counts for each region
@@ -91,7 +92,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
   #plotting the read count per region (log2) as heatmap
   cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
   
-  heatmap.2(as.matrix(asratio), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "ASratio", cexRow = 1.5, cexCol = 1.5, keysize = 1)
+  heatmap.2(as.matrix(asratio), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "ASratio", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
 ```
 
 ### Clustered heatmap of average read count (log2 scale)
@@ -99,7 +100,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-average-read-count-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
-  heatmap.2(as.matrix(rdCntAvgLog), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "log2(readCountsAvg)", cexRow = 1.5, cexCol = 1.5, keysize = 1)
+  heatmap.2(as.matrix(rdCntAvgLog), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "log2(readCountsAvg)", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
 ```
 
 ### PCA plot of samples

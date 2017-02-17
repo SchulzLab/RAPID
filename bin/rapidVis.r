@@ -57,7 +57,10 @@ if(plotMethod=="compare"){
   normData=read.table(paste(out,"NormalizedValues.dat",sep=""),header=T,stringsAsFactors=FALSE)
   dfa=normData
   allowed<-unique(dfa$region)
-  hval=nrow(transform(allowed))*0.85
+  hval=nrow(transform(allowed))*0.75
+  if(hval>120){
+    hval=120
+  }
   dfa$readCountsAvgLog = log2(0.00001+dfa$readCountsAvg)
   asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratioNorm'))
   rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
