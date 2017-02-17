@@ -54,8 +54,14 @@ computeStats <- function(subMatrix,header){
   Cratio=round(Cminus/(Cplus+Cminus),2)
   Gratio=round(Gminus/(Gplus+Gminus),2)
   Tratio=round(Tminus/(Tplus+Tminus),2)
-  ASratio=round(stranded/reads,2)
-  MODratio=round(mod/reads,2)
+  if(reads==0){
+    ASratio=0
+    MODratio=0
+  }
+  else {
+    ASratio=round(stranded/reads,2)
+    MODratio=round(mod/reads,2)
+  }
   return(as.character(c(header,reads,mod,MODratio,stranded,ASratio,Aplus,Cplus,Gplus,Tplus,Aminus,Cminus,Gminus,Tminus,Aratio,Cratio,Gratio,Tratio)))
 }
 
