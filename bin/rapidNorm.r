@@ -64,8 +64,8 @@ normalizeEntries <- function(Stats,oldTotal,adjustForBackground=TRUE,normalizeBy
     readData$Regions=NULL
     sizes=estimateSizeFactorsForMatrix(readData)
     for (i in 1:length(Stats)){
-      newList[[i]]$reads_norm=round(newList[[i]]$reads*sizes[i],digits = 0)
-      newList[[i]]$asreads_norm=round(newList[[i]]$antisenseReads*sizes[i],digits = 0)
+      newList[[i]]$reads_norm=round(newList[[i]]$reads/sizes[i],digits = 0)
+      newList[[i]]$asreads_norm=round(newList[[i]]$antisenseReads/sizes[i],digits = 0)
       newList[[i]]$asratio_norm=round(newList[[i]]$asreads_norm/newList[[i]]$reads_norm,digits=2)
       newList[[i]]$asratio_norm[is.na(newList[[i]]$asratio_norm)]=0
       if(normalizeByLength){
