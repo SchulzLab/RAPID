@@ -16,7 +16,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 config=args[1]
 out=args[2]
-ALPHA=args[3]
+ALPHA=as.numeric(args[3])
 
 conf=read.table(config,header=T,sep="\t",stringsAsFactors=FALSE)
 lapply(conf$location,parseStatsGetReadCountFile)
