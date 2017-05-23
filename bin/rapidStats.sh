@@ -191,6 +191,7 @@ if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
 else
 	rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
 fi
+
 IFS=',' read -ra ANNFILES <<< "$ANNOT"
 for ANNFILE in "${ANNFILES[@]}"; do
 BASEFILE=$(basename $ANNFILE)
@@ -212,6 +213,18 @@ if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
 else
 	rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 fi
+
+echo "Options Used:" >${OUT}/${ANNFILENAME}/Analysis.log
+echo "Output Directory: ${OUT}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Input File: ${FILE}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Contamination Used?: ${CONTAMIN}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Contamination Index: ${INDEXCONT}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Template Index: ${INDEX}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Create BAM?: ${BAM}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Remove intermediates?: ${REMOVE}" >>${OUT}/${ANNFILENAME}/Analysis.log
+echo "Annotation File Used: ${ANNFILE} and its contents are below." >>${OUT}/${ANNFILENAME}/Analysis.log
+cat $ANNFILE >>${OUT}/${ANNFILENAME}/Analysis.log
+
 done;
 #remove intermediate files
 if [ $REMOVE == "yes" ]

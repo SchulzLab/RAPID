@@ -123,5 +123,13 @@ if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
 else
 	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
-echo Normalized values are calculated using the config file ${CONFIG} > $OUT/Analysis.Log
+
+echo "Options Used:" >${OUT}/Analysis.log
+echo "Output Directory: ${OUT}" >>${OUT}/Analysis.log
+echo "Length Restrictions if any: ${RESTLEN}" >>${OUT}/Analysis.log
+echo "Use DESeq?: ${DESEQ}" >>${OUT}/Analysis.log
+echo "Configuration File used: ${CONFIG} and its contents are:" >>${OUT}/Analysis.log
+cat ${CONFIG} >>${OUT}/Analysis.log
+echo "Annotation file used: ${ANNOT} and its contents are: " >>${OUT}/Analysis.log
+cat ${ANNOT} >>${OUT}/Analysis.log
 
