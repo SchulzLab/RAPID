@@ -36,6 +36,26 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
               labs(x="Sample", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
     }
   }
+
+  createSampleTPMPlot <- function(df,title,allowed=c("all"),plotlog=TRUE){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    
+    if(plotlog){
+      print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+              geom_bar(stat="identity")+
+              facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
+              labs(x="Sample", y="TPM (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+    }else{
+      print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ region)+
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
+              labs(x="Sample", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+    }
+  }
+
   #create barplot dividing the read counts for each region
   createSampleASRatioPlot <- function(df,title,allowed=c("all"),y="Antisense ratio "){
     if(allowed[1] != "all"){
@@ -68,6 +88,29 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     }
     
   }
+
+  createRegionTPMPlot <- function(df,title,allowed=c("all"),plotlog=FALSE){
+    if(allowed[1] != "all"){
+      df=subset(df,region %in% allowed)
+    }
+    if(plotlog){
+      print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ samples) + 
+              scale_y_continuous(trans=log2_trans()) +
+              theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) + 
+              labs(x="Gene/Region", y="TPM (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+    }else{
+      print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+              geom_bar(stat="identity") +
+              facet_wrap(~ samples) + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
+              labs(x="Gene/Region", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+      
+    }
+    
+  }
+    
   #create barplot dividing the read counts for each sample
   createRegionASRatioPlot <- function(df,title,allowed=c("all"),y="Antisense ratio"){
     if(allowed[1] != "all"){
@@ -83,7 +126,19 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   ####DONE FUNCTIONS####
 ```
 
-### Clustered heatmap of antisense ratio {#Quality}
+### Clustered heatmap of TPM {#Quality}
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-TPM" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  
+  #plotting the read count per region (log2) as heatmap
+  cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
+  
+  heatmap.2(as.matrix(rdCntTPM), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "TPM", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
+```
+
+### Clustered heatmap of antisense ratio
 
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-antisense-ratio" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
@@ -125,12 +180,14 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}  
   #Making MDS Plots of samples, analyzed with Normalized counts
   rdCntNormTDist=dist(t(rdCntNorm))
-  mds=cmdscale(rdCntNormTDist, k=2, eig = TRUE)
-  scoreMDS=as.data.frame(mds$points)
-  scoreMDS<-cbind(row.names(scoreMDS),scoreMDS)
-  row.names(scoreMDS)<-c(1:dim(scoreMDS)[1])
-  colnames(scoreMDS)<-c("Sample","Dimension1","Dimension2")
-  print(ggplot(scoreMDS, aes(x = Dimension1, y = Dimension2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+  if(ncol(rdCntNorm)>2){
+    mds=cmdscale(rdCntNormTDist, k=2, eig = TRUE)
+    scoreMDS=as.data.frame(mds$points)
+    scoreMDS<-cbind(row.names(scoreMDS),scoreMDS)
+    row.names(scoreMDS)<-c(1:dim(scoreMDS)[1])
+    colnames(scoreMDS)<-c("Sample","Dimension1","Dimension2")
+    print(ggplot(scoreMDS, aes(x = Dimension1, y = Dimension2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+  }
 ```
 
 ### Box plot of regions
@@ -160,6 +217,25 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #createSamplePlot(dfa,title="Sample Comparison in log scale",allowed)
 ```
 
+
+### Sample wise comparison of TPM for each gene/region
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-tpm-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createSampleTPMPlot(dfa,title="",allowed,plotlog=FALSE)
+  #createSamplePlot(dfa,title="Sample Comparison",allowed,plotlog=FALSE)
+```
+
+### Sample wise comparison of TPM for each gene/region (log2 scale)
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-tpm-for-each-generegion-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createSampleTPMPlot(dfa,title="",allowed)
+  #createSamplePlot(dfa,title="Sample Comparison in log scale",allowed)
+```
+
 ### Sample wise comparison of antisense ratio for each gene/region
 
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-antisense-ratio-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
@@ -185,6 +261,24 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionPlot(dfa,title="",allowed,plotlog=TRUE)
   #createRegionPlot(dfa,title="Gene/Regions Comparison in log scale",allowed,plotlog=TRUE)
+```
+
+### Gene/Region wise comparsion of TPM for each sample
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-tpm-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createRegionTPMPlot(dfa,title="",allowed)
+  #createRegionPlot(dfa,title="Gene/Regions TPM Comparison",allowed)
+```
+
+### Gene/Region wise comparsion of TPM for each sample (log2 scale)
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-tpm-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE, fig.height=hval, fig.width=hval}
+  createRegionTPMPlot(dfa,title="",allowed,plotlog=TRUE)
+  #createRegionPlot(dfa,title="Gene/Regions TPM Comparison in log scale",allowed,plotlog=TRUE)
 ```
 
 ### Gene/Region wise comparison of antisense ratio for each sample

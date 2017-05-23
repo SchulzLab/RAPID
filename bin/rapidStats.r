@@ -5,6 +5,42 @@ args <- commandArgs(trailingOnly = TRUE)
 filename=as.character(args[1])
 annotationfile=as.character(args[2])
 
+computeRegionLengths <- function(data){
+  #process
+  names(data)=c("chr","start","end","label","type")
+  #compute lengths
+  singleLengths=apply(data,1,function(x){return(as.numeric(x[3])-as.numeric(x[2])+1)})
+  dummyDF=data.frame(label=data$label,lens=singleLengths)
+  res=by(dummyDF,dummyDF$label,function(x){sum(x$lens)})
+  return(data.frame(region=as.character(names(res)),lens=as.numeric(res)))
+}
+
+addLengthColumnToStats <- function(dfStats,lens){
+  Lengths=computeRegionLengths(lens)
+  df2=dfStats
+  for(i in 1:length(dfStats)){
+    dfStats = merge(df2,Lengths,by="region")
+  }
+  return(dfStats)
+}
+
+
+#Calculates TPM
+calcTPM <- function(df, annot) {
+  colnames(df) = df[1, ]
+  df=df[-c(1),]
+  df = addLengthColumnToStats(df, annot)
+  df$reads=as.integer(as.character(df$reads))
+  df$lens=as.integer(as.character(df$lens))
+  df$RPK=(df$reads/df$lens)*1000
+  df$TPM=df$RPK/(sum(df$RPK)/1e+06)
+  df$RPK=NULL
+  df$lens=NULL
+  df$reads=as.character(df$reads)
+  df$TPM=as.character(df$TPM)
+  return(df)
+}
+
 annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
 outStats=paste(filename,"Statistics.dat",sep="")
 tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
@@ -74,8 +110,13 @@ subtt=subset(subtt, V2 > rmin & V2 < rmax)
 #add statistics for this subset
 Stats=rbind(Stats,computeStats(subtt,name))
 }
+Stats2=calcTPM(Stats, annotations)
+names(Stats2)=NULL
+Stats2=data.frame(lapply(Stats2, as.character), stringsAsFactors=FALSE)
+thead=c("region","reads","modified","MODratio","antisenseReads","ASratio","A+","C+","G+","T+","A-","C-","G-","T-","Aratio","Cratio","Gratio","Tratio","TPM")
+Stats=rbind(thead,as.data.frame(Stats2))
 
 #add the header line of allCounts to the matrix to have the same nrow then Stats
 allCounts = rbind(names,allCounts)
 Stats=cbind(Stats,allCounts)
-write.table(Stats,outStats,quote=F,col.names=F,sep=" ")
+write.table(Stats,outStats,quote=F,col.names=F,row.names=F,sep=" ")

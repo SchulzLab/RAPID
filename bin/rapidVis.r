@@ -65,10 +65,13 @@ if(plotMethod=="compare"){
   asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratioNorm'))
   rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
   rdCntNorm=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsNorm'))
+  rdCntTPM=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsTPM'))
   rownames(asratio)=asratio$region
   rownames(rdCntAvgLog)=rdCntAvgLog$region
   rownames(rdCntNorm)=rdCntNorm$region
+  rownames(rdCntTPM)=rdCntTPM$region
   rdCntNorm$region=NULL
+  rdCntTPM$region=NULL
   rdCntAvgLog$region=NULL
   asratio$region=NULL
   ipfile=paste(rapidPath,"compPlot.Rmd", sep="")
