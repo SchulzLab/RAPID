@@ -8,6 +8,7 @@ library("scales")
 library("knitr")
 library("gplots")
 library("RColorBrewer")
+
 opts_chunk$set(echo=FALSE, warning = FALSE)
 args <- commandArgs(trailingOnly = TRUE)
 rapidPath=Sys.getenv("rapid")
@@ -21,8 +22,9 @@ if(plotMethod=="stats"){
     rapidPath=as.character(args[4])
   }
   annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
+  names(annotations)=c("chr","start","end","label","type")
   tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
-  allNames=annotations$V4[!duplicated(annotations$V4)] #Need to change this if we need to parse only a subset of regions
+  allNames=annotations$label[!duplicated(annotations$label)] #Need to change this if we need to parse only a subset of regions
   
   smpName=system("pwd|rev|cut -d '/' -f 1|rev", intern = TRUE)
   homeIP=paste(rapidPath,"homePage.Rmd", sep="")
@@ -30,6 +32,10 @@ if(plotMethod=="stats"){
   rmarkdown::render(input=homeIP,output_file = homeOUT, envir=parent.frame())
   
   ipname=paste(rapidPath,"statsPlot.Rmd", sep="")
+  poscov=read.table(paste(filename,"poscov.tsv",sep=""), header = F, colClasses = c(rep('NULL',3), NA, rep('NULL',3), NA))
+  negcov=read.table(paste(filename,"negcov.tsv",sep=""), header = F, colClasses = c(rep('NULL',3), NA, rep('NULL',3), NA))
+  colnames(poscov)=c("region","depth")
+  colnames(negcov)=c("region","depth")
   for(name in allNames){
     opts_chunk$set(echo=FALSE)
     fname=paste(normalizePath(filename),paste(name,".html", sep=""), sep="/")

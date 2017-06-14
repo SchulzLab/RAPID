@@ -32,6 +32,9 @@ This plot shows various read legnths utilized in the analysis and their read cou
 #### Strand specific reads with respect to base modification status
 This plot shows the strand specific read counts with their base modification status.
 
+#### Strand specific coverage plot
+This plot shows the strand specific coverage (1bp resolution).
+
 ## Comparison Report
 This section describe the plots in the comparison report produced from *rapidVis*. The normalized values mentioned below corresponds to the normalization method you choose, while running *rapidNorm*
 

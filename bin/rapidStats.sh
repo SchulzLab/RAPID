@@ -24,7 +24,6 @@ ANNOT=""
 INDEX=""
 CONTAMIN="no"
 INDEXCONT=""
-BAM="no"
 REMOVE="yes"
 FILETYPE="fq"
 
@@ -53,7 +52,6 @@ echo "|________________________________________________|"
     echo "-a|--annot=file.bed : bed file with regions that should be annotated with read alignments (Multiple Bed files should be separated by commas)"
     echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
     echo "-i|--index=PATH/ : set location of the bowtie2 index for alignment" 
-    echo "--bam=yes : create sorted and indexed bam file (default no, needs samtools on path)"
     echo "--contamin=yes : use a double alignment step first aligning to a contamination file (default no)"
     echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
@@ -81,9 +79,6 @@ while [ "$1" != "" ]; do
             ;;
         -a | --annot)
             ANNOT=$VALUE
-            ;;
-        --bam)
-            BAM=$VALUE
             ;;
         --contamin)
             CONTAMIN=$VALUE
@@ -143,6 +138,8 @@ then
 	samtools flagstat ${new}.sam >${new}.flagstat
 	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
 	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
+	samtools sort -T ${new} -o ${new}_sorted.bam ${FILE}
+	samtools index ${new}_sorted.bam
 elif [ $FILETYPE == "SAM" ]
 then
 	BASEFILE=$(basename $FILE)
@@ -151,6 +148,13 @@ then
 	samtools flagstat ${new}.sam >${new}.flagstat
 	awk 'BEGIN{total=0}{if($0~"secondary"){total=total-$1}; if($0~"mapped"){total=total+$1};}END{print total}' ${new}.flagstat >${OUT}/TotalReads.dat
 	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
+	#create bam
+	samtools view -S -b ${new}.sam >  ${new}.bam
+	#sort and 
+	samtools sort -T ${new} -o ${new}_sorted.bam ${new}.bam
+	#index
+	samtools index ${new}_sorted.bam
+	rm ${new}.bam
 else
 	if [ $CONTAMIN == "yes" ]
 	then
@@ -172,15 +176,13 @@ else
 	#compute statisticis for aligned reads of different lengths:
 	awk '{if( $1 !~ "4" && NF > 5){print $0}}' ${new}.sam | cut -f 10 |  uniq| awk '{if($0 !~ "^0"){print length($0)}}' | sort | uniq -c > ${new}_lengths.dat
 
-	if [ $BAM == "yes" ]
-		then
-			#create bam
-				samtools view -S -b ${new}.sam >  ${new}.bam
-			#sort and 
-				samtools sort -T ${new} -o ${new}_sorted.bam ${new}.bam
-			#index
-				samtools index ${new}_sorted.bam
-	fi
+	#create bam
+	samtools view -S -b ${new}.sam >  ${new}.bam
+	#sort and 
+	samtools sort -T ${new} -o ${new}_sorted.bam ${new}.bam
+	#index
+	samtools index ${new}_sorted.bam
+	rm ${new}.bam
 fi
 
 ######Postprocess data######
@@ -205,14 +207,17 @@ intersectBed -a ${OUT}/alignedReads.gff -b ${ANNFILE} -f 1 > ${OUT}/${ANNFILENAM
 #produce reduced output after using Bedtools
 awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANNFILENAME}/alignedReads.intersect | awk '{if($1 !~ /\./){print $0}}' > ${OUT}/${ANNFILENAME}/alignedReads.sub.compact
 
-
-
 #generate Statistics for 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
 	R3script ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 else
 	rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 fi
+
+#To generate coverage plot information
+awk 'OFS="\t" {print $0,"+"}' ${ANNFILE} >${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed
+bedtools coverage -abam ${new}_sorted.bam -b ${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed -d -s >${OUT}/${ANNFILENAME}/poscov.tsv
+bedtools coverage -abam ${new}_sorted.bam -b ${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed -d -S >${OUT}/${ANNFILENAME}/negcov.tsv
 
 echo "Options Used:" >${OUT}/${ANNFILENAME}/Analysis.log
 echo "Output Directory: ${OUT}" >>${OUT}/${ANNFILENAME}/Analysis.log
@@ -226,6 +231,7 @@ echo "Annotation File Used: ${ANNFILE} and its contents are below." >>${OUT}/${A
 cat $ANNFILE >>${OUT}/${ANNFILENAME}/Analysis.log
 
 done;
+
 #remove intermediate files
 if [ $REMOVE == "yes" ]
     then

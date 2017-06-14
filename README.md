@@ -17,10 +17,10 @@ In addition to downloading the RAPID source you need to have installed the follo
 * Bedtools2
 * Bowtie2 (version 2.1.0 or higher)
 * R version 3.2 or higher
-* Samtools (only if you want BAM files, version 0.1.19 or higher)
+* Samtools (version 0.1.19 or higher)
 * R Packages required:
 ** DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
-** ggplot2, scales, pandoc (MUST)
+** ggplot2, scales, pandoc
 
 Extract the RAPID/bin/ files in your preferred location. Ensure to give execute permissions to all files in RAPID/bin/ and then add the installed location to PATH variable.
 
@@ -40,7 +40,6 @@ short | long params | explanation
 -ft | --filetype | BAM/SAM/fq : Mention either BAM/SAM or FASTQ. Default FASTQ
 -a | --annot |  bed file with regions that should be annotated with read alignments (Multiple Bed files should be separated by commas)
 -r | --rapid | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) if not in PATH
- | --bam=yes | create sorted and indexed bam file (default no, needs samtools on path)
 -i | --index | set location of the bowtie2 index for alignment
  | --contamin=yes | use a double alignment step first aligning to a contamination file (default no)
  | --indexco | set location of the contamination bowtie2 index for alignment (only with contamin=yes)

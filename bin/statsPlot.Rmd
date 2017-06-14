@@ -169,4 +169,36 @@ if(nrow(subtt)>0){
 }
 ```
 
+### Strand specific coverage plot
+
+<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-coverage-plot" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+
+```{r echo=FALSE}
+  a=poscov[poscov$region==name,]
+  b=negcov[negcov$region==name,]
+  a$region=NULL
+  b$region=NULL
+  
+  idx=which(annotations$label==name)
+  pstn=c()
+  for(ind in idx) {
+    regStart=as.numeric(annotations$start[ind])
+    regEnd=as.numeric(annotations$end[ind])
+    if(regStart%%2==0) { 
+      pstn=c(pstn,(regStart+1):regEnd)
+    } else {
+      pstn=c(pstn,regStart:(regEnd-1))
+    }
+  }
+  a$position=pstn
+  b$position=pstn
+  b$depth= b$depth*-1
+  
+  print(ggplot(a, aes(position,depth)) + ylim(range(c(b$depth,a$depth))) + 
+    geom_bar(stat="identity", aes(fill="+")) + 
+    geom_bar(aes(b$position, b$depth, fill="-"), stat="identity") + 
+    guides(fill=guide_legend(title="Strand")) +
+    labs(x="Position", y="Coverage", title="") + COSMO)
+```
+
 This document was created with R Markdown and the Knit package. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
