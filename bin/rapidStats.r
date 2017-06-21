@@ -7,7 +7,7 @@ annotationfile=as.character(args[2])
 
 computeRegionLengths <- function(data){
   #process
-  names(data)=c("chr","start","end","label","type")
+  names(data)=c("chr","start","end","label","type","strand")
   #compute lengths
   singleLengths=apply(data,1,function(x){return(as.numeric(x[3])-as.numeric(x[2])+1)})
   dummyDF=data.frame(label=data$label,lens=singleLengths)
@@ -42,6 +42,7 @@ calcTPM <- function(df, annot) {
 }
 
 annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
+names(annotations)=c("chr","start","end","label","type","strand")
 outStats=paste(filename,"Statistics.dat",sep="")
 tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
 tt$ID=paste(tt$V1,tt$V2,tt$V3,tt$V4,sep="")
@@ -56,7 +57,7 @@ rmin=range(tt$V2)[1]-1
 rmax=range(tt$V2)[2]+1
 
 ##create datastructure that counts reads per length per region and strand
-allNames=annotations$V4[!duplicated(annotations$V4)]
+allNames=annotations$label[!duplicated(annotations$label)]
 #names=paste(c(17:25,17:25),c(rep("+",9),rep("-",9)),sep="")
 names=paste(c((rmin+1):(rmax-1), (rmin+1):(rmax-1)), c(rep("+", rmax-rmin-1), rep("-", rmax-rmin-1)), sep = "")
 allCounts=rep(0,length(names))
@@ -64,6 +65,13 @@ allCounts=rep(0,length(names))
 for(name in allNames){
   counts=rep(0,length(names))
   subb=subset(tt,V1 == name)
+  idx=which(annotations$label==name)
+  strandInfo=annotations$strand[idx][1]
+  if(strandInfo=="-") {
+    subb$LS=sub('\\+$','t',subb$LS)
+    subb$LS=sub('\\-$','+',subb$LS)
+    subb$LS=sub('t$','-',subb$LS)
+  }
   for (i in 1:length(names)){
     #counts[i]=length(grep(names[i],tt$LS,fixed=T))
     counts[i]=nrow(subset(subb,LS == names[i]))
@@ -101,6 +109,33 @@ computeStats <- function(subMatrix,header){
   return(as.character(c(header,reads,mod,MODratio,stranded,ASratio,Aplus,Cplus,Gplus,Tplus,Aminus,Cminus,Gminus,Tminus,Aratio,Cratio,Gratio,Tratio)))
 }
 
+computeStatsNeg <- function(subMatrix,header){
+  reads=nrow(subMatrix)
+  mod=nrow(subset(subMatrix,V3 == "Y"))
+  stranded=nrow(subset(subMatrix,V4 == "+"))
+  Aminus=nrow(subset(subMatrix,V4 == "+" & V5 == "A"))
+  Cminus=nrow(subset(subMatrix,V4 == "+" & V5 == "C"))
+  Gminus=nrow(subset(subMatrix,V4 == "+" & V5 == "G"))
+  Tminus=nrow(subset(subMatrix,V4 == "+" & V5 == "T"))
+  Aplus=nrow(subset(subMatrix,V4 == "-" & V5 == "A"))
+  Cplus=nrow(subset(subMatrix,V4 == "-" & V5 == "C"))
+  Gplus=nrow(subset(subMatrix,V4 == "-" & V5 == "G"))
+  Tplus=nrow(subset(subMatrix,V4 == "-" & V5 == "T"))
+  Aratio=round(Aminus/(Aplus+Aminus),2)
+  Cratio=round(Cminus/(Cplus+Cminus),2)
+  Gratio=round(Gminus/(Gplus+Gminus),2)
+  Tratio=round(Tminus/(Tplus+Tminus),2)
+  if(reads==0){
+    ASratio=0
+    MODratio=0
+  }
+  else {
+    ASratio=round(stranded/reads,2)
+    MODratio=round(mod/reads,2)
+  }
+  return(as.character(c(header,reads,mod,MODratio,stranded,ASratio,Aplus,Cplus,Gplus,Tplus,Aminus,Cminus,Gminus,Tminus,Aratio,Cratio,Gratio,Tratio)))
+}
+
 #create table for stats results
 Stats=c("region","reads","modified","MODratio","antisenseReads","ASratio","A+","C+","G+","T+","A-","C-","G-","T-","Aratio","Cratio","Gratio","Tratio")
 for(name in allNames){
@@ -108,7 +143,14 @@ subtt=subset(tt,V1==name)
 subtt=subset(subtt, V2 > rmin & V2 < rmax)
 #subtt=subset(subtt, V2 > 16 & V2 <27)
 #add statistics for this subset
-Stats=rbind(Stats,computeStats(subtt,name))
+idx=which(annotations$label==name)
+strandInfo=annotations$strand[idx][1]
+if(strandInfo=="+") {
+  Stats=rbind(Stats,computeStats(subtt,name))
+} else {
+  #For -ve gene direction
+  Stats=rbind(Stats,computeStatsNeg(subtt,name))
+}
 }
 Stats2=calcTPM(Stats, annotations)
 names(Stats2)=NULL

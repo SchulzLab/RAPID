@@ -45,6 +45,14 @@ short | long params | explanation
  | --indexco | set location of the contamination bowtie2 index for alignment (only with contamin=yes)
  | --remove=yes | remove unecessary intermediate files (default yes)
 
+#### Bed file format (Do not provide a header, its shown here only for clarity)
+chromosome  |  start |  end | geneName  | type  | strand (Gene Direction)  |
+------------|--------|------|-----------|-------|---------|
+chr1  | 1234  | 1368  | geneA | region  | + |
+chr2  | 1234  | 1368  | geneB | region  | - |
+chr2  | 1432  | 1568  | geneB | region  | - |
+chr3  | 1234  | 1368  | geneC | background  | + |
+
 ## rapidNorm
 rapidNorm gets a config file as input that tells the software which folders have been created with rapidStats, these will be used to create the analysis.
 

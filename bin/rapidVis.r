@@ -22,7 +22,7 @@ if(plotMethod=="stats"){
     rapidPath=as.character(args[4])
   }
   annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
-  names(annotations)=c("chr","start","end","label","type")
+  names(annotations)=c("chr","start","end","label","type","strand")
   tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
   allNames=annotations$label[!duplicated(annotations$label)] #Need to change this if we need to parse only a subset of regions
   

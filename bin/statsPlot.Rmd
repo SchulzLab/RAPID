@@ -174,12 +174,18 @@ if(nrow(subtt)>0){
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-coverage-plot" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  a=poscov[poscov$region==name,]
-  b=negcov[negcov$region==name,]
+  idx=which(annotations$label==name)
+  #This condition check assumes that, if two regions have same name then it should have same strand as well.
+  if(annotations$strand[idx][1]=="+") { 
+    a=poscov[poscov$region==name,]
+    b=negcov[negcov$region==name,]  
+  } else {
+    b=poscov[poscov$region==name,]
+    a=negcov[negcov$region==name,]
+  }
   a$region=NULL
   b$region=NULL
   
-  idx=which(annotations$label==name)
   pstn=c()
   for(ind in idx) {
     regStart=as.numeric(annotations$start[ind])

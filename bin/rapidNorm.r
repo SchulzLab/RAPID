@@ -22,7 +22,7 @@ readTotal <- function(path){
 #to the RAPID pipeline and used for intersection
 computeRegionLengths <- function(data){
   #process
-  names(data)=c("chr","start","end","label","type")
+  names(data)=c("chr","start","end","label","type","strand")
   #compute lengths
   singleLengths=apply(data,1,function(x){return(as.numeric(x[3])-as.numeric(x[2])+1)})
   dummyDF=data.frame(label=data$label,lens=singleLengths)
@@ -144,7 +144,7 @@ restrictLength=args[5]
 #load datasets 
 conf=read.table(config,header=T,sep="\t",stringsAsFactors=FALSE)
 lens=read.table(annot,header=F,stringsAsFactors=FALSE)
-names(lens)=c("chr","start","end","region","type")
+names(lens)=c("chr","start","end","region","type","strand")
 Stats=lapply(conf$location,readStatistics)
 Total=lapply(conf$location,readTotal)
 

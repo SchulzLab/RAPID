@@ -215,9 +215,9 @@ else
 fi
 
 #To generate coverage plot information
-awk 'OFS="\t" {print $0,"+"}' ${ANNFILE} >${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed
-bedtools coverage -abam ${new}_sorted.bam -b ${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed -d -s >${OUT}/${ANNFILENAME}/poscov.tsv
-bedtools coverage -abam ${new}_sorted.bam -b ${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed -d -S >${OUT}/${ANNFILENAME}/negcov.tsv
+#awk 'OFS="\t" {print $0,"+"}' ${ANNFILE} >${OUT}/${ANNFILENAME}/${ANNFILENAME}_coverage.bed
+bedtools coverage -abam ${new}_sorted.bam -b ${ANNFILE} -d -s >${OUT}/${ANNFILENAME}/poscov.tsv
+bedtools coverage -abam ${new}_sorted.bam -b ${ANNFILE} -d -S >${OUT}/${ANNFILENAME}/negcov.tsv
 
 echo "Options Used:" >${OUT}/${ANNFILENAME}/Analysis.log
 echo "Output Directory: ${OUT}" >>${OUT}/${ANNFILENAME}/Analysis.log
