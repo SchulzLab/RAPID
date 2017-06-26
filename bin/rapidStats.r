@@ -18,9 +18,7 @@ computeRegionLengths <- function(data){
 addLengthColumnToStats <- function(dfStats,lens){
   Lengths=computeRegionLengths(lens)
   df2=dfStats
-  for(i in 1:length(dfStats)){
-    dfStats = merge(df2,Lengths,by="region")
-  }
+  dfStats = merge(df2,Lengths,by="region")
   return(dfStats)
 }
 
@@ -29,6 +27,9 @@ addLengthColumnToStats <- function(dfStats,lens){
 calcTPM <- function(df, annot) {
   colnames(df) = df[1, ]
   df=df[-c(1),]
+  if(class(df)=="character"){
+    df=t(as.matrix(df)) 
+  }
   df = addLengthColumnToStats(df, annot)
   df$reads=as.integer(as.character(df$reads))
   df$lens=as.integer(as.character(df$lens))
