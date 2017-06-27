@@ -7,7 +7,7 @@ open(FILE,"<$file") or die "cannot open file $file\n";
 
 while(<FILE>){
 	@line=split(/\t/,$_);
-	if(scalar(@line)> 5 && $line[2] ne "\*"  && $_ =~ m/NM:i:0/g){
+	if(scalar(@line)> 5 && $line[2] ne "\*" && $line[9] ne "\*" && $_ =~ m/NM:i:0/g){
 		$len=length($line[9]);
 		if($line[1] eq "256" || $line[1] eq "0"){
 			$strand="+";
