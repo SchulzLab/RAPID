@@ -68,6 +68,7 @@ normalizeEntries <- function(Stats,oldTotal,adjustForBackground=TRUE,normalizeBy
       newList[[i]]$asreads_norm=round(newList[[i]]$antisenseReads/sizes[i],digits = 0)
       newList[[i]]$asratio_norm=round(newList[[i]]$asreads_norm/newList[[i]]$reads_norm,digits=2)
       newList[[i]]$asratio_norm[is.na(newList[[i]]$asratio_norm)]=0
+      newList[[i]]$asratio_norm[is.infinite(newList[[i]]$asratio_norm)]=0
       if(normalizeByLength){
         newList[[i]]$reads_avg=round( (newList[[i]]$reads_norm/newList[[i]]$lens),digits=3)
       }
@@ -84,6 +85,7 @@ normalizeEntries <- function(Stats,oldTotal,adjustForBackground=TRUE,normalizeBy
       newList[[i]]$asreads_norm=round(newList[[i]]$antisenseReads*(Max/Total[[i]]),digits=0)
       newList[[i]]$asratio_norm=round(newList[[i]]$asreads_norm/newList[[i]]$reads_norm,digits=2)
       newList[[i]]$asratio_norm[is.na(newList[[i]]$asratio_norm)]=0
+      newList[[i]]$asratio_norm[is.infinite(newList[[i]]$asratio_norm)]=0
       if(normalizeByLength){
         newList[[i]]$reads_avg=round( (newList[[i]]$reads_norm/newList[[i]]$lens),digits=3)
       }
