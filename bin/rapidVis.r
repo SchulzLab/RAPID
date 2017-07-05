@@ -67,6 +67,9 @@ if(plotMethod=="compare"){
   if(hval>120){
     hval=120
   }
+  if(hval<10){
+    hval=10
+  }
   dfa$readCountsAvgLog = log2(0.00001+dfa$readCountsAvg)
   asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratioNorm'))
   rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
