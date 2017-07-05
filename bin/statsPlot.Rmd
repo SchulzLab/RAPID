@@ -32,7 +32,7 @@ if(nrow(subtt)==0) {
 ```{r echo=FALSE}
 if(nrow(subtt)>0){
   aligned=nrow(subtt)
-  print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("% of aligned reads") + COSMO)
+  try(print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("% of aligned reads") + COSMO))
   #print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Length",name,aligned,sep=" - "))+xlab("Read Length")+ylab("% of aligned reads") + COSMO)
 }
 ```
@@ -44,7 +44,7 @@ if(nrow(subtt)>0){
 ```{r echo=FALSE}
 if(nrow(subtt)>0){
   aligned=nrow(subtt)  
-  print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Modified?")+ylab("% of aligned reads")+COSMO)
+  try(print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Modified?")+ylab("% of aligned reads")+COSMO))
   #print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Modifications",name,aligned,sep=" - "))+xlab("Modified?")+ylab("% of aligned reads")+COSMO)
 }
 ```
@@ -56,7 +56,7 @@ if(nrow(subtt)>0){
 ```{r echo=FALSE}
 if(nrow(subtt)>0){
   aligned=nrow(subtt)  
-  print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Strand")+ylab("% of aligned reads") + COSMO)
+  try(print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Strand")+ylab("% of aligned reads") + COSMO))
   #print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Strand distribution",name,aligned,sep=" - "))+xlab("Strand")+ylab("% of aligned reads") + COSMO)
 }
 if(nrow(subtt)>0){  
@@ -87,7 +87,7 @@ if(nrow(subtt)>0){
     threshold=max(threshold,1)
     
     if(nrow(melt(tab[tab>=threshold]))>1){
-      print(ggplot(melt(tab[tab>=threshold]), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ylab("Count") + COSMO)
+      try(print(ggplot(melt(tab[tab>=threshold]), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ylab("Count") + COSMO))
       #print(ggplot(melt(tab[tab>=threshold]), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications Above ",threshold,"Reads", name, sep=" "))+xlab("Base")+ylab("Count") + COSMO)
 		}
 	}
@@ -109,7 +109,7 @@ if(nrow(subtt)>0){
     threshold=max(threshold,1)
     
     if(nrow(melt(tab[tab>=threshold]))>1){
-      print(ggplot(melt(tab[tab>=threshold]/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ ylab("% of reads aligned") + COSMO)
+      try(print(ggplot(melt(tab[tab>=threshold]/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Base")+ ylab("% of reads aligned") + COSMO))
       #print(ggplot(melt(tab[tab>=threshold]/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications Above ",threshold,"Reads", name, sep=" "))+xlab("Base")+ylab("% of reads aligned") + COSMO)
 		}
 	}
@@ -123,7 +123,7 @@ if(nrow(subtt)>0){
 ```{r echo=FALSE}
   #double category plots
 if(nrow(subtt)>0){ 
-  print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO)
+  try(print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO))
   #print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length & Strand Distribution", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO)
 }
 ```
@@ -134,7 +134,7 @@ if(nrow(subtt)>0){
 
 ```{r echo=FALSE}
 if(nrow(subtt)>0){ 
-  print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+  try(print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO))
   #print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length & Modifications", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
 }
 ```
@@ -151,7 +151,7 @@ if(nrow(subtt)>0){
     #Subset with 1-base modifications
       modtt=subset(subtt,V5 %in% c("A","C","G","T"))
       if(nrow(modtt) >0){
-        print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO)
+        try(print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO))
         #print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Length by modified base", name, sep=" - "))+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO)
       }
     }
@@ -164,7 +164,7 @@ if(nrow(subtt)>0){
 
 ```{r echo=FALSE}
 if(nrow(subtt)>0){ 
-  print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
+  try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO))
   #print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+ggtitle(paste("Read Modifications & Strand", name, sep=" - "))+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO)
 }
 ```
@@ -200,11 +200,11 @@ if(nrow(subtt)>0){
   b$position=pstn
   b$depth= b$depth*-1
   
-  print(ggplot(a, aes(position,depth)) + ylim(range(c(b$depth,a$depth))) + 
+  try(print(ggplot(a, aes(position,depth)) + ylim(range(c(b$depth,a$depth))) + 
     geom_bar(stat="identity", aes(fill="+")) + 
     geom_bar(aes(b$position, b$depth, fill="-"), stat="identity") + 
     guides(fill=guide_legend(title="Strand")) +
-    labs(x="Position", y="Coverage", title="") + COSMO)
+    labs(x="Position", y="Coverage", title="") + COSMO))
 ```
 
 This document was created with R Markdown and the Knit package. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.

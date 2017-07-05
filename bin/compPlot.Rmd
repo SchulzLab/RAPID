@@ -13,6 +13,9 @@ This report provides comparison plots of various samples and gene/region in norm
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
 txtSize=hval*0.5
+if(txtSize<10){
+  txtSize=10
+}
 #COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"), strip.text = element_text(size = 14,face = "bold"))
 COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bold", hjust = 0.5), axis.title.x = element_text(size = txtSize, face = "bold"), axis.title.y = element_text(size = txtSize, face = "bold"), axis.text.x = element_text(size = txtSize, face = "bold", angle = 90, hjust = 1, vjust = 0.45), axis.text.y = element_text(size = txtSize,face = "bold"), legend.title = element_text(size = txtSize, face = "bold"), legend.text = element_text(size = txtSize, face = "bold"), strip.text = element_text(size = txtSize,face = "bold"))
 
@@ -24,16 +27,16 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     }
     
     if(plotlog){
-      print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
               geom_bar(stat="identity")+
               facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
-              labs(x="Sample", y="Read count (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+              labs(x="Sample", y="Read count (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }else{
-      print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ region)+
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
-              labs(x="Sample", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+              labs(x="Sample", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }
   }
 
@@ -43,16 +46,16 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     }
     
     if(plotlog){
-      print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
               geom_bar(stat="identity")+
               facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
-              labs(x="Sample", y="TPM (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+              labs(x="Sample", y="TPM (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }else{
-      print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ region)+
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
-              labs(x="Sample", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+              labs(x="Sample", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }
   }
 
@@ -61,10 +64,10 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     if(allowed[1] != "all"){
       df=subset(df,region %in% allowed)
     }
-    print(ggplot(df,aes(x=samples,y=ASratioNorm,fill=samples)) +  
+    try(print(ggplot(df,aes(x=samples,y=ASratioNorm,fill=samples)) +  
             geom_bar(stat="identity") + facet_wrap(~ region)+ 
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
-            labs(x="Sample", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Sample")))
+            labs(x="Sample", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
   }
   #create barplot dividing the read counts for each sample
   createRegionPlot <- function(df,title,allowed=c("all"),plotlog=FALSE){
@@ -72,18 +75,18 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
       df=subset(df,region %in% allowed)
     }
     if(plotlog){
-      print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               scale_y_continuous(trans=log2_trans()) +
               theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) + 
-              labs(x="Gene/Region", y="Average read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+              labs(x="Gene/Region", y="Average read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
     }else{
-      print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
-              labs(x="Gene/Region", y="Average read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+              labs(x="Gene/Region", y="Average read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
       
     }
     
@@ -94,18 +97,18 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
       df=subset(df,region %in% allowed)
     }
     if(plotlog){
-      print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               scale_y_continuous(trans=log2_trans()) +
               theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) + 
-              labs(x="Gene/Region", y="TPM (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+              labs(x="Gene/Region", y="TPM (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
     }else{
-      print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
-              labs(x="Gene/Region", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+              labs(x="Gene/Region", y="TPM",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
       
     }
     
@@ -117,11 +120,11 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
       df=subset(df,region %in% allowed)
     }
     
-    print(ggplot(df,aes(x=region,y=ASratioNorm,fill=region)) +  
+    try(print(ggplot(df,aes(x=region,y=ASratioNorm,fill=region)) +  
             geom_bar(stat="identity") +
             facet_wrap(~ samples)+
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
-            labs(x="Gene/Region", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region")))
+            labs(x="Gene/Region", y=y,title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
   }
   ####DONE FUNCTIONS####
 ```
@@ -135,7 +138,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #plotting the read count per region (log2) as heatmap
   cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
   
-  heatmap.2(as.matrix(rdCntTPM), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "TPM", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
+  try(heatmap.2(as.matrix(rdCntTPM), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "TPM", cexRow = txtSize*0.1, cexCol = txtSize*0.2, keysize = 1))
 ```
 
 ### Clustered heatmap of antisense ratio
@@ -147,7 +150,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #plotting the read count per region (log2) as heatmap
   cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
   
-  heatmap.2(as.matrix(asratio), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "ASratio", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
+  try(heatmap.2(as.matrix(asratio), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "ASratio", cexRow = txtSize*0.1, cexCol = txtSize*0.2, keysize = 1))
 ```
 
 ### Clustered heatmap of average read count (log2 scale)
@@ -155,7 +158,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-average-read-count-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
-  heatmap.2(as.matrix(rdCntAvgLog), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "log2(readCountsAvg)", cexRow = txtSize*0.1, cexCol = txtSize*0.3, keysize = 1)
+  try(heatmap.2(as.matrix(rdCntAvgLog), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "log2(readCountsAvg)", cexRow = txtSize*0.1, cexCol = txtSize*0.2, keysize = 1))
 ```
 
 ### PCA plot of samples
@@ -170,7 +173,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   score<-cbind(row.names(score),score)
   row.names(score)<-c(1:dim(score)[1])
   colnames(score)<-c("Sample","PC1","PC2")
-  print(ggplot(score, aes(x = PC1, y = PC2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+  try(print(ggplot(score, aes(x = PC1, y = PC2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO))
 ```
 
 ### MDS plot of samples
@@ -186,7 +189,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     scoreMDS<-cbind(row.names(scoreMDS),scoreMDS)
     row.names(scoreMDS)<-c(1:dim(scoreMDS)[1])
     colnames(scoreMDS)<-c("Sample","Dimension1","Dimension2")
-    print(ggplot(scoreMDS, aes(x = Dimension1, y = Dimension2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO)
+    try(print(ggplot(scoreMDS, aes(x = Dimension1, y = Dimension2, colour = Sample)) + geom_point(lwd = hval*0.5) + geom_text(aes(label = Sample),hjust=1, vjust=1, size=hval*0.5) + COSMO))
   }
 ```
 
@@ -196,7 +199,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   #Maxing a boxplot of regions
-  print(ggplot(dfa, aes(region, readCountsAvg)) + geom_boxplot() + labs(x="Gene/Region", y="Normalized Read Count") + COSMO)
+  try(print(ggplot(dfa, aes(region, readCountsAvg)) + geom_boxplot() + labs(x="Gene/Region", y="Normalized Read Count") + COSMO))
 ```
 
 ### Sample wise comparison of read counts for each gene/region {#Sample}
