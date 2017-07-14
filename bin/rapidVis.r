@@ -38,6 +38,14 @@ if(plotMethod=="stats"){
   colnames(negcov)=c("region","depth")
   for(name in allNames){
     opts_chunk$set(echo=FALSE)
+    subtt=subset(tt,V1==name)
+    rmin=range(tt$V2)[1]-1
+    rmax=range(tt$V2)[2]+1
+    subtt=subset(subtt, V2 > rmin & V2 <rmax)
+    aligned=nrow(subtt)
+    if(aligned==0) {
+    	next;
+    }
     fname=paste(normalizePath(filename),paste(name,".html", sep=""), sep="/")
     rmarkdown::render(input=ipname,output_file = fname, envir=parent.frame())
     #knit2html(input=ipname,output=fname, envir=parent.frame())
