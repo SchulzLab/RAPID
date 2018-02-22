@@ -205,7 +205,7 @@ echo compute overlap with regions in bed file ${ANNFILE}
 intersectBed -a ${OUT}/alignedReads.gff -b ${ANNFILE} -f 1 > ${OUT}/${ANNFILENAME}/alignedReads.intersect -wao
 
 #produce reduced output after using Bedtools
-awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANNFILENAME}/alignedReads.intersect | awk '{if($1 !~ /\./){print $0}}' > ${OUT}/${ANNFILENAME}/alignedReads.sub.compact
+awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANNFILENAME}/alignedReads.intersect | awk '{if($1 !~ /^\./){print $0}}' > ${OUT}/${ANNFILENAME}/alignedReads.sub.compact
 
 #generate Statistics for 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then

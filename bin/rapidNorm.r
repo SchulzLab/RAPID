@@ -72,7 +72,7 @@ normalizeEntries <- function(Stats,oldTotal,adjustForBackground=TRUE,normalizeBy
       if(normalizeByLength){
         newList[[i]]$reads_avg=round( (newList[[i]]$reads_norm/newList[[i]]$lens),digits=3)
       }
-      newList[[i]]$RPK=(newList[[i]]$reads/newList[[i]]$lens)*1000
+      newList[[i]]$RPK=(newList[[i]]$reads_norm/newList[[i]]$lens)*1000
       newList[[i]]$TPM=round(newList[[i]]$RPK/(sum(newList[[i]]$RPK)/1e+06), digits = 3)
       newList[[i]]$RPK=NULL
     }
@@ -89,7 +89,7 @@ normalizeEntries <- function(Stats,oldTotal,adjustForBackground=TRUE,normalizeBy
       if(normalizeByLength){
         newList[[i]]$reads_avg=round( (newList[[i]]$reads_norm/newList[[i]]$lens),digits=3)
       }
-      newList[[i]]$RPK=(newList[[i]]$reads/newList[[i]]$lens)*1000
+      newList[[i]]$RPK=(newList[[i]]$reads_norm/newList[[i]]$lens)*1000
       newList[[i]]$TPM=round(newList[[i]]$RPK/(sum(newList[[i]]$RPK)/1e+06),digits = 3)
       newList[[i]]$RPK=NULL
     } 
@@ -112,7 +112,7 @@ createPlottingData <- function(Stats,conf){
   rows=nrow(Stats[[1]])
   numDatasets=length(Stats)
   readCounts=rep(Stats[[1]]$reads,numDatasets)
-  readCountsTPM=rep(Stats[[1]]$TPM,numDatasets)
+  readCountsNormTPM=rep(Stats[[1]]$TPM,numDatasets)
   readCountsNorm=rep(Stats[[1]]$reads_norm,numDatasets)
   ASreadCountsNorm=rep(Stats[[1]]$asreads_norm,numDatasets)
   readCountsAvg=rep(Stats[[1]]$reads_avg,numDatasets)
@@ -122,7 +122,7 @@ createPlottingData <- function(Stats,conf){
   names=rep(conf$name[1],numDatasets*rows)
   for(i in 1:(numDatasets-1)){
     readCounts[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$reads
-    readCountsTPM[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$TPM
+    readCountsNormTPM[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$TPM
     readCountsNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$reads_norm
     ASreadCountsNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$asreads_norm
     readCountsAvg[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$reads_avg
@@ -130,7 +130,7 @@ createPlottingData <- function(Stats,conf){
     ASratioNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$asratio_norm
     names[(i*rows+1):((i+1)*rows)] = rep(conf$name[i+1],rows)
   }
-  df=data.frame(region = rep(Stats[[1]]$region,numDatasets), readCounts=readCounts, readCountsTPM=readCountsTPM, readCountsNorm=readCountsNorm, readCountsAvg=readCountsAvg, ASratio=ASratio, ASreadCountsNorm=ASreadCountsNorm, ASratioNorm=ASratioNorm, samples=names)
+  df=data.frame(region = rep(Stats[[1]]$region,numDatasets), readCounts=readCounts, readCountsNormTPM=readCountsNormTPM, readCountsNorm=readCountsNorm, readCountsAvg=readCountsAvg, ASratio=ASratio, ASreadCountsNorm=ASreadCountsNorm, ASratioNorm=ASratioNorm, samples=names)
   return(df)
 }
 

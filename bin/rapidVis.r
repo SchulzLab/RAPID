@@ -82,7 +82,7 @@ if(plotMethod=="compare"){
   asratio=as.data.frame(dcast(dfa, region~samples, value.var = 'ASratioNorm'))
   rdCntAvgLog=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsAvgLog'))
   rdCntNorm=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsNorm'))
-  rdCntTPM=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsTPM'))
+  rdCntTPM=as.data.frame(dcast(dfa, region~samples, value.var = 'readCountsNormTPM'))
   rownames(asratio)=asratio$region
   rownames(rdCntAvgLog)=rdCntAvgLog$region
   rownames(rdCntNorm)=rdCntNorm$region

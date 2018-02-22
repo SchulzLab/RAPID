@@ -46,12 +46,12 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
     }
     
     if(plotlog){
-      try(print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsNormTPM,fill=samples)) +  
               geom_bar(stat="identity")+
               facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
               labs(x="Sample", y="TPM (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }else{
-      try(print(ggplot(df,aes(x=samples,y=readCountsTPM,fill=samples)) +  
+      try(print(ggplot(df,aes(x=samples,y=readCountsNormTPM,fill=samples)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ region)+
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
@@ -97,14 +97,14 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
       df=subset(df,region %in% allowed)
     }
     if(plotlog){
-      try(print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsNormTPM,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               scale_y_continuous(trans=log2_trans()) +
               theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) + 
               labs(x="Gene/Region", y="TPM (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
     }else{
-      try(print(ggplot(df,aes(x=region,y=readCountsTPM,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsNormTPM,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) + 
@@ -138,7 +138,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #plotting the read count per region (log2) as heatmap
   cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 299)
   
-  try(heatmap.2(as.matrix(rdCntTPM), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "TPM", cexRow = txtSize*0.1, cexCol = txtSize*0.2, keysize = 1))
+  try(heatmap.2(as.matrix(rdCntTPM), col=cpalette, margin=c(hval,hval), density.info = "none", trace = "none", key.xlab = "TPM (Normalized)", cexRow = txtSize*0.1, cexCol = txtSize*0.2, keysize = 1))
 ```
 
 ### Clustered heatmap of antisense ratio
