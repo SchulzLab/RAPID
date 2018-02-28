@@ -1,5 +1,5 @@
-#!/TL/opt/bin/R3script
-#!/TL/opt/bin/R3
+#!/usr/bin/Rscript
+
 #CALL: R3script rapidVis.r <plotMethod> <outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)> <AnnotationFile> <rapidPath (MUST)>
 #load libraries
 library("reshape2")

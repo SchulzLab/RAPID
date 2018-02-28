@@ -2,10 +2,10 @@
  
 #
 # RAPID
-# Read Alignment and Analysis Pipeline
+# Read Alignment, Analysis, and Differential Pipeline
 # 
  
-# Copyright (C) 2017 Marcel H. Schulz  and Sivarajan Karunanithi
+# Copyright (C) 2018 Marcel H. Schulz  and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -29,18 +29,18 @@ FILETYPE="fq"
 
 function usage()
 {
-    echo " _________________________________________________"
-echo "|_______               ________       _____      |"
-echo "|  |    |                 |    |   I    |  \\     |"
-echo "|  |    |      /\\         |    |   I    |   \\    |"
-echo "|  |____|     /  \\        |____|   I    |    |   |"
-echo "|  |\\        /____\\       |        I    |    |   |"
-echo "|  | \\      /      \\      |        I    |    |   |"
-echo "|  |  \\    /        \\     |        I    |   /    |"
-echo "|  |   \\  /          \\    |        I    |__/     |"
-echo "|                                                |"
-echo "| -Read Alignment and Analysis Pipeline- V $VERSION   |"
-echo "|________________________________________________|"
+    echo " ________________________________________________________________"
+echo "|_______               ________       _____                          |"
+echo "|  |    |                 |    |   I    |  \\                        |"
+echo "|  |    |      /\\         |    |   I    |   \\                      |"
+echo "|  |____|     /  \\        |____|   I    |    |                      |"
+echo "|  |\\        /____\\       |        I    |    |                     |"
+echo "|  | \\      /      \\      |        I    |    |                     |"
+echo "|  |  \\    /        \\     |        I    |   /                      |"
+echo "|  |   \\  /          \\    |        I    |__/                       |"
+echo "|                                                                    |"
+echo "| -Read Alignment, Analysis, and Differential Pipeline- V $VERSION   |"
+echo "|____________________________________________________________________|"
     echo "Usage: "
     echo ""
     echo "./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no --annot=file.bed --index=/path_to_index"
@@ -209,7 +209,7 @@ awk '{if($9 ~ /M*S/){add="Y"}else{add="N"};print $13,$6,add,$7,$8}' ${OUT}/${ANN
 
 #generate Statistics for 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	R3script ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
+	Rscript ${BIN}/rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 else
 	rapidStats.r ${OUT}/${ANNFILENAME}/ ${ANNFILE} >${OUT}/${ANNFILENAME}/R_Errors.log 2>&1 
 fi

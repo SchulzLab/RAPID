@@ -1,6 +1,5 @@
-#!/TL/opt/bin/Rscript
-#!/TL/opt/bin/R3script
-#CALL: R3script rapidStats.r <outputFolder> <AnnotationFile>
+#!/usr/bin/Rscript
+
 args <- commandArgs(trailingOnly = TRUE)
 filename=as.character(args[1])
 annotationfile=as.character(args[2])

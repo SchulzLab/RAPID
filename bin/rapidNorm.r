@@ -1,5 +1,5 @@
-#!/TL/opt/bin/Rscript
-#!/TL/opt/bin/R3script
+#!/usr/bin/Rscript
+
 #CALL: Rscript rapidNorm.R <configFile> <AnnotationFile> <OutputFolder> <LengthRestrictionIfAny>
 
 #load libraries

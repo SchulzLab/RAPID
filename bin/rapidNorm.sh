@@ -2,10 +2,10 @@
  
 #
 # RAPID
-# Read Alignment and Analysis Pipeline
+# Read Alignment, Analysis, and Differential Pipeline
 # 
  
-# Copyright (C) 2017 Marcel H. Schulz and Sivarajan Karunanithi
+# Copyright (C) 2018 Marcel H. Schulz and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -26,18 +26,18 @@ DESEQ="FALSE"
 
 function usage()
 {
-    echo " _________________________________________________"
-echo "|_______               ________       _____      |"
-echo "|  |    |                 |    |   I    |  \\     |"
-echo "|  |    |      /\\         |    |   I    |   \\    |"
-echo "|  |____|     /  \\        |____|   I    |    |   |"
-echo "|  |\\        /____\\       |        I    |    |   |"
-echo "|  | \\      /      \\      |        I    |    |   |"
-echo "|  |  \\    /        \\     |        I    |   /    |"
-echo "|  |   \\  /          \\    |        I    |__/     |"
-echo "|                                                |"
-echo "| -Read Alignment and Analysis Pipeline- V $VERSION   |"
-echo "|________________________________________________|"
+    echo " ________________________________________________________________"
+echo "|_______               ________       _____                          |"
+echo "|  |    |                 |    |   I    |  \\                        |"
+echo "|  |    |      /\\         |    |   I    |   \\                      |"
+echo "|  |____|     /  \\        |____|   I    |    |                      |"
+echo "|  |\\        /____\\       |        I    |    |                     |"
+echo "|  | \\      /      \\      |        I    |    |                     |"
+echo "|  |  \\    /        \\     |        I    |   /                      |"
+echo "|  |   \\  /          \\    |        I    |__/                       |"
+echo "|                                                                    |"
+echo "| -Read Alignment, Analysis, and Differential Pipeline- V $VERSION   |"
+echo "|____________________________________________________________________|"
     echo "Usage: "
     echo ""
     echo "./rapidNorm.sh --out=complete/path/outputDirectory/ --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid "
@@ -119,7 +119,7 @@ fi
 mkdir -p $OUT/
 echo Run comparative analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	R3script ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	Rscript ${BIN}rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
 	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
