@@ -6,13 +6,12 @@ One of the strengths of RAPID is that a number of useful file with statistics an
 Statistics
 ----------
 
-For each folder respective for each annotation file supplied in --annot parameter is created by rapidStats analysis contains the following files:
+An output folder is created, for each annotation BED file supplied in **rapidStats** analysis, with the following files:
 
 * Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications and coverage on DNA strands
 * TotalReads.dat : Lists the total number of reads mapped to the genome (given by parameter -i and excluding reads that may have mapped to the contamination file)
 * Other associated files used for calculation and reporting. 
   * alignedReads.sub.compact has the compact information of aligned reads. If intermediate files are not removed, aligned BAM files will be present.
-
 
 
 Normalization
@@ -37,6 +36,8 @@ RapidVis output description when ran in two different modes.
 * rapidNorm
 
    *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
+
+More description about each plot can be found in `PlotInfo <https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md>_`
 
 
 Differential Analysis

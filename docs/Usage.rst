@@ -2,7 +2,7 @@ Basic Usage
 ===========
 
 
-**rapidStats**
+rapidStats
 --------------
 
 Basic statistics calculation like analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions are done using this script.
@@ -21,14 +21,18 @@ This quantification step provides an output file containing the read counts of v
 *Sample script*
 ^^^^^^^^^^^^^^^
 
-If using a previously aligned BAM file:
-    `./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no --annot=file.bed --rapid=/rapidPath/`
+If using a previously aligned BAM file: ::
 
-If using a fastq file, and wish to quantify multiple BED files. Results will be stored in separate folders with each annotation file's name:
-    `./rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq --annot=file.bed,file2.bed --index=/path_to_index --rapid=/rapidPath/`
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no -a=file.bed -r=/rapidPath/
+
+If using a fastq file, and wish to quantify multiple BED files. 
+Results will be stored in separate folders with each annotation file's name: ::
+
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq -a=file.bed,file2.bed -i=/path_to_index -r=/rapidPath/
     
-If using a fastq file, and wish to perform a two-step alignment:
-    `./rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq --annot=file.bed --index=/path_to_index --contamin=yes --indexco=/path_to_contaminants_index --rapid=/rapidPath/`
+If using a fastq file, and wish to perform a two-step alignment: ::
+
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq -a=file.bed -i=/path_to_index --contamin=yes --indexco=/path_to_contaminants_index -r=/rapidPath/
 
 The different parameters we provide currently are listed below.
 
@@ -62,7 +66,7 @@ The different parameters we provide currently are listed below.
 +------------+--------+-------+-----------+------------+--------------------------+
 | chromosome |  start |  end  | geneName  | type       | strand (Gene Direction)  |
 +============+========+=======+===========+============+==========================+
-| chr1       |  1234  | 1368  | geneA     | region     |  \+                      |
+| chr1       |  1234  | 1368  | geneA     | region     | \+                       |
 +------------+--------+-------+-----------+------------+--------------------------+
 | chr2       | 1234   | 1368  | geneB     | region     | \-                       |
 +------------+--------+-------+-----------+------------+--------------------------+
@@ -73,8 +77,8 @@ The different parameters we provide currently are listed below.
 
 The column *type* in the Bed file says whether a gene has to be treated as background (knockdown) or not during normalizations. 
 
-**rapidNorm**
--------------
+rapidNorm
+----------
 
 Normalization module aims to facilitate the comparison of genes across various samples, and vice versa. As sequencing depth differs across samples, the read counts have to be normalized. RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
 
@@ -88,14 +92,17 @@ Normalization module aims to facilitate the comparison of genes across various s
 Sample script: 
 ^^^^^^^^^^^^^^
 
-If normalizing using the TCS based normalization:
-    `./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/`
+If normalizing using the TCS based normalization: ::
     
-If normalizing using the DESeq2 based normalization:
-    `./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -d=T`
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/
     
-If normalizing using the TCS based scaling, while considering only reads of length 23bp, and 25bp:
-    `./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -l=23,25`
+If normalizing using the DESeq2 based normalization: ::
+    
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -d=T
+    
+If normalizing using the TCS based scaling, while considering only reads of length 23bp, and 25bp: ::
+    
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -l=23,25
 
 
 +-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -116,7 +123,7 @@ If normalizing using the TCS based scaling, while considering only reads of leng
 | -l    | --restrictlength       | An INTEGER of Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"                       |
 +-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-The config file is a simple **tab-delimited** file that has 3 columns,  the path to the folder produced by **rapidStats**, the name of the experiment, and list of regions need to be corrected in TCS based normalization. Each line is one dataset that should be included in the Normalization. Later these normalized statistics can be used to make comparison plots using **rapidVis**. 
+The config file is a simple **tab-delimited** file that has three columns, the path to the folder produced by **rapidStats**, the name of the experiment, and list of regions need to be corrected in TCS based normalization. Each line is one dataset that should be included in the Normalization. Later these normalized statistics can be used to make comparison plots using **rapidVis**. 
 
 
 *Config file format* 
@@ -138,8 +145,8 @@ The config file is a simple **tab-delimited** file that has 3 columns,  the path
 
 
 
-**rapidVis**
-------------
+rapidVis
+----------
 
 The visualization module of RAPID is a simple R script, which creates informative plots from the output of **rapidStats**, and **rapidNorm**. 
 
@@ -151,14 +158,17 @@ The visualization module of RAPID is a simple R script, which creates informativ
 
 Sample script:
 ^^^^^^^^^^^^^^
+Generic Format: ::
 
     `Rscript rapidVis.r <plotMethod> <outputfolder> <annotationfile> <rapidPath>`
 
-If you want to plot rapidStats output:
-    `Rscript ${rapidPath}/rapidVis.r stats /path_to_output_directory_rapidStats/ regions.bed <$rapid>`
+If you want to plot rapidStats output: ::
+
+    Rscript ${rapidPath}/rapidVis.r stats /path_to_output_directory_rapidStats/ regions.bed <$rapid>
     
-If you want to plot rapidNorm output:
-    `Rscript ${rapidPath}/rapidVis.r compare /path_to_output_directory_rapidNorm/ <$rapid>`
+If you want to plot rapidNorm output: ::
+
+    Rscript ${rapidPath}/rapidVis.r compare /path_to_output_directory_rapidNorm/ <$rapid>
 
 
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------+
@@ -175,8 +185,8 @@ If you want to plot rapidNorm output:
 
 
 
-**rapidDiff**
--------------
+rapidDiff
+----------
 
 This module of RAPID implements DESeq2 software and generate basic graphs to highlight the differentially expressed gene/region among the samples.
 
@@ -188,10 +198,14 @@ This module of RAPID implements DESeq2 software and generate basic graphs to hig
 
 Sample script:
 ^^^^^^^^^^^^^^
-    `./rapidDiff.sh --out=complete/path/outputDirectory/ --conf=data.config`
+
+Generic Format: ::
+
+    ./rapidDiff.sh --out=complete/path/outputDirectory/ --conf=data.config
     
-If a different q-value cut-off is required: 
-    `./rapidDiff.sh --out=complete/path/outputDirectory/ --conf=data.config --alpha=0.01`
+If a different q-value cut-off is required: ::
+
+    ./rapidDiff.sh --out=complete/path/outputDirectory/ --conf=data.config --alpha=0.01
     
 +-------+-------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | short | long params | explanation                                                                                                                          |

@@ -2,6 +2,9 @@
 Installation
 ============
 
+Manual
+------
+
 RAPID does not require any compilation. 
 
 * You need to download (or clone) the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
@@ -43,9 +46,9 @@ Ensure you have initialized a shell variable named *rapid* if rapid installation
 Simple Test
 -----------
 
-Simply run
+Move to the testData folder, and simply run ::
 
-`bash runTest.sh`
+    bash runTest.sh
 
-and there should be the folder TestRapid created by **rapidStats** and TestCompare from **rapidNorm** in the testData folder. 
+Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
 You should also find the outputs described under the **rapidVis** section.
