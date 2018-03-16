@@ -38,6 +38,7 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
 =============
 Conda
 =============
+
 RAPID is available as a recipe in the bioconda channel. Conda users can install RAPID, for example, using the following command. ::
     conda install rapid=0.2=pl5.22.0_3
 
@@ -55,6 +56,7 @@ Ensure you have initialized a shell variable named *rapid* if rapid installation
 ============
 Simple Test
 ============
+
 Simply run
 
 `bash runTest.sh`
@@ -281,7 +283,7 @@ Output Description
 One of the strengths of RAPID is that a number of useful file with statistics and plots are automaically created which can be used for additional analysis.
 
 ================
-**rapidStats**
+Statistics
 ================
 For each folder respective for each annotation file supplied in --annot parameter is created by rapidStats analysis contains the following files:
 * Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications and coverage on DNA strands
@@ -291,7 +293,7 @@ For each folder respective for each annotation file supplied in --annot paramete
 
 
 ================
-**rapidNorm**
+Normalization
 ================
 In each folder created by rapidNorm analysis exist the following files:
 * NormalizedValues.dat - A tab-separated file that contains the actual and normalized values for each region/sample provided in the config file.
@@ -299,7 +301,7 @@ In each folder created by rapidNorm analysis exist the following files:
 
 
 ================
-**rapidVis**
+visualization
 ================
 RapidVis output description when ran in two different modes. 
 
@@ -311,7 +313,9 @@ RapidVis output description when ran in two different modes.
 
    *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
-* rapidDiff
+======================
+Differential Analysis
+======================
 
 In each folder created by rapidDiff analysis exist the following files:
   * DiffExp_Statistics.csv - A CSV file containing the normal counts retrieved for each sample and the DESeq2 statistics obtained
