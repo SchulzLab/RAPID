@@ -1,10 +1,10 @@
---------------------
+********************
 General Description
---------------------
+********************
 
 Understanding the role of small RNA (sRNA) in diverse biological processes requires detailed attention to strand specificity, length distribution, and base modification. No integrated computational solution exists to investigate novel sRNA data in an unbiased way. We developed a generic sRNA analysis tool which captures information inherent in the dataset and automatically produces numerous visualizations, as user-friendly HTML reports, covering multiple categories required for sRNA analysis. Our tool also facilitates an automated comparison of multiple datasets, with different normalization techniques. For ease of use, our tool also integrates an automated differential expression analysis using DESeq2.
 
-===================
+
 Features of RAPID
 ===================
 
@@ -15,9 +15,9 @@ Read Alignment, Analysis and Differential Pipeline (RAPID) is a set of tools for
 * **rapidVis**: Generates insightful graphs of the basic statistics and comparison
 * **rapidDiff**: Differential analysis of the given samples using DESeq2
 
---------------
+********************
 Installation
---------------
+********************
 
 RAPID does not require any compilation. 
 
@@ -35,7 +35,7 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
    * DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
    * ggplot2, scales, pandoc, knitr
 
-=============
+
 Conda
 =============
 
@@ -53,7 +53,7 @@ Always remember to set the rapid path variable to the bin directory where RAPID 
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder. 
 Ensure you have initialized a shell variable named *rapid* if rapid installation bin folder (e.g. /home/software/RAPID/bin/) is not in the PATH variable
 
-============
+
 Simple Test
 ============
 
@@ -64,16 +64,17 @@ Simply run
 and there should be the folder TestRapid created by **rapidStats** and TestCompare from **rapidNorm** in the testData folder. 
 You should also find the outputs described under the **rapidVis** section.
 
-----------------
+********************
 Basic Usage
-----------------
+********************
 
-================
+
 **rapidStats**
 ================
 Basic statistics calculation like analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions are done using this script.
 
 *Input*
+------------------
 
 * Trimmed sequence file (FASTQ) or an alignment file (BAM/SAM) 
 * BED file containing the localization and names of genes/regions to be quantified
@@ -84,6 +85,7 @@ We then subject the aligned files to quantify the read counts for the regions pr
 This quantification step provides an output file containing the read counts of various read lengths, modification, strandedness, etc.
 
 *Sample script*: 
+------------------
 
 If using a previously aligned BAM file:
     `./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no --annot=file.bed --rapid=/rapidPath/`
@@ -121,6 +123,7 @@ The different parameters we provide currently are listed below.
 +-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
 
 *Bed file format* (Do not provide a header, its shown here only for clarity)
+--------------------------------------------------------------------------------
 
 +------------+--------+-------+-----------+------------+--------------------------+
 | chromosome |  start |  end  | geneName  | type       | strand (Gene Direction)  |
@@ -136,18 +139,19 @@ The different parameters we provide currently are listed below.
 
 The column *type* in the Bed file says whether a gene has to be treated as background (knockdown) or not during normalizations. 
 
-================
 **rapidNorm**
 ================
 Normalization module aims to facilitate the comparison of genes across various samples, and vice versa. As sequencing depth differs across samples, the read counts have to be normalized. RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
 
 *Input*
+------------------
 
 * BED file containing the localization and names of genes/regions to be compared. Care should be taken to include only the gene/regions which were quantified in **rapidStats**
 * Config file containing the location of **rapidStats** output folders
 
 
 Sample script: 
+------------------
 
 If normalizing using the TCS based normalization:
     `./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/`
@@ -181,6 +185,7 @@ The config file is a simple **tab-delimited** file that has 3 columns,  the path
 
 
 *Config file format* 
+----------------------
 
 +--------------+---------+----------------+
 | location     |  name   |   background   |
@@ -197,17 +202,20 @@ The config file is a simple **tab-delimited** file that has 3 columns,  the path
 *geneA,geneB* - Gene names provided as background should be same as provided in the **rapidStats** *bed file*.
 
 
-================
+
 **rapidVis**
 ================
 The visualization module of RAPID is a simple R script, which creates informative plots from the output of **rapidStats**, and **rapidNorm**. 
 
 *Input*
+------------------
 
 * Path of the output folder from **rapidStats**, and **rapidNorm**
 * BED file containing the localization and names of genes/regions need to be visualized. Care should be taken to include only the gene/regions which were quantified in **rapidStats**
 
 Sample script:
+------------------
+
     `Rscript rapidVis.r <plotMethod> <outputfolder> <annotationfile> <rapidPath>`
 
 If you want to plot rapidStats output:
@@ -230,17 +238,19 @@ If you want to plot rapidNorm output:
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------+
 
 
-================
+
 **rapidDiff**
 ================
 This module of RAPID implements DESeq2 software and generate basic graphs to highlight the differentially expressed gene/region among the samples.
 
 *Input*
+------------------
 
 * Path of the output folder from **rapidStats**
 * Config file describing the DESeq2 analysis setup
 
 Sample script:
+------------------
     `./rapidDiff.sh --out=complete/path/outputDirectory/ --conf=data.config`
     
 If a different q-value cut-off is required: 
@@ -263,6 +273,7 @@ If a different q-value cut-off is required:
 +-------+-------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
 *Config file format*
+-----------------------
 
 +------------+------------+-------------+
 | sampleName |   location |   condition |
@@ -273,34 +284,37 @@ If a different q-value cut-off is required:
 +------------+------------+-------------+
 
 This config file is a simple **tab-delimited** file that has three columns, with the **same** headers as mentioned in the above format. 
+
 *sampleName* tells the name to be used in the analysis output.
 *location* tells the location of rapidStats analysis folders should be used for extracting the raw counts of gene/regions analyzed (**USE ONLY ABSOLUTE PATH**)
 *condition* tells whether the sample is *untreated* or *treated* sample. For example, Use *treated*  drug treated cancerous samples and *untreated* for cancer samples.
 
----------------------
+********************
 Output Description
----------------------
+********************
 One of the strengths of RAPID is that a number of useful file with statistics and plots are automaically created which can be used for additional analysis.
 
-================
+
 Statistics
 ================
 For each folder respective for each annotation file supplied in --annot parameter is created by rapidStats analysis contains the following files:
+
 * Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications and coverage on DNA strands
 * TotalReads.dat : Lists the total number of reads mapped to the genome (given by parameter -i and excluding reads that may have mapped to the contamination file)
 * Other associated files used for calculation and reporting. 
-** alignedReads.sub.compact has the compact information of aligned reads. If intermediate files are not removed, aligned BAM files will be present.
+  * alignedReads.sub.compact has the compact information of aligned reads. If intermediate files are not removed, aligned BAM files will be present.
 
 
-================
+
 Normalization
 ================
 In each folder created by rapidNorm analysis exist the following files:
+
 * NormalizedValues.dat - A tab-separated file that contains the actual and normalized values for each region/sample provided in the config file.
 * Other associated files used for calculation and reporting.
 
 
-================
+
 visualization
 ================
 RapidVis output description when ran in two different modes. 
@@ -313,7 +327,7 @@ RapidVis output description when ran in two different modes.
 
    *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
-======================
+
 Differential Analysis
 ======================
 
