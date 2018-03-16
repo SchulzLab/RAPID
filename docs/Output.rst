@@ -37,7 +37,7 @@ RapidVis output description when ran in two different modes.
 
    *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
-More description about each plot can be found in `PlotInfo <https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md>_`
+More description about each plot can be found in `PlotInfo <https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md>`_.
 
 
 Differential Analysis
