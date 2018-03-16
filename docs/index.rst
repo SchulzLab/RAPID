@@ -1,12 +1,12 @@
-********************
+
 General Description
-********************
+===================
 
 Understanding the role of small RNA (sRNA) in diverse biological processes requires detailed attention to strand specificity, length distribution, and base modification. No integrated computational solution exists to investigate novel sRNA data in an unbiased way. We developed a generic sRNA analysis tool which captures information inherent in the dataset and automatically produces numerous visualizations, as user-friendly HTML reports, covering multiple categories required for sRNA analysis. Our tool also facilitates an automated comparison of multiple datasets, with different normalization techniques. For ease of use, our tool also integrates an automated differential expression analysis using DESeq2.
 
 
 Features of RAPID
-===================
+-----------------
 
 Read Alignment, Analysis and Differential Pipeline (RAPID) is a set of tools for the alignment, and analysis of genomic regions with small RNA clusters derived from small RNA sequencing data. RAPID currently consists of four modules, whose functionalities are described below.
 
@@ -15,9 +15,9 @@ Read Alignment, Analysis and Differential Pipeline (RAPID) is a set of tools for
 * **rapidVis**: Generates insightful graphs of the basic statistics and comparison
 * **rapidDiff**: Differential analysis of the given samples using DESeq2
 
-********************
+
 Installation
-********************
+============
 
 RAPID does not require any compilation. 
 
@@ -37,17 +37,20 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
 
 
 Conda
-=============
+-----
 
 RAPID is available as a recipe in the bioconda channel. Conda users can install RAPID, for example, using the following command. ::
+
     conda install rapid=0.2=pl5.22.0_3
 
 This command installs the RAPID v0.2, build pl5.22.0_3. 
 
 We recommend to use RAPID as a conda environment. An example command is given below. ::
+
     conda create --name <name> rapid=0.2=pl5.22.0_3
 
 Always remember to set the rapid path variable to the bin directory where RAPID is found. In case of a conda environment it should look soemthing like ::
+
     rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/
 
 After installation you can try running RAPID using the provided script runTest.sh in the testData folder. 
@@ -55,7 +58,7 @@ Ensure you have initialized a shell variable named *rapid* if rapid installation
 
 
 Simple Test
-============
+-----------
 
 Simply run
 
@@ -84,7 +87,7 @@ To facilitate these alignments, bowtie2 index files should be provided against t
 We then subject the aligned files to quantify the read counts for the regions provided in the BED file. 
 This quantification step provides an output file containing the read counts of various read lengths, modification, strandedness, etc.
 
-*Sample script*: 
+*Sample script*
 ------------------
 
 If using a previously aligned BAM file:
