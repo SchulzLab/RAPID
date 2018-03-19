@@ -1,0 +1,201 @@
+Use Cases
+=========
+
+Small RNA transcriptomics is gaining a lot of interest over the past decade. There is a lot of smallRNA (sRNA) computational analysis tools available. However, they focus mainly on predicting novel miRNAs, piRNAs, etc. and annotating them. This leads to complete ignorance of the other sRNA information inherent in the dataset. There is no integrated computational solution that can investigate novel sRNA data in an unbiased way, to the best of our knowledge. Hence, we developed a generic sRNA analysis offline tool, Read Alignment,Analysis, and Differential PIpeline (RAPID). RAPID quantifies the basic alignment statistics with respect to read length, strand bias, non-templated nucleotides, nucleotide content, etc. for an user-defined set of genes or regions. Once the basic statistics is performed for multiple sRNA datasets, our tools aids the user with versatile functionalities, ranging from general quantitative analysis to visual comparison of multiple sRNA datasets. 
+
+Statistics
+----------
+Assume you are working on a not so well annotated organism, and out of curiosity, you have used your smallRNA transcriptomics dataset to identify novel small RNA expressing regions using any of the existing computational tools. 
+The sRNA prediction tool, probably, would have given you just the basic read count summary of the novel sRNA regions. However, in the field of sRNA transcriptomics, there are various intricate parameters which needs to be paid attention, like read length, strand of origin, base modifications, etc. For instance, sRNA with different read length have different downstream functions. They also show difference in function, based on the strand of origin. 
+
+**rapidStats** captures all this essential information, in a single command. ::
+
+    rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq -a=file.bed -i=/path_to_index -r=/rapidPath/
+
+If you have a set of contaminant sequences (known from the organismal knowledge, or from your lab), you can remove the contaminants and map the rest to the genome of interest. ::
+    
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.fq -a=file.bed -i=/path_to_index --contamin=yes --indexco=/path_to_contaminants_index -r=/rapidPath/
+
+Also, many small RNA processing tools, perform alignments and output BAM/SAM files as part of their sRNA annotation pipeline. Depending on their need, they are prone to filter out lot of alignments, reads, etc. And, it can be meaningful to subject such alignments to quantification. You can simply use the BAM/SAM file produced from the other tool. ::
+    
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no -a=file.bed -r=/rapidPath/
+
+What if, you want to quantify different set of small non-coding RNA categories, like siRNAs, and piRNAs. You can simply pass multiple BED files to the annotation parameter, and the respective outputs are stored in subfolders. ::
+    
+    ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no -a=file.bed -r=/rapidPath/
+
+Sometimes, if you want to restrict your analysis to only certain regions. For instance, if you want to analyze only two sub-parts of a geneX (namely, positions 1500-2500, and 5000-6500 in chr1) because you suspect this region is a target for RNA silencing. You can do this by specifying so in your annotation BED file. 
+
++------------+--------+-------+-----------+------------+--------------------------+
+| chromosome |  start |  end  | geneName  | type       | strand (Gene Direction)  |
++============+========+=======+===========+============+==========================+
+| chr1       |  1500  | 2500  | geneX     | region     | \+                       |
++------------+--------+-------+-----------+------------+--------------------------+
+| chr1       |  5000  | 6500  | geneX     | region     | \+                       |
++------------+--------+-------+-----------+------------+--------------------------+
+| chr3       |  1234  | 1368  | geneC     | background | \-                       |
++------------+--------+-------+-----------+------------+--------------------------+
+
+As you can see, both regions have the same *geneName* in the above annotation table. RAPID quantifies only those regions and sums up their statistics under the same name to ease up the calculations. 
+
+If you are performing RNA interference (RNAi) experiments, you introduce exogenous RNA in to the system to trigger the RNAi pathway. However, in the resultant sequencing run your exogenous RNA is also intact. To avoid them from skewing the analysis, you can mention those as *background* in the *type* column in the BED file. Such *background* regions are also excluded from the total reads, if you go for normalization using **rapidNorm**
+
+A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
+
+Normalization
+-------------
+In the previous *Statistics* section, we quantified reads from an RNAi experiment. When you have such different knockdowns, you will like to compare the samples/genes and analyze how their behavior changes in different settings. And, often before performing a differential analysis with multiple replicates (which are difficult to produce in many cases), you may appreciate a simple comparison to have an idea of what is going on among the different control vs cases. As sequencing depth differs across samples, the read counts have to be normalized.  In order to do that, RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
+
+Simply add the sample locations you want to compare as described in the `config file <http://rapid-doc.readthedocs.io/en/latest/Usage.html#config-file-format>`_:  and run the following command with all the regions (in the annotation bed file) you previously quantified or only a subset of them which you think is intersting. ::
+    
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/
+    
+If you think, using the DESeq2 based normalization is a better choice for your experimental setup, you may well do so. ::
+    
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -d=T
+    
+Sometimes, you may need to consider only reads of certain readlength. Say, 23bp, and 25bp. Restricting the analysis to certain read length may increase the specificity of your comparative analysis. You can do that, by simply adding the lengths of your interst in the command line. ::
+    
+    ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -l=23,25
+
+In case, of TCS based normalization, RAPID also accounts for the background regions which are mentioned in the BED file. To be specific, they are removed from the scaling factor calculations, such that, they do not create bias from the introduction of exogenous RNA. 
+
+A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
+
+Visualization: Statistical Report
+---------------------------------
+
+This section describe the plots in the statistical report produced from **rapidVis**. To exemplify the Visualization abilities of RAPID, we used four small RNA sequencing data sets (unpublished) from the wildtype serotypes (51A, 51B, 51D, and 51H) of \textit{Paramecium tetraurelia}. We analyzed only the rDNA cluster producing 17S, 5.8S, 25S ribosomal RNAs. The rDNA cluster sequence can be obtained from GenBank Accession: AF149979.1 ~\citep{Preer1999DoesCircle}, with the additional annotation of the 5.8S sequence from GenBank accession: AM072801.1 ~\citep{Barth2006IntraspecificSequences}. 
+
+*FolderName*.html - An automatically generated HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions.
+
+.. image:: ./images/stats_homepage.png
+
+
+Read alignment percentage of various read lengths
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows various read lengths utilized in the analysis and their percentage of alignment.
+
+.. image:: ./images/rDNA_51A_plot1.png
+
+Alignment percentage of reads with (Un)Modified bases
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the alignment percentage of reads containing (un)modified bases.
+
+.. image:: ./images/rDNA_51A_plot2.png
+
+Strand specific alignment percentage of reads
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The alignment percentage of reads corresponding to each strand is shown in this plot.
+
+.. image:: ./images/rDNA_51A_plot3.png
+
+Reads aligned with base modifications above 'n' reads
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the modified bases and the number of reads containing such modifications. We only show bases which have at least 'n' reads. Here, 'n' corresponds to 5% of the overall alignment.
+
+.. image:: ./images/rDNA_51A_plot4.png
+
+Alignment percentage of reads with base modifications above 'n' reads
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the modified bases and the percentage of reads containing such modifications. We only show bases which have at least 'n' reads. Here, 'n' corresponds to 5% of the overall alignment.
+
+.. image:: ./images/rDNA_51A_plot5.png
+
+Strand specific reads of varied length
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows various read lengths utilized in the analysis and their read counts, specific to each strand.
+
+.. image:: ./images/rDNA_51A_plot6.png
+
+Modification status specific reads of varied length
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Various read lengths utilized in the analysis and their read counts, specific to their modification status is shown in this plot.
+
+.. image:: ./images/rDNA_51A_plot7.png
+
+1-base modification specific reads of varied length
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows various read legnths utilized in the analysis and their read counts, with respected to the modified bases. Only the single bases (A,T,G and C) modified were considered.
+
+.. image:: ./images/rDNA_51A_plot8.png
+
+Strand specific reads with respect to base modification status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the strand specific read counts with their base modification status.
+
+.. image:: ./images/rDNA_51A_plot9.png
+
+Strand specific coverage plot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the strand specific coverage (1bp resolution).
+
+.. image:: ./images/rDNA_51A_plot10.png
+
+Visualization: Comparison Report
+--------------------------------
+This section describe the plots in the comparison report produced from *rapidVis*. The normalized values mentioned below corresponds to the normalization method you choose, while running *rapidNorm*
+
+Clustered heatmap of TPM
+^^^^^^^^^^^^^^^^^^^^^^^^
+This is a heatmap of the TPM of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
+
+Clustered heatmap of antisense ratio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is a heatmap of the antisense ratio of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
+
+Clustered heatmap of average read count (log2 scale)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is a heatmap of the average read count (log2) of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
+
+PCA plot of samples
+^^^^^^^^^^^^^^^^^^^
+This principle component analysis (PCA) plot shows where your samples fall in the first and second principle components. The principle componenets are calculated using the read counts of each sample. 
+
+MDS plot of samples
+^^^^^^^^^^^^^^^^^^^
+This multi dimensional scaling (MDS) plot shows the proximities of your samples in two dimension. Read counts of each sample is used for performing MDS.
+
+Box plot of read counts
+^^^^^^^^^^^^^^^^^^^^^^^^
+This is a box plot of the normalized read counts of each gene/region.
+
+Sample wise comparison of read counts for each gene/region
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the normalized read counts of each sample for each gene/region.
+
+Sample wise comparison of read counts for each gene/region (log2 scale)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Log2 of normalized read counts of each sample for each gene/region is shown in this plot.
+
+Sample wise comparison of TPM for each gene/region
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the TPM values of each sample for each gene/region. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user. 
+
+Sample wise comparison of TPM for each gene/region (log2 scale)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Log2 of TPM Values of each sample for each gene/region is shown in this plot. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
+
+Sample wise comparison of antisense ratio for each gene/region
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the antisense ratio of each sample is shown for each gene/region.
+
+Gene/Region wise comparsion of average read counts for each sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the gene/region wise average read counts for each sample.
+
+Gene/Region wise comparsion of average read counts for each sample (log2 scale)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Log2 of gene/region wise average read counts for each sample is shown in this plot.
+
+Gene/Region wise comparsion of TPM for each sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This plot shows the gene/region wise TPM for each sample. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
+
+Gene/Region wise comparsion of TPM for each sample (log2 scale)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Log2 of gene/region wise TPM for each sample is shown in this plot. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
+
+Gene/Region wise comparison of antisense ratio for each sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Antisense ratio of gene/region for each samples is shown in this plot.
