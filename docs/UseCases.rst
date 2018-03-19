@@ -71,58 +71,59 @@ This section describe the plots in the statistical report produced from **rapidV
 
 .. image:: ./images/stats_homepage.png
 
+The left panel contains the list of regions/genes provided as part of the BED file to create the plots. Each region contains the following plots, if applicable. 
 
 Read alignment percentage of various read lengths
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths utilized in the analysis and their percentage of alignment.
+This plot shows various read lengths (x-axis) utilized in the analysis and their percentage of alignment (y-axis).
 
 .. image:: ./images/rDNA_51A_plot1.png
 
 Alignment percentage of reads with (Un)Modified bases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the alignment percentage of reads containing (un)modified bases.
+This plot shows the alignment percentage of reads (y-axis) containing (un)modified bases (x-axis; Modification status).
 
 .. image:: ./images/rDNA_51A_plot2.png
 
 Strand specific alignment percentage of reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The alignment percentage of reads corresponding to each strand is shown in this plot.
+The alignment percentage (y-axis) of reads corresponding to each strand (x-axis) is shown in this plot.
 
 .. image:: ./images/rDNA_51A_plot3.png
 
 Reads aligned with base modifications above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the modified bases and the number of reads containing such modifications. We only show bases which have at least 'n' reads. Here, 'n' corresponds to 5% of the overall alignment.
+This plot shows the modified bases (x-axis) and the number of reads (y-axis) containing such modifications. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
 
 .. image:: ./images/rDNA_51A_plot4.png
 
 Alignment percentage of reads with base modifications above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the modified bases and the percentage of reads containing such modifications. We only show bases which have at least 'n' reads. Here, 'n' corresponds to 5% of the overall alignment.
+This plot shows the modified bases (x-axis) and the percentage of reads (y-axis) containing such modifications. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
 
 .. image:: ./images/rDNA_51A_plot5.png
 
 Strand specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths utilized in the analysis and their read counts, specific to each strand.
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to each strand (Cyan-Plus; Red-Minus).
 
 .. image:: ./images/rDNA_51A_plot6.png
 
 Modification status specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Various read lengths utilized in the analysis and their read counts, specific to their modification status is shown in this plot.
+Various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to their modification status (Cyan-Modified; Red-Unmodified) is shown in this plot.
 
 .. image:: ./images/rDNA_51A_plot7.png
 
 1-base modification specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read legnths utilized in the analysis and their read counts, with respected to the modified bases. Only the single bases (A,T,G and C) modified were considered.
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the modified bases. Only the single bases (A,T,G and C) modified were considered.
 
 .. image:: ./images/rDNA_51A_plot8.png
 
 Strand specific reads with respect to base modification status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the strand specific read counts with their base modification status.
+This plot shows the strand (x-axis) specific read counts (y-axis) with their base modification status (Cyan-Modified; Red-Unmodified).
 
 .. image:: ./images/rDNA_51A_plot9.png
 
@@ -134,68 +135,106 @@ This plot shows the strand specific coverage (1bp resolution).
 
 Visualization: Comparison Report
 --------------------------------
-This section describe the plots in the comparison report produced from *rapidVis*. The normalized values mentioned below corresponds to the normalization method you choose, while running *rapidNorm*
+This section describe the plots in the comparison report produced from *rapidVis*. The normalized values mentioned below corresponds to the normalization method you choose, while running *rapidNorm*.
+
+The plots are split in to three categories. 
+
+* Quality Plots
+* Sample based comparison
+* Gene based comparison
 
 Clustered heatmap of TPM
 ^^^^^^^^^^^^^^^^^^^^^^^^
 This is a heatmap of the TPM of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
 
+.. image:: ./images/rDNA_Comp_plot1.png
+
 Clustered heatmap of antisense ratio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This is a heatmap of the antisense ratio of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
 
+.. image:: ./images/rDNA_Comp_plot2.png
+
 Clustered heatmap of average read count (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is a heatmap of the average read count (log2) of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure.
+This is a heatmap of the average read count (log2) of gene/region corresponding to the samples analyzed. The dendograms shown are calculated using the default clustering parameters of heatmap.2 function, which uses a complete linkage method with an euclidean measure. Average read count is calculated as the reads aligned to a gene divided by the gene length. 
+
+.. image:: ./images/rDNA_Comp_plot3.png
 
 PCA plot of samples
 ^^^^^^^^^^^^^^^^^^^
 This principle component analysis (PCA) plot shows where your samples fall in the first and second principle components. The principle componenets are calculated using the read counts of each sample. 
 
+.. image:: ./images/rDNA_Comp_plot4.png
+
 MDS plot of samples
 ^^^^^^^^^^^^^^^^^^^
 This multi dimensional scaling (MDS) plot shows the proximities of your samples in two dimension. Read counts of each sample is used for performing MDS.
+
+.. image:: ./images/rDNA_Comp_plot5.png
 
 Box plot of read counts
 ^^^^^^^^^^^^^^^^^^^^^^^^
 This is a box plot of the normalized read counts of each gene/region.
 
+.. image:: ./images/rDNA_Comp_plot6.png
+
 Sample wise comparison of read counts for each gene/region
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the normalized read counts of each sample for each gene/region.
+
+.. image:: ./images/rDNA_Comp_plot7.png
 
 Sample wise comparison of read counts for each gene/region (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Log2 of normalized read counts of each sample for each gene/region is shown in this plot.
 
+.. image:: ./images/rDNA_Comp_plot8.png
+
 Sample wise comparison of TPM for each gene/region
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the TPM values of each sample for each gene/region. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user. 
+
+.. image:: ./images/rDNA_Comp_plot9.png
 
 Sample wise comparison of TPM for each gene/region (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Log2 of TPM Values of each sample for each gene/region is shown in this plot. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
 
+.. image:: ./images/rDNA_Comp_plot10.png
+
 Sample wise comparison of antisense ratio for each gene/region
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the antisense ratio of each sample is shown for each gene/region.
+
+.. image:: ./images/rDNA_Comp_plot11.png
 
 Gene/Region wise comparsion of average read counts for each sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the gene/region wise average read counts for each sample.
 
+.. image:: ./images/rDNA_Comp_plot12.png
+
 Gene/Region wise comparsion of average read counts for each sample (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Log2 of gene/region wise average read counts for each sample is shown in this plot.
+
+.. image:: ./images/rDNA_Comp_plot13.png
 
 Gene/Region wise comparsion of TPM for each sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the gene/region wise TPM for each sample. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
 
+.. image:: ./images/rDNA_Comp_plot14.png
+
 Gene/Region wise comparsion of TPM for each sample (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Log2 of gene/region wise TPM for each sample is shown in this plot. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
 
+.. image:: ./images/rDNA_Comp_plot15.png
+
 Gene/Region wise comparison of antisense ratio for each sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Antisense ratio of gene/region for each samples is shown in this plot.
+
+.. image:: ./images/rDNA_Comp_plot16.png
