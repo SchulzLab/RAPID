@@ -5,3 +5,4 @@
    Installation.rst
    Usage.rst
    Output.rst
+   UseCases.rst
