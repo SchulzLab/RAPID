@@ -41,7 +41,7 @@ We recommend to use RAPID as a conda environment using the following command: ::
 
     conda create --name <name> rapid=0.2=pl5.22.0_3
 
-This command creates an environment for RAPID v0.2, build pl5.22.0_3.
+This command creates an environment for RAPID v0.2, build pl5.22.0_3. We advise to use conda environment based approach, as this would not disturb your exisiting installations, and use only the compatible versions of dependencies. 
 
 If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
 
@@ -49,9 +49,17 @@ Move to the test data folder. Edit the *rapid* path variable in the runTest.sh s
 
     rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/
 
+First activate the desired conda environment ::
+
+    source activate <environment_name>
+    
 Now, simply run ::
 
     bash runTest.sh
-
+    
 Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
 You should also find the outputs described under the **rapidVis** section.
+
+To move out of the environment, type ::
+
+    source deactivate <environment_name>
