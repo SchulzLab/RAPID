@@ -41,9 +41,9 @@ RAPID is available as a recipe in the bioconda channel. If bioconda is not in yo
 
 We recommend to use RAPID as a conda environment using the following command: ::
 
-    conda create --name <name> rapid=0.2=pl5.22.0_3
+    conda create --name <name> rapid=0.3
 
-This command creates an environment for RAPID v0.2, build pl5.22.0_3. We advise to use conda environment based approach, as this would not disturb your exisiting installations, and use only the compatible versions of dependencies. 
+This command creates an environment for RAPID v0.3. We advise to use conda environment based approach, as this would not disturb your exisiting installations, and use only the compatible versions of dependencies. 
 
 If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
 
