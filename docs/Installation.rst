@@ -21,32 +21,35 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
    * DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
    * ggplot2, scales, pandoc, knitr
 
+Simple Test
+-----------
+After installation you can try running RAPID using the provided script runTest.sh in the testData folder. Ensure to set the *rapid* path variable in the script.
+Now, simply run ::
+
+    bash runTest.sh
+
+Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
+You should also find the outputs described under the **rapidVis** section.
 
 Conda
 -----
 
-RAPID is available as a recipe in the bioconda channel. Conda users can install RAPID, for example, using the following command. ::
+RAPID is available as a recipe in the bioconda channel. If bioconda is not in your channel list, you can add it ::
+    conda config --add channels bioconda
 
-    conda install rapid=0.2=pl5.22.0_3
-
-This command installs the RAPID v0.2, build pl5.22.0_3. 
-
-We recommend to use RAPID as a conda environment. An example command is given below. ::
+We recommend to use RAPID as a conda environment using the following command: ::
 
     conda create --name <name> rapid=0.2=pl5.22.0_3
 
-Always remember to set the rapid path variable to the bin directory where RAPID is found. In case of a conda environment it should look soemthing like ::
+This command creates an environment for RAPID v0.2, build pl5.22.0_3.
+
+If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
+
+Move to the test data folder. Edit the *rapid* path variable in the runTest.sh script. With a conda environment it should look soemthing like ::
 
     rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/
 
-After installation you can try running RAPID using the provided script runTest.sh in the testData folder. 
-Ensure you have initialized a shell variable named *rapid* if rapid installation bin folder (e.g. /home/software/RAPID/bin/) is not in the PATH variable
-
-
-Simple Test
------------
-
-Move to the testData folder, and simply run ::
+Now, simply run ::
 
     bash runTest.sh
 
