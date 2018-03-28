@@ -35,7 +35,9 @@ Conda
 -----
 
 RAPID is available as a recipe in the bioconda channel. If bioconda is not in your channel list, you can add it ::
+
     conda config --add channels bioconda
+    conda config --add channels conda-forge
 
 We recommend to use RAPID as a conda environment using the following command: ::
 
