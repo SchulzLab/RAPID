@@ -80,7 +80,9 @@ The column *type* in the Bed file says whether a gene has to be treated as backg
 rapidNorm
 ----------
 
-Normalization module aims to facilitate the comparison of genes across various samples, and vice versa. As sequencing depth differs across samples, the read counts have to be normalized. RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
+Normalization module aims to facilitate the comparison of genes across various samples, and vice versa. As sequencing depth differs across samples, the read counts have to be normalized. RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv.
+
+By default, RAPID uses the modified TCS based normalization method. However, in order to provide flexibility with the choice of normalization, we have also incorporated the DESeq2 based normalization. If an user can safely assume that most of the genes between samples are not differentially expressed, in a small RNA based study, then they can use the DESeq2 based normalization. 
 
 *Input*
 ^^^^^^^

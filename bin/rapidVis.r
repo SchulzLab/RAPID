@@ -53,10 +53,10 @@ if(plotMethod=="stats"){
   masterFile=paste(paste("cp ", paste(rapidPath,"master.html", sep=""), sep=""), filename)
   system(masterFile)
   setwd(filename)
-  system("echo \"<HTML>\" >>sidecolumn.html")
-  system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo -n $file| rev | cut -c 6- | rev >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
+  system("echo \"<HTML>\" >sidecolumn.html")
+  system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo $file| rev | cut -c 6- | rev >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
   system("echo \"</HTML>\" >>sidecolumn.html")
-  system("sed -i '/sidecolumn\\|master/d' sidecolumn.html")
+  #system("sed -i '/sidecolumn\\|master/d' sidecolumn.html")
   system("mv master.html `pwd|rev|cut -d '/' -f 1|rev`.html")
 }
 ##################################################For Individual Results - END

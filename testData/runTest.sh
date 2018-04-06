@@ -16,7 +16,7 @@
 #PATH=$PATH:/  #RAPID/bin/
 
 #rapid=/home/software/RAPID-master/bin/
-
+rapid=/MMCI/MS/smallRNA-1/work/paramecium/softwares/githubrepos/RAPID/bin/
 #first create a rapid analysis of a small data set with 1 gene and 2 regions
 bash ${rapid}rapidStats.sh --file=test.fastq.gz --out=TestRapid/ --remove=yes --annot=Regions.bed --index=./GeneIndex --rapid=$rapid
 
