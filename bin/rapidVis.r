@@ -57,6 +57,7 @@ if(plotMethod=="stats"){
   system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo $file| rev | cut -c 6- | rev >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
   system("echo \"</HTML>\" >>sidecolumn.html")
   #system("sed -i '/sidecolumn\\|master/d' sidecolumn.html")
+  system("awk '!/sidecolumn/' sidecolumn.html | awk '!/master/' >temp && mv temp sidecolumn.html")
   system("mv master.html `pwd|rev|cut -d '/' -f 1|rev`.html")
 }
 ##################################################For Individual Results - END
