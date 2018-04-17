@@ -1,6 +1,6 @@
 Output Description
 ==================
-One of the strengths of RAPID is that a number of useful file with statistics and plots are automaically created which can be used for additional analysis.
+One of the strengths of RAPID is that a number of useful files with statistics and plots are automatically created, which can be used for additional analysis.
 
 
 Statistics
