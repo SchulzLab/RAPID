@@ -21,6 +21,7 @@ OUT=""
 CONFIG=""
 ALPHA="0.05"
 BIN=""
+RESTLEN=""
 
 function usage()
 {
@@ -45,6 +46,7 @@ echo "|____________________________________________________________________|"
     echo "-c|--conf=PATH/ : the config file that defines which rapidStats analysis folders should be used"
     echo "-a|--alpha=0.05 (default) : Alpha value cut off for adjusted p-value to use in MAPlot"
     echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
+    echo "-l|--restrictlength=<INTEGER> : Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"
     echo ""
     echo ""
 }
@@ -68,6 +70,9 @@ while [ "$1" != "" ]; do
             ;;
         -a | --alpha)
             ALPHA=$VALUE
+            ;;
+        -l | --restrictlength)
+            RESTLEN=$VALUE
             ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
@@ -103,8 +108,8 @@ fi
 mkdir -p $OUT/
 echo Run differential analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} >${OUT}/R_Errors.log 2>&1
+	Rscript ${BIN}rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
-	rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} >${OUT}/R_Errors.log 2>&1
+	rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
 

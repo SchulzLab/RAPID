@@ -8,6 +8,16 @@ library("gplots")
 parseStatsGetReadCountFile <- function(path){
   full=paste(path,"/Statistics.dat",sep="")
   stats=read.table(full,header=T,sep=" ",stringsAsFactors=FALSE)
+  #check if variable is defined then updated Stats values 
+  if(!is.na(restrictLength)){
+    # update reads column in each Stats entry to the sum of the counts 
+    # in the columns of given read counts
+    restrictPattern=gsub(',','|',restrictLength)
+    indices=grep(restrictPattern,names(stats))
+    if(length(indices) > 0){
+        stats$reads=apply(stats[,indices],1,sum)
+    }
+  }
   dfa=data.frame(stats$region, stats$reads)
   write.table(dfa,paste(path,"/readCounts.txt",sep=""),quote=F,row.names=F, col.names=F, sep="\t")
 }
@@ -17,6 +27,7 @@ args <- commandArgs(trailingOnly = TRUE)
 config=args[1]
 out=args[2]
 ALPHA=as.numeric(args[3])
+restrictLength=args[4]
 
 conf=read.table(config,header=T,sep="\t",stringsAsFactors=FALSE)
 lapply(conf$location,parseStatsGetReadCountFile)
