@@ -158,9 +158,15 @@ if(!is.na(restrictLength)){
   #show(paste(restrictPattern)) 
   for (i in 1:length(Stats)){
     indices=grep(restrictPattern,names(Stats[[i]]))
+    negindices=indices[-c(1:(length(indices)/2))]
     #show(paste(indices))
     if(length(indices) > 0){
       Stats[[i]]$reads=apply(Stats[[i]][,indices],1,sum)
+      if(length(negindices)>1){
+        Stats[[i]]$antisenseReads=apply(Stats[[i]][,negindices],1,sum)
+      } else {
+        Stats[[i]]$antisenseReads=Stats[[i]][,negindices]
+      }
     }
   }
 }
