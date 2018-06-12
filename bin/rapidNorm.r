@@ -116,7 +116,7 @@ createPlottingData <- function(Stats,conf){
   readCountsNorm=rep(Stats[[1]]$reads_norm,numDatasets)
   ASreadCountsNorm=rep(Stats[[1]]$asreads_norm,numDatasets)
   readCountsAvg=rep(Stats[[1]]$reads_avg,numDatasets)
-  ASratio=rep(Stats[[1]]$ASratio,numDatasets)
+  #ASratio=rep(Stats[[1]]$ASratio,numDatasets)
   ASratioNorm=rep(Stats[[1]]$asratio_norm,numDatasets)
   
   names=rep(conf$name[1],numDatasets*rows)
@@ -126,11 +126,11 @@ createPlottingData <- function(Stats,conf){
     readCountsNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$reads_norm
     ASreadCountsNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$asreads_norm
     readCountsAvg[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$reads_avg
-    ASratio[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$ASratio
+    #ASratio[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$ASratio
     ASratioNorm[(i*rows+1):((i+1)*rows)] = Stats[[i+1]]$asratio_norm
     names[(i*rows+1):((i+1)*rows)] = rep(conf$name[i+1],rows)
   }
-  df=data.frame(region = rep(Stats[[1]]$region,numDatasets), readCounts=readCounts, readCountsNormTPM=readCountsNormTPM, readCountsNorm=readCountsNorm, readCountsAvg=readCountsAvg, ASratio=ASratio, ASreadCountsNorm=ASreadCountsNorm, ASratioNorm=ASratioNorm, samples=names)
+  df=data.frame(region = rep(Stats[[1]]$region,numDatasets), readCounts=readCounts, readCountsNormTPM=readCountsNormTPM, readCountsNorm=readCountsNorm, readCountsAvg=readCountsAvg, ASreadCountsNorm=ASreadCountsNorm, ASratioNorm=ASratioNorm, samples=names)
   return(df)
 }
 
