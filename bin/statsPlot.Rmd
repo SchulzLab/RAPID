@@ -136,14 +136,8 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ```{r echo=FALSE}
   idx=which(annotations$label==name)
-  #This condition check assumes that, if two regions have same name then it should have same strand as well.
-  if(annotations$strand[idx][1]=="+") { 
-    a=poscov[poscov$region==name,]
-    b=negcov[negcov$region==name,]  
-  } else {
-    b=poscov[poscov$region==name,]
-    a=negcov[negcov$region==name,]
-  }
+  a=poscov[poscov$region==name,]
+  b=negcov[negcov$region==name,]  
   a$region=NULL
   b$region=NULL
   

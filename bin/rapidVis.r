@@ -46,6 +46,16 @@ if(plotMethod=="stats"){
     if(aligned==0) {
     	next;
     }
+    if(annotations$strand[which(annotations$label==name)]=="-"){
+      subtt$temp="-"
+      for(i in 1:nrow(subtt)){
+        if(subtt$V4[i]=="-"){
+          subtt$temp[i]="+"
+        }
+      }
+      subtt$V4=NULL
+      colnames(subtt)[which(colnames(subtt) %in% "temp")]="V4"
+    }
     fname=paste(normalizePath(filename),paste(name,".html", sep=""), sep="/")
     rmarkdown::render(input=ipname,output_file = fname, envir=parent.frame())
     #knit2html(input=ipname,output=fname, envir=parent.frame())
