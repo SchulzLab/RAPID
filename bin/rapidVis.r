@@ -21,6 +21,7 @@ if(plotMethod=="stats"){
   if(rapidPath==""){
     rapidPath=as.character(args[4])
   }
+  rapidPath=paste(rapidPath,"/",sep="")
   annotations=read.table(annotationfile,header=F,stringsAsFactors=FALSE)
   names(annotations)=c("chr","start","end","label","type","strand")
   tt=read.table(paste(filename,"alignedReads.sub.compact",sep=""),stringsAsFactors=FALSE)
@@ -46,16 +47,6 @@ if(plotMethod=="stats"){
     if(aligned==0) {
     	next;
     }
-    if(annotations$strand[which(annotations$label==name)]=="-"){
-      subtt$temp="-"
-      for(i in 1:nrow(subtt)){
-        if(subtt$V4[i]=="-"){
-          subtt$temp[i]="+"
-        }
-      }
-      subtt$V4=NULL
-      colnames(subtt)[which(colnames(subtt) %in% "temp")]="V4"
-    }
     fname=paste(normalizePath(filename),paste(name,".html", sep=""), sep="/")
     rmarkdown::render(input=ipname,output_file = fname, envir=parent.frame())
     #knit2html(input=ipname,output=fname, envir=parent.frame())
@@ -63,6 +54,7 @@ if(plotMethod=="stats"){
   masterFile=paste(paste("cp ", paste(rapidPath,"master.html", sep=""), sep=""), filename)
   system(masterFile)
   setwd(filename)
+  system("rm -f `pwd|rev|cut -d '/' -f 1|rev`.html")
   system("echo \"<HTML>\" >sidecolumn.html")
   system("for file in *.html; do printf \"<a href='$file' target='main'>\" >>sidecolumn.html; echo $file| rev | cut -c 6- | rev >>sidecolumn.html; printf \"<br><br>\n\" >>sidecolumn.html;done;")
   system("echo \"</HTML>\" >>sidecolumn.html")

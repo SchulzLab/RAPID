@@ -1,6 +1,6 @@
 ---
 title: "Comparison plots of samples and gene/regions"
-author: "Sivarajan Karunanithi"
+author: "Report created by <a href='https://rapid-doc.readthedocs.io/en/latest/Description.html'>RAPID</a>"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---

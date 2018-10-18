@@ -1,6 +1,6 @@
 ---
 title: "Statistical report of *`r name`*"
-author: "Sivarajan Karunanithi"
+author: "Report created by <a href='https://rapid-doc.readthedocs.io/en/latest/Description.html'>RAPID</a>"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
@@ -136,8 +136,14 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ```{r echo=FALSE}
   idx=which(annotations$label==name)
-  a=poscov[poscov$region==name,]
-  b=negcov[negcov$region==name,]  
+  #This condition check assumes that, if two regions have same name then it should have same strand as well.
+  if(annotations$strand[idx][1]=="+") { 
+    a=poscov[poscov$region==name,]
+    b=negcov[negcov$region==name,]  
+  } else {
+    b=poscov[poscov$region==name,]
+    a=negcov[negcov$region==name,]
+  }
   a$region=NULL
   b$region=NULL
   

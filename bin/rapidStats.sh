@@ -189,7 +189,7 @@ fi
 
 #create summary gff file from SAM alignment files
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	perl ${BIN}rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
+	perl ${BIN}/rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
 else
 	rapid_ParseSam.pl ${new}.sam  > ${OUT}/alignedReads.gff
 fi

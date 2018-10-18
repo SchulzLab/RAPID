@@ -7,7 +7,7 @@ We strongly recommend using the latest version of our tool, using a conda enviro
 Conda
 -----
 
-RAPID is available as a recipe in the bioconda channel. If bioconda is not in your channel list, you can add it ::
+RAPID is available as a recipe in the bioconda channel. If bioconda is not in your channel list (You can see it, with the command "conda info"), you can add it ::
 
     conda config --add channels bioconda
     conda config --add channels conda-forge
@@ -25,9 +25,9 @@ You can find the location of environments in the file ~/.conda/environments.txt
 
 If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
 
-Move to the test data folder. Edit the *rapid* path variable in the runTest.sh script. With a conda environment it should look soemthing like ::
+Move to the test data folder. Edit the *rapid* path variable in the runTest.sh script. Depending on your OS, and conda installation directory, it should look soemthing like ::
 
-    rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/
+    rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/ (or) rapid=/Users/<username>/miniconda2/envs/<environment_name>/bin/
 
 
 First activate the desired conda environment ::
@@ -72,4 +72,4 @@ Now, simply run ::
     bash runTest.sh
 
 Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
-You should also find the outputs described under the **rapidVis** section.
+You should also find the basic statistics output described under the **Visualization** section.

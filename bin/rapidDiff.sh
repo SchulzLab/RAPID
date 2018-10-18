@@ -108,7 +108,7 @@ fi
 mkdir -p $OUT/
 echo Run differential analysis using config file ${CONFIG} 
 if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	Rscript ${BIN}/rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 else
 	rapidDiff.r ${CONFIG} ${OUT} ${ALPHA} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
 fi
