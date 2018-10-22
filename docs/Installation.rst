@@ -39,8 +39,12 @@ Now, simply run ::
     bash runTest.sh
     
 Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
-You should also find the outputs described under the **rapidVis** section.
+You should also find the outputs described under the **Visualization** section.
 
+If there are some errors with R modules, Open R by staying in the conda environment, and update the R modules ::
+
+    update.packages(ask = FALSE, checkBuilt = TRUE)
+ 
 To move out of the environment, type ::
 
     source deactivate <environment_name>
