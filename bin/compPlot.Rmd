@@ -183,7 +183,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}  
   #Making MDS Plots of samples, analyzed with Normalized counts
   rdCntNormTDist=dist(t(rdCntNorm))
-  if(ncol(rdCntNorm)>2){
+  if(ncol(rdCntNorm)>2 && sum(rdCntNormTDist>0)){
     mds=cmdscale(rdCntNormTDist, k=2, eig = TRUE)
     scoreMDS=as.data.frame(mds$points)
     scoreMDS<-cbind(row.names(scoreMDS),scoreMDS)

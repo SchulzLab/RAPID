@@ -28,3 +28,4 @@ bash ${rapid}/rapidNorm.sh --conf=test.config --out=TestCompare/ --annot=Regions
 
 #third run the rapidVis pipeline to generate the visualizations for both rapidStats and rapidNorm
 Rscript ${rapid}/rapidVis.r stats ./TestRapid/Regions/ ./Regions.bed $rapid
+Rscript ${rapid}/rapidVis.r compare ./TestCompare/ $rapid
