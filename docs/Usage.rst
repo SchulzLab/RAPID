@@ -53,6 +53,10 @@ The different parameters we provide currently are listed below.
 +-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
 | -i    | --index         | set location of the bowtie2 index for alignment                                                                         |
 +-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
+| -p    | --proc          | An INTEGER for number of processors; for bowtie's use (default: 4)                                                      |
++-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
+| -m    | --multi         | An INTEGER for number of alignments to report. '-k' param of bowtie2 (default: 100)                                     |
++-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
 |       | --contamin=yes  | use a double alignment step first aligning to a contamination file (default no)                                         |
 +-------+-----------------+-------------------------------------------------------------------------------------------------------------------------+
 |       | --indexco       | set location of the contamination bowtie2 index for alignment (only with contamin=yes)                                  |

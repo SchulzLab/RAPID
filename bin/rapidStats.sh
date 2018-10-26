@@ -26,6 +26,8 @@ CONTAMIN="no"
 INDEXCONT=""
 REMOVE="yes"
 FILETYPE="fq"
+PROCESS="4"
+MMAP_SMALL="100"
 
 function usage()
 {
@@ -55,6 +57,8 @@ echo "|____________________________________________________________________|"
     echo "--contamin=yes : use a double alignment step first aligning to a contamination file (default no)"
     echo "--indexco=PATH/ set location of the contamination bowtie2 index for alignment (only with contamin=yes)" 
     echo "--remove=yes : remove unecessary intermediate files (default yes)"
+	echo "-p|--proc=<INTEGER> : Number of processors for bowtie's use (default: 4)"
+	echo "-m|--multi=<INTEGER> : Number of alignments to report. '-k' param of bowtie2 (default: 100)"
 }
  
 while [ "$1" != "" ]; do
@@ -91,6 +95,12 @@ while [ "$1" != "" ]; do
             ;;
         --remove)
             REMOVE=$VALUE
+            ;;
+        -p | --proc)
+            PROCESS=$VALUE
+            ;;
+        -m | --multi)
+            MMAP_SMALL=$VALUE
             ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
@@ -159,14 +169,14 @@ else
 	if [ $CONTAMIN == "yes" ]
 	then
 		echo run two-step alignment by aligning first to contamination index  ${INDEXCONT}
-		bowtie2 -p 20  -k 2 -x ${INDEXCONT}  -U ${FILE}  --un ${new}_unmappedReads.fastq -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
+		bowtie2 -p ${PROCESS}  -k 2 -x ${INDEXCONT}  -U ${FILE}  --un ${new}_unmappedReads.fastq -S ${new}_contamination.sam 2> ${new}_bowtie.LOG  
 		#reset FILE name to unmapped reads
 		FILE=${new}_unmappedReads.fastq
 		echo run alignment with index ${INDEX}
-		bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
+		bowtie2 -p ${PROCESS} --local -k ${MMAP_SMALL} -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
 	else
 		echo run alignment with index ${INDEX}
-		bowtie2 -p 20 --local -k 100 -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
+		bowtie2 -p ${PROCESS} --local -k ${MMAP_SMALL} -x ${INDEX} -U ${FILE}  -S ${new}.sam  2> ${new}_bowtie_final.LOG 
 	fi
 
 	#format for R

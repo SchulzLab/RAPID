@@ -15,17 +15,16 @@
 #PATH=$PATH:/  #bedtools2
 #PATH=$PATH:/  #RAPID/bin/
 
-#rapid=/home/software/RAPID-master/bin/
-#rapid=/MMCI/MS/smallRNA-1/work/paramecium/softwares/githubrepos/RAPID/bin/
 #rapid=/Users/siva/Softwares/miniconda2/envs/testrapid/bin/
 rapid=/Users/siva/Softwares/githubrepos/RAPID/bin
 
 #first create a rapid analysis of a small data set with 1 gene and 2 regions
-bash ${rapid}/rapidStats.sh --file=test.fastq.gz --out=TestRapid/ --remove=yes --annot=Regions.bed --index=./GeneIndex --rapid=$rapid
+bash ${rapid}/rapidStats.sh --file=test.fastq.gz --out=TestRapid/ --remove=yes --annot=Regions.bed --index=./GeneIndex --rapid=$rapid/ -p=2
 
 #second use the config file test.config to generate a toy comparative analysis
-bash ${rapid}/rapidNorm.sh --conf=test.config --out=TestCompare/ --annot=Regions.bed  --rapid=$rapid
+bash ${rapid}/rapidNorm.sh --conf=test.config --out=TestCompare/ --annot=Regions.bed  --rapid=$rapid/
 
 #third run the rapidVis pipeline to generate the visualizations for both rapidStats and rapidNorm
-Rscript ${rapid}/rapidVis.r stats ./TestRapid/Regions/ ./Regions.bed $rapid
-Rscript ${rapid}/rapidVis.r compare ./TestCompare/ $rapid
+Rscript ${rapid}/rapidVis.r stats ./TestRapid/Regions/ ./Regions.bed $rapid/
+Rscript ${rapid}/rapidVis.r compare ./TestCompare/ $rapid/
+
