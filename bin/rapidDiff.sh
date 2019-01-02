@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
  
 #
 # RAPID
 # Read Alignment, Analysis, and Differential Pipeline
 # 
  
-# Copyright (C) 2018 Marcel H. Schulz  and Sivarajan Karunanithi
+# Copyright (C) 2019 Marcel H. Schulz  and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -16,12 +16,14 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 
-VERSION="0.1"
+VERSION="1.0"
 OUT=""
 CONFIG=""
 ALPHA="0.05"
 BIN=""
 RESTLEN=""
+raploc=`which rapidVis.r`
+BIN=$(dirname $raploc)
 
 function usage()
 {
@@ -100,7 +102,12 @@ if [ -z "$CONFIG" ]
         usage
         exit 1
 fi  
-
+if [ -z "$BIN" ]
+    then
+        echo "ERROR: RAPID is not in PATH, or rapid environment variable is not set. At least one should be done. "
+        usage
+        exit 1
+fi 
 
 #Main routines#
 

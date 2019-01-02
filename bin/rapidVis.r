@@ -1,4 +1,4 @@
-#!/usr/bin/Rscript
+#!/usr/bin/env Rscript
 
 #CALL: R3script rapidVis.r <plotMethod> <outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)> <AnnotationFile> <rapidPath (MUST)>
 #load libraries

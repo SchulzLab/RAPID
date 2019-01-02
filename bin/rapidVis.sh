@@ -5,7 +5,7 @@
 # Read Alignment, Analysis, and Differential Pipeline
 # 
  
-# Copyright (C) 2019 Marcel H. Schulz and Sivarajan Karunanithi
+# Copyright (C) 2019 Marcel H. Schulz  and Sivarajan Karunanithi
 #  
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without 
@@ -18,13 +18,11 @@
 
 VERSION="1.0"
 OUT=""
-CONFIG=""
-ANNOT=""
 BIN=""
-RESTLEN=""
-DESEQ="FALSE"
+ANNOT=""
 raploc=`which rapidVis.r`
 BIN=$(dirname $raploc)
+TYPE=""
 
 function usage()
 {
@@ -42,17 +40,14 @@ echo "| -Read Alignment, Analysis, and Differential Pipeline- V $VERSION   |"
 echo "|____________________________________________________________________|"
     echo "Usage: "
     echo ""
-    echo "./rapidNorm.sh --out=complete/path/outputDirectory/ --conf=data.config --annot=regions.bed --rapid=Path/To/Rapid "
+    echo "./rapidVis.sh -t=stats -o=/path_to_output_directory/ -a=file.bed -r=/path_to_rapid"
+    echo "./rapidVis.sh -t=compare -o=/path_to_output_directory/ -r=/path_to_rapid"
     echo "Parameters:"
     echo "-h|--help"
-    echo "-o|--out=PATH/ : path to the output directory, directory will be created if non-existent"
-    echo "-c|--conf=PATH/ : the config file that defines which rapidStats analysis folders should be used"
-    echo "-a|--annot=file.bed : bed file with regions that should be used for the comparison"
-    echo "-d|--deseq=<LOGICAL> : Use only TRUE or FALSE. Set this to TRUE, if you wish to use DESeq2 based normalization. Default is FALSE." 
+    echo "-t|--type= stats/Compare - Choose basic statistics, or comparison plots"
+    echo "-o|--out=/path_to_output_directory/ : path to the output directory, directory will be created if non-existent"
+    echo "-a|--annot=file.bed : bed file with regions that should be visualised (Not required for comparison plots)"
     echo "-r|--rapid=PATH/ : set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable"
-	echo "-l|--restrictlength=<INTEGER> : Read Lengths to be considered. If not provided, all reads will be used. (Multiple read lengths should be separated by commas)"
-    echo ""
-    echo ""
 }
  
 while [ "$1" != "" ]; do
@@ -63,24 +58,18 @@ while [ "$1" != "" ]; do
             usage
             exit
             ;;
-        -c | --conf)
-            CONFIG=$VALUE
-            ;;
         -o | --out)
             OUT=$VALUE
             ;;
-        -r | --rapid)
+        --rapid | -r)
             BIN=$VALUE
             ;;
         -a | --annot)
             ANNOT=$VALUE
             ;;
-        -d | --deseq)
-            DESEQ=$VALUE
-            ;;            
-	-l | --restrictlength)
-	    RESTLEN=$VALUE
-	    ;;
+        -t | --type)
+            TYPE=$VALUE
+            ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
             usage
@@ -89,10 +78,8 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+######Done parameter parsing######
 
- ######Done parameter parsing######
-
- 
 #ERROR HANDLING#
 
 if [ -z "$OUT" ]
@@ -101,42 +88,24 @@ if [ -z "$OUT" ]
         usage
         exit 1
 fi   
-if [ -z "$ANNOT" ]
-    then
-        echo "ERROR no annotation file defined "
-        usage
-        exit 1
-fi
-if [ -z "$CONFIG" ]
-    then
-        echo "ERROR no config file defined "
-        usage
-        exit 1
-fi  
 if [ -z "$BIN" ]
     then
         echo "ERROR: RAPID is not in PATH, or rapid environment variable is not set. At least one should be done. "
         usage
         exit 1
 fi 
+if [ -z "$TYPE" ]
+    then
+        echo "ERROR Plot Type not defined, please say whether to use stats (or) compare mode "
+        usage
+        exit 1
+fi 
 
 #Main routines#
 
-#create new folder for comparative results
-mkdir -p $OUT/
-echo Run comparative analysis using config file ${CONFIG} 
-if [  ! -z "$BIN" -a "$BIN" != " "  ];	then
-	Rscript ${BIN}/rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+ 
+if [ $TYPE == "stats" ]; then
+	Rscript $BIN/rapidVis.r $TYPE $OUT $ANNOT $BIN/
 else
-	rapidNorm.r ${CONFIG} ${ANNOT} ${OUT} ${DESEQ} ${RESTLEN} >${OUT}/R_Errors.log 2>&1
+	Rscript $BIN/rapidVis.r $TYPE $OUT $BIN/
 fi
-
-echo "Options Used:" >${OUT}/Analysis.log
-echo "Output Directory: ${OUT}" >>${OUT}/Analysis.log
-echo "Length Restrictions if any: ${RESTLEN}" >>${OUT}/Analysis.log
-echo "Use DESeq?: ${DESEQ}" >>${OUT}/Analysis.log
-echo "Configuration File used: ${CONFIG} and its contents are:" >>${OUT}/Analysis.log
-cat ${CONFIG} >>${OUT}/Analysis.log
-echo "Annotation file used: ${ANNOT} and its contents are: " >>${OUT}/Analysis.log
-cat ${ANNOT} >>${OUT}/Analysis.log
-

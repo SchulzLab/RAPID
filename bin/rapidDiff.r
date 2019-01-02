@@ -1,4 +1,5 @@
-#!/usr/bin/Rscript
+#!/usr/bin/env Rscript
+
 #load libraries
 library("DESeq2")
 library("ggplot2")

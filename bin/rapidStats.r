@@ -1,4 +1,4 @@
-#!/usr/bin/Rscript
+#!/usr/bin/env Rscript
 
 args <- commandArgs(trailingOnly = TRUE)
 filename=as.character(args[1])
