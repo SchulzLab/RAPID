@@ -4,6 +4,7 @@
 #load libraries
 library("reshape2")
 library("ggplot2")
+library("viridis")
 library("scales")
 library("knitr")
 library("gplots")

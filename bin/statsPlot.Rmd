@@ -93,7 +93,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ```{r echo=FALSE}
   #double category plots
-  try(print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + COSMO))
+  try(print(ggplot(melt(table(subtt$V4,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Strand")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 
 ```
 
@@ -102,7 +102,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#modification-status-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  try(print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO))
+  try(print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 
 ```
 
@@ -117,7 +117,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
     #Subset with 1-base modifications
       modtt=subset(subtt,V5 %in% c("A","C","G","T"))
       if(nrow(modtt) >0){
-        try(print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + COSMO))
+        try(print(ggplot(melt(table(modtt$V5,modtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Base")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
       }
     }
 ```
@@ -127,7 +127,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 <a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-reads-with-respect-to-base-modification-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + COSMO))
+  try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 ```
 
 ### Strand specific coverage plot
@@ -165,7 +165,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
     geom_bar(stat="identity", aes(fill="+")) + 
     geom_bar(aes(b$position, b$depth, fill="-"), stat="identity") + 
     guides(fill=guide_legend(title="Strand")) +
-    labs(x="Position", y="Coverage", title="") + COSMO))
+    labs(x="Position", y="Coverage", title="") + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 ```
 
 This document was created with R Markdown and the Knit package. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.

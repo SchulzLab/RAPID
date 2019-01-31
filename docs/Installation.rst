@@ -1,4 +1,3 @@
-
 Installation
 ============
 
@@ -13,6 +12,7 @@ RAPID is available as a recipe in the bioconda channel. If bioconda is not in yo
     conda config --add channels conda-forge
 
 You can search for rapid using the following command: ::
+
     conda search rapid
 
 An example command to use RAPID as a conda environment : ::
