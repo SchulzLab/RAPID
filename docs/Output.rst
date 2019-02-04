@@ -29,15 +29,15 @@ Visualization
 
 RapidVis output description when ran in two different modes. 
 
-* rapidStats
+* stats
 
    *FolderName*.html - An automatically generated main HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions.
 
-* rapidNorm
+* compare
 
    *FolderName*.html - An automatically generated HTML file consisting of various plots like read lengths, antisense ratio, etc. in different scales, compared across all the samples.
 
-More description about each plot can be found in `PlotInfo <https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md>`_.
+More description about each plot can be found in `UseCases <https://rapid-doc.readthedocs.io/en/latest/UseCases.html#visualization-statistical-report>`_.
 
 
 Differential Analysis
