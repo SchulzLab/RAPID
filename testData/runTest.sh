@@ -13,7 +13,7 @@
 ## 
 
 
-
+#Once the respective commands finish executing, you should see respective outputs as shown in the folder SampleOutput
 
 ############################################################## UNCOMMENT THE RESPECTIVE PARTS TO RUN THE SCRIPT ############################################################## 
 
