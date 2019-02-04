@@ -38,7 +38,9 @@ Sometimes, if you want to restrict your analysis to only certain regions. For in
 
 As you can see, both regions have the same *geneName* in the above annotation table. RAPID quantifies only those regions and sums up their statistics under the same name to ease up the calculations. 
 
-If you are performing RNA interference (RNAi) experiments, you introduce exogenous RNA in to the system to trigger the RNAi pathway. However, in the resultant sequencing run your exogenous RNA is also intact. To avoid them from skewing the analysis, you can mention those as *background* in the *type* column in the BED file. Such *background* regions are also excluded from the total reads, if you go for normalization using **rapidNorm**
+If you are performing RNA interference (RNAi) experiments, by introducing exogenous RNA in to the system to trigger the RNAi pathway. However, in the resultant sequencing run your exogenous RNA is also intact. 
+To avoid them from skewing the analysis, you can mention those as *background* in the *type* column in the BED file. Such *background* regions are also excluded from the total reads, if you go for normalization using **rapidNorm**
+Another use case of the background gene/regions could be with the use of RNAi vector constructs (like L4440 in C.elegans). Due to lack of specificity (or any technical inefficiency) non-insert RNA locations will also be transcribed. When the user is aware of such locations, they can be termed as background to RAPID, such that it will be rightfully handled in the analysis.
 
 A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
 
@@ -54,18 +56,36 @@ If you think, using the DESeq2 based normalization is a better choice for your e
     
     ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -d=T
     
-Sometimes, you may need to consider only reads of certain readlength. Say, 23bp, and 25bp. Restricting the analysis to certain read length may increase the specificity of your comparative analysis. You can do that, by simply adding the lengths of your interst in the command line. ::
+Sometimes, you may need to consider only reads of certain readlength. Say, 23bp, and 25bp. Restricting the analysis to certain read length may increase the specificity of your comparative analysis. You can do that, by simply adding the lengths of your interest in the command line. ::
     
     ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -l=23,25
 
-In case, of TCS based normalization, RAPID also accounts for the background regions which are mentioned in the BED file. To be specific, they are removed from the scaling factor calculations, such that, they do not create bias from the introduction of exogenous RNA. 
+In case, of TCS based normalization, RAPID also accounts for the background regions which are mentioned in the BED/CONFIG file. To be specific, these background genes/regions are locus which should be removed from the scaling factor calculations, such that, they do not create any bias. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
+
+
+A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section.
+
+Visualization
+-------------
+To provide a better understanding of the data, **rapidVis** module generates insightful plots from the output of previous rapid modules. 
+
+If you want to plot rapidStats output: ::
+
+    ./rapidVis.sh -t=stats -o=/path_to_output_directory_rapidStats/ -a=file.bed -r=/rapidPath/
+    
+If you want to plot rapidNorm output: ::
+
+    ./rapidVis.sh -t=compare -o=/path_to_output_directory_rapidNorm/ -r=/rapidPath/
 
 A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
+
 
 Visualization: Statistical Report
 ---------------------------------
 
-This section describe the plots in the statistical report produced from **rapidVis**. To exemplify the Visualization abilities of RAPID, we used four small RNA sequencing data sets (unpublished) from the wildtype serotypes (51A, 51B, 51D, and 51H) of \textit{Paramecium tetraurelia}. We analyzed only the rDNA cluster producing 17S, 5.8S, 25S ribosomal RNAs. The rDNA cluster sequence can be obtained from GenBank Accession: AF149979.1 ~\citep{Preer1999DoesCircle}, with the additional annotation of the 5.8S sequence from GenBank accession: AM072801.1 ~\citep{Barth2006IntraspecificSequences}. 
+This section describe the plots in the statistical report produced from **rapidVis**. These explanations are merely some interpretation of each type of plot. 
+
+To exemplify the Visualization abilities of RAPID, we used four small RNA sequencing data sets (unpublished) from the wildtype serotypes (51A, 51B, 51D, and 51H) of \textit{Paramecium tetraurelia}. We analyzed only the rDNA cluster producing 17S, 5.8S, 25S ribosomal RNAs. The rDNA cluster sequence can be obtained from GenBank Accession: AF149979.1 ~\citep{Preer1999DoesCircle}, with the additional annotation of the 5.8S sequence from GenBank accession: AM072801.1 ~\citep{Barth2006IntraspecificSequences}. 
 
 *FolderName*.html - An automatically generated HTML file which is an ensemble of individual gene/region's HTML files that contain different plots analyzing read counts, distribution of reads on the two DNA strands and listing smallRNA modifications stratified by the defined regions.
 
@@ -75,61 +95,61 @@ The left panel contains the list of regions/genes provided as part of the BED fi
 
 Read alignment percentage of various read lengths
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their percentage of alignment (y-axis).
+This plot shows various read lengths (x-axis) utilized in the analysis and their percentage of alignment (y-axis). Read length distribution plot is important to see if there is a predominance of certain length transcripts. As sRNA mechanisms are rather sensitive and specific, different length predominance can indicate different downstream pathways of the sRNA.
 
 .. image:: ./images/rDNA_51A_plot1.png
 
-Alignment percentage of reads with (Un)Modified bases
+Alignment percentage of reads with (Not)Soft-clipped bases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the alignment percentage of reads (y-axis) containing (un)modified bases (x-axis; Modification status).
+This plot shows the alignment percentage of reads (y-axis) containing soft-clipped bases (x-axis; Soft-clipping status). Soft-clipping refers to the bases (five-prime or three-prime) in a read that are not part of the alignment. This helps in understanding the percentage of aligned sRNA which has non-specific alignments. In sRNA mechanisms, it is not uncommon to exclude bases in five or three prime end to achieve base-pairing.  
 
 .. image:: ./images/rDNA_51A_plot2.png
 
 Strand specific alignment percentage of reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The alignment percentage (y-axis) of reads corresponding to each strand (x-axis) is shown in this plot.
+The alignment percentage (y-axis) of reads corresponding to each strand (x-axis) is shown in this plot. sRNA mechanisms are quite specific to length, and their strand of origin. This plot helps in understanding which strand shows a predominance in the library, such that one can hypothesise the role of the analysed small RNAs. 
 
 .. image:: ./images/rDNA_51A_plot3.png
 
-Reads aligned with base modifications above 'n' reads
+Reads aligned with soft clipping above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the modified bases (x-axis) and the number of reads (y-axis) containing such modifications. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
+This plot shows the soft-clipped bases (x-axis) and the number of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could simply indicate a potential technical inadequacy in trimming adapter, or primer, etc. 
 
 .. image:: ./images/rDNA_51A_plot4.png
 
-Alignment percentage of reads with base modifications above 'n' reads
+Alignment percentage of reads with soft clipping above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the modified bases (x-axis) and the percentage of reads (y-axis) containing such modifications. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
+This plot (similar to the previous plot) shows the soft-clipped bases (x-axis) and the percentage of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
 
 .. image:: ./images/rDNA_51A_plot5.png
 
 Strand specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to each strand (Cyan-Plus; Red-Minus).
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to each strand. Length, and strand of origin plays an important role in understanding sRNA mechanisms. For instance, an antisense predominance could indicate a cis-mediated sRNA mechanism. 
 
 .. image:: ./images/rDNA_51A_plot6.png
 
-Modification status specific reads of varied length
+Soft-clipping status specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to their modification status (Cyan-Modified; Red-Unmodified) is shown in this plot.
+Various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to their soft-clipping status is shown in this plot.
 
 .. image:: ./images/rDNA_51A_plot7.png
 
-1-base modification specific reads of varied length
+1-base soft-clipping specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the modified bases. Only the single bases (A,T,G and C) modified were considered.
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the soft-clipped bases. Only the single bases (A,T,G and C) soft-clipped were considered.
 
 .. image:: ./images/rDNA_51A_plot8.png
 
-Strand specific reads with respect to base modification status
+Strand specific reads with respect to base soft-clipping status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the strand (x-axis) specific read counts (y-axis) with their base modification status (Cyan-Modified; Red-Unmodified).
+This plot shows the strand (x-axis) specific read counts (y-axis) with their base soft-clipping status.
 
 .. image:: ./images/rDNA_51A_plot9.png
 
 Strand specific coverage plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the strand specific coverage (1bp resolution).
+This plot shows the strand specific coverage (1bp resolution). A coverage plot helps in understanding if a particular sub-region in an analysed gene/region has a major predominance. It could also show, if a region appears to be phased giving insights in to the mechanism of action.
 
 .. image:: ./images/rDNA_51A_plot10.png
 
@@ -163,13 +183,13 @@ This is a heatmap of the average read count (log2) of gene/region corresponding 
 
 PCA plot of samples
 ^^^^^^^^^^^^^^^^^^^
-This principle component analysis (PCA) plot shows where your samples fall in the first and second principle components. The principle componenets are calculated using the read counts of each sample. 
+This principle component analysis (PCA) plot shows where your samples fall in the first and second principle components. The principle componenets are calculated using the read counts of each sample. When replicates of a sample are grouped together in this plot, it is an indication of good quality replicates.
 
 .. image:: ./images/rDNA_Comp_plot4.png
 
 MDS plot of samples
 ^^^^^^^^^^^^^^^^^^^
-This multi dimensional scaling (MDS) plot shows the proximities of your samples in two dimension. Read counts of each sample is used for performing MDS.
+This multi dimensional scaling (MDS) plot shows the proximities of your samples in two dimension. Read counts of each sample is used for performing MDS. When replicates of a sample are grouped together in this plot, it is an indication of good quality replicates.
 
 .. image:: ./images/rDNA_Comp_plot5.png
 
