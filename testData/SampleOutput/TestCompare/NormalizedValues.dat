@@ -1,0 +1,7 @@
+region	readCounts	readCountsNormTPM	readCountsNorm	readCountsAvg	ASreadCountsNorm	ASratioNorm	samples
+ND-1	14	74873.427	14	0.039	0	0	Test1
+NDgene	627	925126.573	627	0.485	467	0.74	Test1
+ND-1	14	74873.427	14	0.039	0	0	Test2
+NDgene	627	925126.573	627	0.485	467	0.74	Test2
+ND-1	14	74873.427	14	0.039	0	0	Test3
+NDgene	627	925126.573	627	0.485	467	0.74	Test3

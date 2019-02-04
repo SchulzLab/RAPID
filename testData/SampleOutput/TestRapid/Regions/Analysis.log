@@ -1,0 +1,12 @@
+Options Used:
+Output Directory: TestRapid/
+Input File: test.fastq.gz
+Contamination Used?: no
+Contamination Index: 
+Template Index: ./GeneIndex
+Create BAM?: 
+Remove intermediates?: no
+Annotation File Used: Regions.bed and its contents are below.
+ND169	174	530	ND-1	region	-
+ND169	1	173	NDgene	region	+
+ND169	531	1651	NDgene	region	+

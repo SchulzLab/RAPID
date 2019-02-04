@@ -1,0 +1,13 @@
+Options Used:
+Output Directory: TestCompare/
+Length Restrictions if any: 
+Use DESeq?: FALSE
+Configuration File used: test.config and its contents are:
+location	name	background
+./TestRapid/Regions	Test1	none
+./TestRapid/Regions	Test2	none
+./TestRapid/Regions	Test3	none
+Annotation file used: Regions.bed and its contents are: 
+ND169	174	530	ND-1	region	-
+ND169	1	173	NDgene	region	+
+ND169	531	1651	NDgene	region	+
