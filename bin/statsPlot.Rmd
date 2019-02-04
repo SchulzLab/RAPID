@@ -108,7 +108,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ### 1-base soft-clipping specific reads of varied length
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#1-base-soft-clipping-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#base-soft-clipping-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   tab=table(subset(tt,V1==name & V5 != "-")$V5)
@@ -124,7 +124,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ### Strand specific reads with respect to base soft-clipping status
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-reads-with-respect-to-base-modification-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-reads-with-respect-to-base-soft-clipping-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Soft-clipped?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
