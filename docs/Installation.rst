@@ -66,7 +66,7 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
 * Samtools (version 0.1.19 or higher)
 * R Packages required:
    * DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
-   * ggplot2, scales, pandoc, knitr
+   * ggplot2, scales, rmarkdown, knitr, viridis
 
 Simple Test
 -----------
