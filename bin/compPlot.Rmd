@@ -80,20 +80,20 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
       df=subset(df,region %in% allowed)
     }
     if(plotlog){
-      try(print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsNorm,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               scale_y_continuous(trans=log2_trans()) +
               theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) +
                 scale_fill_viridis(discrete=T, option="D")+
-              labs(x="Gene/Region", y="Average read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
+              labs(x="Gene/Region", y="Read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
     }else{
-      try(print(ggplot(df,aes(x=region,y=readCountsAvg,fill=region)) +  
+      try(print(ggplot(df,aes(x=region,y=readCountsNorm,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
                 scale_fill_viridis(discrete=T, option="D")+
-              labs(x="Gene/Region", y="Average read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
+              labs(x="Gene/Region", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
       
     }
     
@@ -141,7 +141,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Clustered heatmap of TPM {#Quality}
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#clustered-heatmap-of-TPM" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#clustered-heatmap-of-tpm" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   
@@ -264,7 +264,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #createSampleASRatioPlot(dfa,title="Antisense ratio of samples",allowed)
 ```
 
-### Gene/Region wise comparsion of average read counts for each sample {#Gene}
+### Gene/Region wise comparsion of read counts for each sample {#Gene}
 
 <a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
@@ -273,7 +273,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #createRegionPlot(dfa,title="Gene/Regions Comparison",allowed)
 ```
 
-### Gene/Region wise comparsion of average read counts for each sample (log2 scale)
+### Gene/Region wise comparsion of read counts for each sample (log2 scale)
 
 <a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
