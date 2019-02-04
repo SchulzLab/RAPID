@@ -86,7 +86,7 @@ rapidNorm
 
 Normalization module aims to facilitate the comparison of genes across various samples, and vice versa. As sequencing depth differs across samples, the read counts have to be normalized. RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv.
 
-By default, RAPID uses the modified TCS based normalization method. However, in order to provide flexibility with the choice of normalization, we have also incorporated the DESeq2 based normalization. If an user can safely assume that most of the genes between samples are not differentially expressed, in a small RNA based study, then they can use the DESeq2 based normalization. 
+By default, RAPID uses the modified TCS based normalization method. However, in order to provide flexibility with the choice of normalization, we have also incorporated the DESeq2 based normalization. 
 
 *Input*
 ^^^^^^^
@@ -154,7 +154,7 @@ The config file is a simple **tab-delimited** file that has three columns, the p
 rapidVis
 ----------
 
-The visualization module of RAPID is a simple R script, which creates informative plots from the output of **rapidStats**, and **rapidNorm**. 
+The visualization module of RAPID creates informative plots from the output of **rapidStats**, and **rapidNorm**. 
 
 *Input*
 ^^^^^^^
@@ -164,31 +164,28 @@ The visualization module of RAPID is a simple R script, which creates informativ
 
 Sample script:
 ^^^^^^^^^^^^^^
-Generic Format: ::
-
-    `Rscript rapidVis.r <plotMethod> <outputfolder> <annotationfile> <rapidPath>`
 
 If you want to plot rapidStats output: ::
 
-    Rscript ${rapidPath}/rapidVis.r stats /path_to_output_directory_rapidStats/ regions.bed <$rapid>
+    ./rapidVis.sh -t=stats -o=/path_to_output_directory_rapidStats/ -a=regions.bed -r=<$rapid>
     
 If you want to plot rapidNorm output: ::
 
-    Rscript ${rapidPath}/rapidVis.r compare /path_to_output_directory_rapidNorm/ <$rapid>
+    ./rapidVis.sh -t=compare -o=/path_to_output_directory_rapidNorm/ -r=<$rapid>
 
-
-+---------------+-----------------------------------------------------------------------------------------------------------------------------------+
-| arguments     | explanation                                                                                                                       |
-+===============+===================================================================================================================================+
-| plotMethod    | stats OR compare-use **stats** to visualize **rapidStats** or use **compare** to visualize results of **rapidNorm**               |
-+---------------+-----------------------------------------------------------------------------------------------------------------------------------+
-| out           | outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)                                      |
-+---------------+-----------------------------------------------------------------------------------------------------------------------------------+
-| annot         | Annotation file similar to BED file given in **rapidStats**                                                                       |
-+---------------+-----------------------------------------------------------------------------------------------------------------------------------+
-| rapidPath     | **Must** provide the location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/)                               |
-+---------------+-----------------------------------------------------------------------------------------------------------------------------------+
-
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| short | long params            | explanation                                                                                                                                                        |
++=======+========================+====================================================================================================================================================================+
+| -h    | --help                 | output help                                                                                                                                                        |
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| -o    | --out                  | outputFolder_of_rapidStats.sh or rapidNorm.sh (Where Statistics and other files are located)                                                                       |
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| -t    | --type                 | stats OR compare - use **stats** to visualize **rapidStats** or use **compare** to visualize results of **rapidNorm**                                              |
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| -a    | --annot                | bed file with regions that should be visualised (Not required for **compare**). Caution: Include only the gene/regions which were quantified in **rapidStats**     |
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| -r    | --rapid                | set location of the rapid installation bin folder (e.g. /home/software/RAPID/bin/) or put into PATH variable                                                       |
++-------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 rapidDiff
