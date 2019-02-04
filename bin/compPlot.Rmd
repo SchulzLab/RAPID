@@ -141,7 +141,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Clustered heatmap of TPM {#Quality}
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-TPM" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#clustered-heatmap-of-TPM" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   
@@ -153,7 +153,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Clustered heatmap of antisense ratio
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-antisense-ratio" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#clustered-heatmap-of-antisense-ratio" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   
@@ -166,7 +166,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Clustered heatmap of average read count (log2 scale)
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#clustered-heatmap-of-average-read-count-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#clustered-heatmap-of-average-read-count-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   cpalette<-colorRampPalette(c("white","green","green4","violet","purple"))(n=100)
@@ -175,7 +175,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### PCA plot of samples
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#pca-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#pca-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   
@@ -192,7 +192,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### MDS plot of samples
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#mds-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#mds-plot-of-samples" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}  
   #Making MDS Plots of samples, analyzed with Normalized counts
@@ -211,7 +211,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Box plot of regions
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#box-plot-of-read-counts" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#box-plot-of-read-counts" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   #Maxing a boxplot of regions
@@ -220,7 +220,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Sample wise comparison of read counts for each gene/region {#Sample}
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-read-counts-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-read-counts-for-each-gene-region" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSamplePlot(dfa,title="",allowed,plotlog=FALSE)
@@ -229,7 +229,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Sample wise comparison of read counts for each gene/region (log2 scale)
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-read-counts-for-each-generegion-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-read-counts-for-each-gene-region-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSamplePlot(dfa,title="",allowed)
@@ -239,7 +239,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Sample wise comparison of TPM for each gene/region
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-tpm-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-tpm-for-each-gene-region" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSampleTPMPlot(dfa,title="",allowed,plotlog=FALSE)
@@ -248,7 +248,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Sample wise comparison of TPM for each gene/region (log2 scale)
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-tpm-for-each-generegion-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-tpm-for-each-gene-region-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSampleTPMPlot(dfa,title="",allowed)
@@ -257,7 +257,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Sample wise comparison of antisense ratio for each gene/region
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#sample-wise-comparison-of-antisense-ratio-for-each-generegion" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-antisense-ratio-for-each-gene-region" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSampleASRatioPlot(dfa,title="",allowed)
@@ -266,7 +266,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Gene/Region wise comparsion of average read counts for each sample {#Gene}
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-average-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionPlot(dfa,title="",allowed)
@@ -275,7 +275,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Gene/Region wise comparsion of average read counts for each sample (log2 scale)
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-average-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionPlot(dfa,title="",allowed,plotlog=TRUE)
@@ -284,7 +284,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Gene/Region wise comparsion of TPM for each sample
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-tpm-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-tpm-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionTPMPlot(dfa,title="",allowed)
@@ -293,7 +293,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Gene/Region wise comparsion of TPM for each sample (log2 scale)
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparsion-of-tpm-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-tpm-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionTPMPlot(dfa,title="",allowed,plotlog=TRUE)
@@ -302,7 +302,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
 
 ### Gene/Region wise comparison of antisense ratio for each sample
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#generegion-wise-comparison-of-antisense-ratio-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparison-of-antisense-ratio-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionASRatioPlot(dfa,title="",allowed)

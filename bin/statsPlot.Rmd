@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
 
-This report provides the basic statistical analysis of **`r name`**. It consists of various single category plots detailing on the distribution of read length, strand, and base modification. It also contains double category plots showing the combinations of aforementioned.
+This report provides the basic statistical analysis of **`r name`**. It consists of various single category plots detailing on the distribution of read length, strand, and base soft-clipping. It also contains double category plots showing the combinations of aforementioned.
 
 ```{r echo=FALSE}
 COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 16, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 14,face = "bold"), legend.title = element_text(size = 14, face = "bold"), legend.text = element_text(size = 14, face = "bold"))
@@ -17,23 +17,23 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ### Read alignment percentage of various read lengths
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#read-alignment-percentage-of-various-read-lengths" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#read-alignment-percentage-of-various-read-lengths" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   try(print(ggplot(melt(table(subtt$V2)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("% of aligned reads") + COSMO))
 ```
 
-### Alignment percentage of reads with (Un)Modified bases
+### Alignment percentage of reads with (Not)Soft-clipped bases
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#alignment-percentage-of-reads-with-unmodified-bases" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#alignment-percentage-of-reads-with-not-soft-clipped-bases" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  try(print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Modified?")+ylab("% of aligned reads")+COSMO))
+  try(print(ggplot(melt(table(subtt$V3)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Soft-clipped?")+ylab("% of aligned reads")+COSMO))
 ```
 
 ### Strand specific alignment percentage of reads
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-alignment-percentage-of-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-alignment-percentage-of-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   try(print(ggplot(melt(table(subtt$V4)/aligned*100), aes(x=Var1, y=value))+geom_bar(stat = "identity")+xlab("Strand")+ylab("% of aligned reads") + COSMO))
@@ -49,9 +49,9 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
   }
 ```
 
-### Reads aligned with base modifications above `r threshold` reads
+### Reads aligned with base soft-clipping above `r threshold` reads
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#reads-aligned-with-base-modifications-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#reads-aligned-with-soft-clipping-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   tab=table(subset(tt,V1==name & V5 != "-")$V5)
@@ -69,9 +69,9 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ```
 
-### Alignment percentage of reads with base modifications above `r threshold` reads
+### Alignment percentage of reads with base soft-clipping above `r threshold` reads
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#alignment-percentage-of-reads-with-base-modifications-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#alignment-percentage-of-reads-with-soft-clipping-above-n-reads" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   tab=table(subset(tt,V1==name & V5 != "-")$V5)
@@ -89,7 +89,7 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ### Strand specific reads of varied length
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   #double category plots
@@ -97,18 +97,18 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
 
 ```
 
-### Modification status specific reads of varied length
+### Soft-clipping status specific reads of varied length
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#modification-status-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#soft-clipping-status-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  try(print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
+  try(print(ggplot(melt(table(subtt$V3,subtt$V2)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Read Length")+ylab("Count") + guides(fill=guide_legend(title="Soft-clipped?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 
 ```
 
-### 1-base modification specific reads of varied length
+### 1-base soft-clipping specific reads of varied length
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#1-base-modification-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#1-base-soft-clipping-specific-reads-of-varied-length" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   tab=table(subset(tt,V1==name & V5 != "-")$V5)
@@ -122,17 +122,17 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", h
     }
 ```
 
-### Strand specific reads with respect to base modification status
+### Strand specific reads with respect to base soft-clipping status
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-reads-with-respect-to-base-modification-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-reads-with-respect-to-base-modification-status" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
-  try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Modified?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
+  try(print(ggplot(melt(table(subtt$V3,subtt$V4)), aes(x=Var2, y=value, fill=Var1))+geom_bar(stat = "identity")+xlab("Strand")+ylab("Count") + guides(fill=guide_legend(title="Soft-clipped?")) + scale_fill_viridis(discrete = T, option = "D") + COSMO))
 ```
 
 ### Strand specific coverage plot
 
-<a href="https://github.com/SchulzLab/RAPID/blob/master/PlotInfo.md#strand-specific-coverage-plot" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#strand-specific-coverage-plot" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE}
   idx=which(annotations$label==name)
