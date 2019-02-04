@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'RAPID'
-copyright = '2017, Sivarajan Karunanithi and Marcel H. Schulz'
+copyright = '2019, Sivarajan Karunanithi and Marcel H. Schulz'
 author = 'Sivarajan Karunanithi and Marcel Schulz'
 
 # The version info for the project you're documenting, acts as replacement for
