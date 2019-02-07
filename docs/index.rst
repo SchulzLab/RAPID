@@ -6,3 +6,4 @@
    Usage.rst
    Output.rst
    UseCases.rst
+   TroubleShooting_FAQs.rst
