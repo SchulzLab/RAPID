@@ -58,6 +58,7 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
 * Bowtie2 (version 2.1.0 or higher)
 * R version 3.2 or higher
 * Samtools (version 0.1.19 or higher)
+* pandoc
 * R Packages required:
    * DESeq2, gplots and RColorBrewer (if you are using rapidDiff)
    * ggplot2, scales, rmarkdown, knitr, viridis
