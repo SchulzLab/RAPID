@@ -83,7 +83,7 @@ A detailed description of all the command-line parameters can be found under the
 Visualization: Statistical Report
 ---------------------------------
 
-This section describe the plots in the statistical report produced from **rapidVis**. These explanations are merely some interpretation of each type of plot. 
+This section describe the plots in the statistical report produced from **rapidVis**. These explanations are merely one of several possible interpretation of each type of plot, and are not conclusive evidences on sRNA mechanism of action.
 
 To exemplify the Visualization abilities of RAPID, we used four small RNA sequencing data sets (unpublished) from the wildtype serotypes (51A, 51B, 51D, and 51H) of \textit{Paramecium tetraurelia}. We analyzed only the rDNA cluster producing 17S, 5.8S, 25S ribosomal RNAs. The rDNA cluster sequence can be obtained from GenBank Accession: AF149979.1 ~\citep{Preer1999DoesCircle}, with the additional annotation of the 5.8S sequence from GenBank accession: AM072801.1 ~\citep{Barth2006IntraspecificSequences}. 
 
@@ -101,49 +101,49 @@ This plot shows various read lengths (x-axis) utilized in the analysis and their
 
 Alignment percentage of reads with (Not)Soft-clipped bases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the alignment percentage of reads (y-axis) containing soft-clipped bases (x-axis; Soft-clipping status). Soft-clipping refers to the bases (five-prime or three-prime) in a read that are not part of the alignment. This helps in understanding the percentage of aligned sRNA which has non-specific alignments. In sRNA mechanisms, it is not uncommon to exclude bases in five or three prime end to achieve base-pairing.  
+This plot shows the alignment percentage of reads (y-axis) containing soft-clipped bases (x-axis; Soft-clipping status). Soft-clipping refers to the bases (five-prime or three-prime) in a read that are not part of the alignment. This helps in understanding the percentage of aligned sRNA which has non-specific alignments. In sRNA mechanisms, as it is not uncommon to exclude bases in five or three prime end to achieve base-pairing, this plot can give insights into the mode of base-pairing of the sRNAs in downstream mechanisms.  
 
 .. image:: ./images/rDNA_51A_plot2.png
 
 Strand specific alignment percentage of reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The alignment percentage (y-axis) of reads corresponding to each strand (x-axis) is shown in this plot. sRNA mechanisms are quite specific to length, and their strand of origin. This plot helps in understanding which strand shows a predominance in the library, such that one can hypothesise the role of the analysed small RNAs. 
+The alignment percentage (y-axis) of reads corresponding to each strand (x-axis) is shown in this plot. sRNA mechanisms are quite specific to length, and their strand of origin. This plot helps in understanding which strand shows a predominance in the library, such that one can hypothesise the role of the analysed small RNAs. For instance, an antisense predominance could indicate a cis-acting mechanism in modulating the target mRNA.
 
 .. image:: ./images/rDNA_51A_plot3.png
 
 Reads aligned with soft clipping above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the soft-clipped bases (x-axis) and the number of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could simply indicate a potential technical inadequacy in trimming adapter, or primer, etc. 
+This plot shows the soft-clipped bases (x-axis) and the number of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; where, 'n' corresponds to 5% of the overall alignment. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could simply indicate a potential technical inadequacy in trimming adapter, or primer, etc. 
 
 .. image:: ./images/rDNA_51A_plot4.png
 
 Alignment percentage of reads with soft clipping above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot (similar to the previous plot) shows the soft-clipped bases (x-axis) and the percentage of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; Where, 'n' corresponds to 5% of the overall alignment.
+This plot (similar to the previous plot) shows the soft-clipped bases (x-axis) and the percentage of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; where, 'n' corresponds to 5% of the overall alignment.
 
 .. image:: ./images/rDNA_51A_plot5.png
 
 Strand specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to each strand. Length, and strand of origin plays an important role in understanding sRNA mechanisms. For instance, an antisense predominance could indicate a cis-mediated sRNA mechanism. 
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to each strand. Length, and strand of origin plays an important role in understanding sRNA mechanisms. For instance, an antisense predominance of 23nt bases could indicate a cis-acting mechanism in modulating the target mRNA, and dicer activity. 
 
 .. image:: ./images/rDNA_51A_plot6.png
 
 Soft-clipping status specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to their soft-clipping status is shown in this plot.
+Various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), specific to their soft-clipping status is shown in this plot. This plot can further assist in understanding which read lengths are affected by soft-clipping, and if it is important to handle the soft-clipped bases before proceeding to downstream analysis.
 
 .. image:: ./images/rDNA_51A_plot7.png
 
 1-base soft-clipping specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the soft-clipped bases. Only the single bases (A,T,G and C) soft-clipped were considered.
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the soft-clipped bases. Only the single bases (A,T,G and C) soft-clipped were considered. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could further indicate the potential source of the soft-clipped bases. For instance, untrimmed adapter, or primer, etc. 
 
 .. image:: ./images/rDNA_51A_plot8.png
 
 Strand specific reads with respect to base soft-clipping status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the strand (x-axis) specific read counts (y-axis) with their base soft-clipping status.
+This plot shows the strand (x-axis) specific read counts (y-axis) with their base soft-clipping status. This plot can further assist in understanding which strands are affected by soft-clipping, and if it is important to handle the soft-clipped bases before proceeding to downstream analysis.
 
 .. image:: ./images/rDNA_51A_plot9.png
 
@@ -195,19 +195,19 @@ This multi dimensional scaling (MDS) plot shows the proximities of your samples 
 
 Box plot of read counts
 ^^^^^^^^^^^^^^^^^^^^^^^^
-This is a box plot of the normalized read counts of each gene/region.
+This is a box plot of the normalized read counts of each gene/region across all the samples used in the analysis. This can indicate the variance among samples for a specific gene/region.
 
 .. image:: ./images/rDNA_Comp_plot6.png
 
-Sample wise comparison of read counts for each gene/region
+Sample wise comparison of normalised read counts for each gene/region
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the normalized read counts of each sample for each gene/region.
+This plot shows the normalised read counts of each sample for each gene/region.
 
 .. image:: ./images/rDNA_Comp_plot7.png
 
-Sample wise comparison of read counts for each gene/region (log2 scale)
+Sample wise comparison of normalised read counts for each gene/region (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Log2 of normalized read counts of each sample for each gene/region is shown in this plot.
+Log2 of normalised read counts of each sample for each gene/region is shown in this plot.
 
 .. image:: ./images/rDNA_Comp_plot8.png
 
@@ -229,25 +229,25 @@ This plot shows the antisense ratio of each sample is shown for each gene/region
 
 .. image:: ./images/rDNA_Comp_plot11.png
 
-Gene/Region wise comparsion of average read counts for each sample
+Gene/Region wise comparison of normalised read counts for each sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the gene/region wise average read counts for each sample.
+This plot shows the gene/region wise normalised read counts for each sample.
 
 .. image:: ./images/rDNA_Comp_plot12.png
 
-Gene/Region wise comparsion of average read counts for each sample (log2 scale)
+Gene/Region wise comparison of normalised read counts for each sample (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Log2 of gene/region wise average read counts for each sample is shown in this plot.
+Log2 of gene/region wise normalised read counts for each sample is shown in this plot.
 
 .. image:: ./images/rDNA_Comp_plot13.png
 
-Gene/Region wise comparsion of TPM for each sample
+Gene/Region wise comparison of TPM for each sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This plot shows the gene/region wise TPM for each sample. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
 
 .. image:: ./images/rDNA_Comp_plot14.png
 
-Gene/Region wise comparsion of TPM for each sample (log2 scale)
+Gene/Region wise comparison of TPM for each sample (log2 scale)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Log2 of gene/region wise TPM for each sample is shown in this plot. TPM values are calculated from the read counts, after accounting for read length restrictions, if provided by user.
 
