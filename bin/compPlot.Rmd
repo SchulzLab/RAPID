@@ -31,14 +31,14 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
               geom_bar(stat="identity")+
               facet_wrap(~ region)+scale_y_continuous(trans=log2_trans()) +
                 scale_fill_viridis(discrete = T, option="D")+
-              labs(x="Sample", y="Read count (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
+              labs(x="Sample", y="Normalized read count (log2)",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }else{
       try(print(ggplot(df,aes(x=samples,y=readCountsNorm,fill=samples)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ region)+
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
                 scale_fill_viridis(discrete=T, option="D")+
-              labs(x="Sample", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
+              labs(x="Sample", y="Normalized read count",title=title)+ COSMO + guides(fill=guide_legend(title="Sample"))))
     }
   }
 
@@ -86,14 +86,14 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
               scale_y_continuous(trans=log2_trans()) +
               theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0)) +
                 scale_fill_viridis(discrete=T, option="D")+
-              labs(x="Gene/Region", y="Read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
+              labs(x="Gene/Region", y="Normalized read count (log2) ",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
     }else{
       try(print(ggplot(df,aes(x=region,y=readCountsNorm,fill=region)) +  
               geom_bar(stat="identity") +
               facet_wrap(~ samples) + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.45)) +
                 scale_fill_viridis(discrete=T, option="D")+
-              labs(x="Gene/Region", y="Read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
+              labs(x="Gene/Region", y="Normalized read count",title=title)+ COSMO + guides(fill=guide_legend(title="Gene/Region"))))
       
     }
     
@@ -218,18 +218,18 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   try(print(ggplot(dfa, aes(region, readCountsAvg)) + geom_boxplot() + labs(x="Gene/Region", y="Normalized Read Count") + COSMO))
 ```
 
-### Sample wise comparison of read counts for each gene/region {#Sample}
+### Sample wise comparison of normalised read counts for each gene/region {#Sample}
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-read-counts-for-each-gene-region" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-normalised-read-counts-for-each-gene-region" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSamplePlot(dfa,title="",allowed,plotlog=FALSE)
   #createSamplePlot(dfa,title="Sample Comparison",allowed,plotlog=FALSE)
 ```
 
-### Sample wise comparison of read counts for each gene/region (log2 scale)
+### Sample wise comparison of normalised read counts for each gene/region (log2 scale)
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-read-counts-for-each-gene-region-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#sample-wise-comparison-of-normalised-read-counts-for-each-gene-region-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createSamplePlot(dfa,title="",allowed)
@@ -264,36 +264,36 @@ COSMO = theme_bw() + theme(plot.title = element_text(size = txtSize, face = "bol
   #createSampleASRatioPlot(dfa,title="Antisense ratio of samples",allowed)
 ```
 
-### Gene/Region wise comparsion of read counts for each sample {#Gene}
+### Gene/Region wise comparison of normalised read counts for each sample {#Gene}
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparison-of-normalised-read-counts-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionPlot(dfa,title="",allowed)
   #createRegionPlot(dfa,title="Gene/Regions Comparison",allowed)
 ```
 
-### Gene/Region wise comparsion of read counts for each sample (log2 scale)
+### Gene/Region wise comparison of normalised read counts for each sample (log2 scale)
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-average-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparison-of-normalised-read-counts-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionPlot(dfa,title="",allowed,plotlog=TRUE)
   #createRegionPlot(dfa,title="Gene/Regions Comparison in log scale",allowed,plotlog=TRUE)
 ```
 
-### Gene/Region wise comparsion of TPM for each sample
+### Gene/Region wise comparison of TPM for each sample
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-tpm-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparison-of-tpm-for-each-sample" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionTPMPlot(dfa,title="",allowed)
   #createRegionPlot(dfa,title="Gene/Regions TPM Comparison",allowed)
 ```
 
-### Gene/Region wise comparsion of TPM for each sample (log2 scale)
+### Gene/Region wise comparison of TPM for each sample (log2 scale)
 
-<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparsion-of-tpm-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
+<a href="https://rapid-doc.readthedocs.io/en/latest/UseCases.html#gene-region-wise-comparison-of-tpm-for-each-sample-log2-scale" target="_blank">See Help</a>  &nbsp; [Back To Top](#top)
 
 ```{r echo=FALSE, fig.height=hval, fig.width=hval}
   createRegionTPMPlot(dfa,title="",allowed,plotlog=TRUE)
