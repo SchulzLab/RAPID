@@ -19,15 +19,11 @@ An example command to use RAPID as a conda environment : ::
 
     conda create --name <environment_name> rapid=<version>
 
-This command creates an environment for RAPID. We advise to use conda environment based approach, as this would not disturb your exisiting installations, and use only the compatible versions of dependencies. 
+This command creates an environment for RAPID. We advise to use conda environment based approach, as this would not disturb your existing installations, and use only the compatible versions of dependencies. 
 
-You can find the location of environments in the file ~/.conda/environments.txt
 
 If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
-
-Move to the test data folder. Edit the *rapid* path variable in the runTest.sh script. Depending on your OS, and conda installation directory, it should look soemthing like ::
-
-    rapid=/home/<username>/miniconda2/envs/<environment_name>/bin/ (or) rapid=/Users/<username>/miniconda2/envs/<environment_name>/bin/
+Please refer to **TroubleShooting_FAQs** section, if you encounter issues.
 
 
 First activate the desired conda environment ::
@@ -38,12 +34,10 @@ Now, simply run ::
 
     bash runTest.sh
     
-Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
-You should also find the outputs described under the **Visualization** section.
+Upon successful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
+You should see outputs as shown in the SampleOutput folder. The output descriptions can be found in the **Visualization** section.
 
-If there are some errors with R modules, Open R by staying in the conda environment, and update the R modules ::
-
-    update.packages(ask = FALSE, checkBuilt = TRUE)
+If you encounter any issues, which is not addressed in the **TroubleShooting_FAQs** section, please report to us.
  
 To move out of the environment, type ::
 
@@ -70,10 +64,10 @@ RAPID makes use of the following tools, and requires them to be in your PATH.
 
 Simple Test
 -----------
-After installation you can try running RAPID using the provided script runTest.sh in the testData folder. Ensure to set the *rapid* path variable in the script.
+After installation you can try running RAPID using the provided script runTest.sh (You will have to uncomment respective lines) in the testData folder. Ensure to add the rapid in the PATH variable or provide the scripts with an environment variable for rapid.
 Now, simply run ::
 
     bash runTest.sh
 
-Upon succesful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
-You should also find the basic statistics output described under the **Visualization** section.
+Upon successful completion, there should be two folders TestRapid created by **rapidStats**, and TestCompare from **rapidNorm** in the testData folder. 
+You should see outputs as shown in the SampleOutput folder. The output descriptions can be found in the **Visualization** section.
