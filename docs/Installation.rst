@@ -17,12 +17,13 @@ You can search for rapid using the following command: ::
 
 An example command to use RAPID as a conda environment : ::
 
-    conda create --name <environment_name> rapid=<version>
+    conda create --name <environment_name> rapid
 
-This command creates an environment for RAPID. We advise to use conda environment based approach, as this would not disturb your existing installations, and use only the compatible versions of dependencies. 
+This command creates an environment for RAPID's latest version. We advise to use conda environment based approach, as this would not disturb your existing installations, and use only the compatible versions of dependencies. 
 
 
 If you wish to test the installation, download the testData folder from the git repository `RAPID <https://github.com/SchulzLab/RAPID>`_. 
+
 Please refer to **TroubleShooting_FAQs** section, if you encounter issues.
 
 
@@ -30,7 +31,7 @@ First activate the desired conda environment ::
 
     source activate <environment_name>
     
-Now, simply run ::
+Move inside the testData folder, and Now, simply run ::
 
     bash runTest.sh
     
