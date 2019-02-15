@@ -7,7 +7,7 @@ output: html_document
 
 ### This report provides the basic statistical analysis of the sample **`r smpName`**. 
 
-You can naviage through the links on the side panel to explore various plots for the gene/regions used in your analysis.
+You can navigate through the links on the side panel to explore various plots for the gene/regions used in your analysis.
 
 ### User provided information:
 
