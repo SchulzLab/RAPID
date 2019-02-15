@@ -90,13 +90,16 @@ A detailed description of all the command-line parameters can be found under the
 Case Studies
 ------------
 
-To exemplify the use of RAPID, we performed to case studies. Sample outputs from the case study can be seen following the links below.
+To exemplify the use of RAPID, we performed two case studies, which are part of the bioarXiv/Manuscript. Using the Reproducible script, and associated data provided in the `GitHub page of RAPID <https://github.com/SchulzLab/RAPID/tree/master/CaseStudy/>`_ , you can perform all the analysis part of these case studies. 
 
+Below you can find few sample output from the case studies. 
+
+An example visualisation of the basic statistics produced by RAPID, for the *Paramecium tetraurelia* case study . 
 `Visualization of Statistics <http://htmlpreview.github.io/?https://github.com/SchulzLab/RAPID/blob/master/CaseStudy/ExampleVisualization/Visualization_BasicStatistics_rDNA_EST_51A.html>`_
 
+An example visualisation of the normalised comparison plots produced by RAPID, for the *Paramecium tetraurelia* case study . 
 `Visualization of Comparisons <http://htmlpreview.github.io/?https://github.com/SchulzLab/RAPID/blob/master/CaseStudy/ExampleVisualization/Visualization_Comparison_All_rDNA.html>`_
 
-Using the Reproducible script, and associated data provided in the `GitHub page of RAPID <https://github.com/SchulzLab/RAPID/tree/master/CaseStudy/>`_ , you can perform all the analysis part of these case studies. 
 
 
 Visualization: Statistical Report
