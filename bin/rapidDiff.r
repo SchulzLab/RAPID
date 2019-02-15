@@ -3,6 +3,7 @@
 #load libraries
 library("DESeq2")
 library("ggplot2")
+library("viridis")
 library("RColorBrewer")
 library("gplots")
 ####FUNCTIONS####
@@ -61,13 +62,15 @@ vsd <- varianceStabilizingTransformation(dds, blind=TRUE)
 #Heatmaps For different transformations
 #selection<-rownames(res)[1:NVAL]
 selection<-rownames(na.omit(res[(res$padj[complete.cases(res$padj)]<ALPHA),]))
-cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 128)
+#cpalette<-colorRampPalette(c("red", "yellow", "green"))(n = 128)
+cpalette<-colorRampPalette(c("white","green","green4","violet","purple"))(n=92)
 #celtextm<-as.data.frame(rep(transform(round(res$padj[1:NVAL],4)),4))
 print(heatmap.2(assay(vsd)[selection,], col = cpalette, margin=c(9,9), density.info="none", scale="none", trace="none", srtRow=0, srtCol=30, key.xlab = "Read Count", cexRow = 0.5, cexCol = 0.75))
 
 #PCA Plot
 pcaPl<-plotPCA(vsd,intgroup=c("condition"),returnData=TRUE)
-print(ggplot(pcaPl,aes(PC1, PC2,color=condition))+geom_point(size=3))
+print(ggplot(pcaPl,aes(PC1, PC2,color=condition))+geom_point(size=3)+
+        scale_color_viridis(discrete = T, option="D"))
 dev.off()
 
 print(paste("No. of DE genes w.r.t cut-off:", length(selection), sep=""))
