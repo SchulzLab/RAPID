@@ -1,7 +1,7 @@
 Use Cases
 =========
 
-Small RNA transcriptomics is gaining a lot of interest over the past decade. There is a lot of smallRNA (sRNA) computational analysis tools available. However, they focus mainly on predicting novel miRNAs, piRNAs, etc. and annotating them. This leads to complete ignorance of the other sRNA information inherent in the dataset. There is no integrated computational solution that can investigate novel sRNA data in an unbiased way, to the best of our knowledge. Hence, we developed a generic sRNA analysis offline tool, Read Alignment,Analysis, and Differential PIpeline (RAPID). RAPID quantifies the basic alignment statistics with respect to read length, strand bias, non-templated nucleotides, nucleotide content, etc. for an user-defined set of genes or regions. Once the basic statistics is performed for multiple sRNA datasets, our tools aids the user with versatile functionalities, ranging from general quantitative analysis to visual comparison of multiple sRNA datasets. 
+Small RNA transcriptomics is gaining a lot of interest over the past decade. There is a lot of smallRNA (sRNA) computational analysis tools available. However, they focus mainly on predicting novel miRNAs, piRNAs, etc. and annotating them. This leads to complete ignorance of the other sRNA information inherent in the dataset. There is no integrated computational solution that can investigate novel sRNA data in an unbiased way, to the best of our knowledge. Hence, we developed a generic eukaryotic sRNA analysis offline tool, Read Alignment,Analysis, and Differential PIpeline (RAPID). RAPID quantifies the basic alignment statistics with respect to read length, strand bias, non-templated nucleotides, nucleotide content, etc. for an user-defined set of genes or regions. Once the basic statistics is performed for multiple sRNA datasets, our tools aids the user with versatile functionalities, ranging from general quantitative analysis to visual comparison of multiple sRNA datasets. 
 
 Statistics
 ----------
@@ -24,7 +24,7 @@ What if, you want to quantify different set of small non-coding RNA categories, 
     
     ./rapidStats.sh -o=/path_to_output_directory/ -f=reads.bam -ft=BAM --remove=no -a=file.bed -r=/rapidPath/
 
-Sometimes, if you want to restrict your analysis to only certain regions. For instance, if you want to analyze only two sub-parts of a geneX (namely, positions 1500-2500, and 5000-6500 in chr1) because you suspect this region is a target for RNA silencing. You can do this by specifying so in your annotation BED file. 
+Sometimes, you may want to restrict your analysis to only certain regions of a gene. For instance, if you want to analyze only two sub-parts of a geneX (namely, positions 1500-2500, and 5000-6500 in chr1). You can simply create the bed file, as shown below.
 
 +------------+--------+-------+-----------+------------+--------------------------+
 | chromosome |  start |  end  | geneName  | type       | strand (Gene Direction)  |
@@ -36,19 +36,28 @@ Sometimes, if you want to restrict your analysis to only certain regions. For in
 | chr3       |  1234  | 1368  | geneC     | background | \-                       |
 +------------+--------+-------+-----------+------------+--------------------------+
 
-As you can see, both regions have the same *geneName* in the above annotation table. RAPID quantifies only those regions and sums up their statistics under the same name to ease up the calculations. 
-
-If you are performing RNA interference (RNAi) experiments, by introducing exogenous RNA in to the system to trigger the RNAi pathway. However, in the resultant sequencing run your exogenous RNA is also intact. 
-To avoid them from skewing the analysis, you can mention those as *background* in the *type* column in the BED file. Such *background* regions are also excluded from the total reads, if you go for normalization using **rapidNorm**
-Another use case of the background gene/regions could be with the use of RNAi vector constructs (like L4440 in C.elegans). Due to lack of specificity (or any technical inefficiency) non-insert RNA locations will also be transcribed. When the user is aware of such locations, they can be termed as background to RAPID, such that it will be rightfully handled in the analysis.
-
+As you can see, both regions have the same *geneName* in the above annotation table. RAPID quantifies those regions and sums up their statistics under the same name to ease up the calculations.  Under the column *type*, you can notice two values; region, and background. Region is the default value you need to use, if you don't have any special conditions to be handled during normalisation as described in the section below. 
 A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
+
 
 Normalization
 -------------
-In the previous *Statistics* section, we quantified reads from an RNAi experiment. When you have such different knockdowns, you will like to compare the samples/genes and analyze how their behavior changes in different settings. And, often before performing a differential analysis with multiple replicates (which are difficult to produce in many cases), you may appreciate a simple comparison to have an idea of what is going on among the different control vs cases. As sequencing depth differs across samples, the read counts have to be normalized.  In order to do that, RAPID facilitates two kinds of normalization. (i) DESeq2 based, and (ii) a variant of Total Count Scaling (TCS) method to account for the knockdown associated smallRNAs inherent in sequencing. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
 
-Simply add the sample locations you want to compare as described in the `config file <http://rapid-doc.readthedocs.io/en/latest/Usage.html#config-file-format>`_:  and run the following command with all the regions (in the annotation bed file) you previously quantified or only a subset of them which you think is intersting. ::
+For instance, assume you are performing RNA interference (RNAi) experiments, by introducing exogenous RNA in to the system to trigger the RNAi pathway. Now the resultant sequencing run contains all the introduced exogenous RNA as well. They can add up to millions of reads in the total library size. In order to avoid them from skewing the analysis, you can mention such regions as *background* in the *type* column in the BED file. Such *background* locations are handled during normalization using **rapidNorm**. 
+Another example of a background gene/region could be with the use of RNAi vector constructs (like L4440 in C.elegans). Due to lack of specificity (or any technical inefficiency) non-insert RNA locations will also be transcribed. When the user is aware of such locations, they can be termed as background to RAPID, such that it will be rightfully handled in the analysis.
+
+When you have such different knockdowns, you will like to compare the samples/genes and analyze how their behavior changes in different settings. And, often before performing a different analysis with multiple replicates (which are difficult to produce in many cases), you may appreciate a simple comparison to have an idea of what is going on among the different control vs cases. As sequencing depth differs across samples, the read counts have to be normalized.  In order to do that, RAPID facilitates two kinds of normalization. (i) factor-based normalisation from `DESeq2 <https://bioconductor.org/packages/release/bioc/html/DESeq2.html>`_ , and (ii) a variant of total count scaling method to account for the knockdown associated smallRNAs inherent in sequencing. This method is called KnockDown Corrected Scaling (KDCS). 
+
+Assume read count *R* for a region of interest that we want to compare between samples. *T* is the total number of reads mapping to the genome, and *K* is the number of small RNA reads mapping to the knockdown gene. In KDCS, we compute the normalized read count * :math: `\hat{R}`* : ::
+
+	:math: `\hat{R} = R \cdot \frac{M}{T-K}`,
+
+
+where *M* is the maximum over all values *(T_1 - K_1),...,(T_n - K_n)* over all *n* samples.
+ 
+For a detailed description of the normalization strategy, please have a look at the bioarXiv/Manuscript. 
+
+Simply add the sample locations you want to compare as described in the `config file <http://rapid-doc.readthedocs.io/en/latest/Usage.html#config-file-format>`_:  and run the following command with all the regions (in the annotation bed file) you previously quantified or only a subset of them which you think is interesting. ::
     
     ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/
     
@@ -56,12 +65,11 @@ If you think, using the DESeq2 based normalization is a better choice for your e
     
     ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -d=T
     
-Sometimes, you may need to consider only reads of certain readlength. Say, 23bp, and 25bp. Restricting the analysis to certain read length may increase the specificity of your comparative analysis. You can do that, by simply adding the lengths of your interest in the command line. ::
+Sometimes, you may need to consider only reads of certain read lengths, say, 23bp, and 25bp. Restricting the analysis to certain read length may increase the specificity of your comparative analysis. You can do that, by simply adding the lengths of your interest in the command line. ::
     
     ./rapidNorm.sh --out=/path_to_output_directory/ --conf=data.config --annot=regions.bed --rapid=/rapidPath/ -l=23,25
 
-In case, of TCS based normalization, RAPID also accounts for the background regions which are mentioned in the BED/CONFIG file. To be specific, these background genes/regions are locus which should be removed from the scaling factor calculations, such that, they do not create any bias. For a detailed description of the normalization strategy, please have a look at the bioarXiv. 
-
+For a detailed description of the normalization strategy, please have a look at the bioarXiv/Manuscript. 
 
 A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section.
 
@@ -78,6 +86,17 @@ If you want to plot rapidNorm output: ::
     ./rapidVis.sh -t=compare -o=/path_to_output_directory_rapidNorm/ -r=/rapidPath/
 
 A detailed description of all the command-line parameters can be found under the `Usage <http://rapid-doc.readthedocs.io/en/latest/Usage.html#basic-usage>`_ section. 
+
+Case Studies
+------------
+
+To exemplify the use of RAPID, we performed to case studies. Sample outputs from the case study can be seen following the links below.
+
+`Visualization of Statistics <http://htmlpreview.github.io/?https://github.com/SchulzLab/RAPID/tree/master/CaseStudy/ExampleVisualization/Visualization_BasicStatistics_rDNA_EST_51A.html>`_
+
+`Visualization of Comparisons <http://htmlpreview.github.io/?https://github.com/SchulzLab/RAPID/tree/master/CaseStudy/ExampleVisualization/Visualization_Comparison_All_rDNA.html>`_
+
+Using the Reproducible script, and associated data provided in the `GitHub page of RAPID <https://github.com/SchulzLab/RAPID/tree/master/CaseStudy/>`_ , you can perform all the analysis part of these case studies. 
 
 
 Visualization: Statistical Report
@@ -113,7 +132,7 @@ The alignment percentage (y-axis) of reads corresponding to each strand (x-axis)
 
 Reads aligned with soft clipping above 'n' reads
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows the soft-clipped bases (x-axis) and the number of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; where, 'n' corresponds to 5% of the overall alignment. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could simply indicate a potential technical inadequacy in trimming adapter, or primer, etc. 
+This plot shows the soft-clipped bases (x-axis) and the number of reads (y-axis) containing such soft-clipping. We only show bases which have at least 'n' reads; where, 'n' corresponds to 5% of the overall alignment. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could simply indicate a potential technical inadequacy in trimming adapter, or primer, etc. Also, depending on the organism, biological mechanisms, such as poly-A tailing of small RNAs, may exist. This plot thus gives a chance for the user to see if there is a RNA modification pathway existing, or whether change in conditions are affecting RNA modification frequencies.
 
 .. image:: ./images/rDNA_51A_plot4.png
 

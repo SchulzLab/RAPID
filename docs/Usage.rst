@@ -246,4 +246,4 @@ This config file is a simple **tab-delimited** file that has three columns, with
 
 *sampleName* tells the name to be used in the analysis output.
 *location* tells the location of rapidStats analysis folders should be used for extracting the raw counts of gene/regions analyzed (**USE ONLY ABSOLUTE PATH**)
-*condition* tells whether the sample is *untreated* or *treated* sample. For example, Use *treated*  drug treated cancerous samples and *untreated* for cancer samples.
+*condition* tells whether the sample is *untreated* or *treated* sample. For example, Use *treated* for drug treated cancerous samples; and *untreated* for cancer samples.
