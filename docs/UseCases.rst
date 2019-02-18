@@ -159,7 +159,7 @@ Various read lengths (x-axis) utilized in the analysis and their read counts (y-
 
 1-base soft-clipping specific reads of varied length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the soft-clipped bases. Only the single bases (A,T,G and C) soft-clipped were considered. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could further indicate the potential source of the soft-clipped bases. For instance, untrimmed adapter, or primer, etc. 
+This plot shows various read lengths (x-axis) utilized in the analysis and their read counts (y-axis), with respected to the soft-clipped bases. Only the single bases (A,T,G and C) soft-clipped were considered. This plot can help in understanding, if any particular nucleotide is always soft-clipped. It could further indicate the potential source of the soft-clipped bases. For instance, untrimmed adapter, or primer, etc. Studies have suggested (Carradec et al. 2015) that sRNAs may carry a single non-templated A or U. This plot can also be helpful to capture such non-templated nucleotide additions.
 
 .. image:: ./images/rDNA_51A_plot8.png
 
