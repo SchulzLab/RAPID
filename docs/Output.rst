@@ -8,7 +8,7 @@ Statistics
 
 An output folder is created, for each annotation BED file supplied in **rapidStats** analysis, with the following files:
 
-* Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications and coverage on DNA strands
+* Statistics.dat - A tab-separated file that contains a number of statistics for each region including read counts, number of read modifications, nucleotide specific read modifications, and strand and length specific read counts.
 * TotalReads.dat : Lists the total number of reads mapped to the genome (given by parameter -i and excluding reads that may have mapped to the contamination file)
 * Other associated files used for calculation and reporting. 
   * alignedReads.sub.compact has the compact information of aligned reads. If intermediate files are not removed, aligned BAM files will be present.
