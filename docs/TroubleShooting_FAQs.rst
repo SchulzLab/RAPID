@@ -35,6 +35,25 @@ Should be changed to: ::
 
 	export PATH=/Users/xxx/miniconda2/condabin:/Users/xxx/miniconda2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/xxx/miniconda2/envs/rapid/bin
 
+* Library not loaded (libcrypto) *
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This issue was encountered in the following scenario: ::
+
+	Conda version: 4.8.4
+	OSX version: 10.15.6 Beta (19G36e)
+	
+	Error: 
+	
+	dyld: Library not loaded: @rpath/libcrypto.1.0.0.dylib
+  	Referenced from: /Users/siva/opt/anaconda3/envs/rapid10/bin/samtools
+  	Reason: image not found
+	Abort trap: 6
+	
+This seems to be an issue with MacOS, and conda usage after recent updates. For unknown reasons an older version of samtools is getting installed. A workaround is to activate the respective conda environment you created, and update your samtools installation manually to version 1.9. You can use the following command: ::
+	
+	conda install samtools==1.9
+
 
 R - related
 -------------
