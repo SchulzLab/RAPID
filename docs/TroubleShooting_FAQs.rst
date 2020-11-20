@@ -10,6 +10,12 @@ Conda related
 
 Known issues related to conda based installation/execution.
 
+* pandoc compilation fails *
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some users have reported a pandoc error. Pleae try to downgrade to pandoc version 1.19
+
+
 * Library not loaded (libgfortran.3) *
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
